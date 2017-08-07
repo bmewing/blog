@@ -1,0 +1,66 @@
+---
+title: "Fuzzy Joining"
+author: "Mark Ewing"
+date: 2017-08-06T20:43:14-05:00
+categories: ["R"]
+tags: ["fuzzyjoin", "data.table", "tidyverse", "sqldf", "data munging"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+# Fuzzy Joining
+
+What is fuzzy joining?  Well, I'll assume you're familiar with common joins (outer, left, innter, cross, etc)
+
+![Common Joins](/img/2017-08-06-picture1.png){width=400px}
+
+If you're like me, you're looking at that diagram wondering what the heck is a 'theta' join?! Well, that's the formal name for a 'fuzzy' join. In fact, you can read about them [in this StackOverflow answer](https://stackoverflow.com/questions/7870155/difference-between-a-theta-join-equijoin-and-natural-join).  Essentially, an equi join is what is most typically used.  In SQL it would be something like:
+
+> select a.*
+>       ,b.*
+> from dbo.table1 as a
+> left join dbo.table2 as b
+> on a.key = b.key
+
+Actually this is a 'natural' join because the key has the same name in both sources and I'm using an equality to establish the join.  But, because I'm joining based on two keys being the same, this fits into the 'equi' join category.
+
+How can we do 'equi' joins in R? I'll present three methods below using three different packages, `data.table`, `dplyr`, and `sqldf`.
+
+## Getting ready
+
+First we're going to install my package, `VersionControl` which will ensure that this example will run using the same version of packages for anybody who uses it.
+
+```{r installVersionControl}
+if (!requireNamespace("devtools")) install.packages("devtools")
+if (!requireNamespace("VersionControl")) devtools::install_github("bmewing/VersionControl",ref="e05c5669ecba717138cb7f70bd29f99a88ec90bb")
+VersionControl::vcInstall(c("data.table","dplyr","sqldf"),version=c("1.1x","0.5x","0.4-11"))
+VersionControl::vcLibrary(c("data.table","dplyr","sqldf"),version=c("1.1x","0.5x","0.4-11"))
+```
+
+## data.table
+
+Are you not familiar with `data.table`? I'll be honest, I don't use it a lot but it's described as follows on CRAN:
+
+> Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, a fast friendly file reader and parallel file writer. Offers a natural and flexible syntax, for faster development.
+
+```{r cars}
+summary(cars)
+fit <- lm(dist ~ speed, data = cars)
+fit
+```
+
+# Including Plots
+
+You can also embed plots. See Figure \@ref(fig:pie) for example:
+
+```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
+par(mar = c(0, 1, 0, 1))
+pie(
+  c(280, 60, 20),
+  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
+  col = c('#0292D8', '#F7EA39', '#C4B632'),
+  init.angle = -50, border = NA
+)
+```
