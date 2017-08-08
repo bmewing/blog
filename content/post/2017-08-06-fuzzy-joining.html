@@ -181,11 +181,16 @@ microbenchmark(base = baseR_left(),
                dplyr = dplyr_left(),
                times = 100)
 ## Unit: microseconds
-##   expr       min        lq       mean     median        uq       max neval
-##   base   463.473   531.116   629.4952   563.2055   621.002  1894.731   100
-##     dt   625.378   715.630   867.2336   843.6225   950.465  1373.279   100
-##  sqldf 11056.240 11642.235 14009.3788 12388.3125 14234.361 58769.819   100
-##  dplyr   289.899   342.226   403.4877   378.8735   406.587  1629.264   100</code></pre>
+##   expr       min         lq       mean     median         uq       max
+##   base   507.961   590.9185   675.9810   615.8975   706.5135  1165.792
+##     dt   681.535   873.3415  1067.0553   925.4870  1163.2400  3161.166
+##  sqldf 12538.549 13796.4150 16108.4890 15309.5370 17238.9095 28922.349
+##  dplyr   299.745   360.6415   463.3125   413.1510   495.5625  2038.039
+##  neval
+##    100
+##    100
+##    100
+##    100</code></pre>
 <div id="results" class="section level4">
 <h4>Results</h4>
 <p>Base R has the smallest memory footprint (duh) and performs pretty well. <code>merge</code> is pretty flexible and can do some cool stuff. dplyr has the fastest performance on this toy set and a small memory footprint. data.table takes about twice as long as dplyr and is ~10x the memory footprint. sqldf is slow and bloated - but what else could you expect from a package that is literally spinning up a database in the background? It’s the price you pay to use SQL in R.</p>
@@ -346,20 +351,20 @@ tidy_fuzzy = function(){
                tidyverse = tidy_fuzzy(),
                times = 100)
 ## Unit: microseconds
-##          expr       min         lq       mean     median         uq
-##          base   423.726   466.0255   508.3179   504.8610   529.4750
-##  base_between   440.865   487.7225   586.8492   527.6515   552.4475
-##            dt  1156.676  1364.8920  1476.3477  1423.0540  1511.6640
-##         sqldf 11166.000 11633.4840 12311.0500 11830.7600 12533.9910
-##     fuzzyjoin 11848.627 12514.1170 13356.1782 12924.1675 13904.8985
-##     tidyverse  1225.595  1334.0790  1647.3803  1428.8885  1513.4870
+##          expr       min        lq       mean    median         uq
+##          base   424.820   485.352   546.7338   519.812   552.2655
+##  base_between   449.251   506.137   639.4538   565.028   609.6985
+##            dt  1220.854  1450.038  1565.6582  1526.432  1605.3795
+##         sqldf 11706.779 12316.841 13189.2771 12732.726 13721.4790
+##     fuzzyjoin 12791.617 13286.631 14569.1409 13703.429 14229.2565
+##     tidyverse  1258.778  1401.722  1689.1073  1496.349  1613.2200
 ##        max neval
-##    847.815   100
-##   4153.383   100
-##   3007.283   100
-##  17823.082   100
-##  19507.772   100
-##  14810.329   100</code></pre>
+##   1849.879   100
+##   4171.251   100
+##   2933.988   100
+##  20371.997   100
+##  67170.665   100
+##  15325.947   100</code></pre>
 <div id="results-1" class="section level4">
 <h4>Results</h4>
 <p>Both base R functions have no memory footprint and actually run the fastest with the <code>%between%</code> function being a touch slower but not enough to ignore it’s improved readability. <code>fuzzyjoin</code> has a large footprint and runs the slowest being in the same ballpark as <code>sqldf</code> - neither of these are great choices for the task we have. <code>data.table</code> and <code>tidyverse</code> are in the same ballpark, but are substantially slower than base R. BUT this was a very small toy problem. Let’s do something more meaningful.</p>
