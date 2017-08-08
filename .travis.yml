@@ -5,7 +5,6 @@ script: true
 deploy:
   provider: s3
   access_key_id: AKIAJQBVY4O4CWIYF7IQ
-  secret_access_key: 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
   bucket: thug-r.life
   skip_cleanup: true
   region: us-east-1
