@@ -1,0 +1,8 @@
+deploy:
+  provider: s3
+  access_key_id: "AKIAJSH3Q5IWDQEOIAQQ"
+  secret_access_key: "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"
+  bucket: "thug-r.life"
+  skip_cleanup: true
+  region: "us-east-1"
+  local_dir: public

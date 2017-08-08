@@ -1,52 +1,474 @@
 ---
-title: "Fuzzy Joining"
+title: "Theta Joins in R"
 author: "Mark Ewing"
-date: 2017-08-06T20:43:14-05:00
+description: "Learn how to do theta joins (fuzzy joins) in R six different ways."
+date: 2017-08-06
 categories: ["R"]
 tags: ["fuzzyjoin", "data.table", "tidyverse", "sqldf", "data munging"]
+type: "post"
 ---
 
 
 
-<div id="fuzzy-joining" class="section level1">
-<h1>Fuzzy Joining</h1>
-<p>What is fuzzy joining? Well, I’ll assume you’re familiar with common joins (outer, left, innter, cross, etc)</p>
+<div id="theta-joins" class="section level1">
+<h1>Theta Joins</h1>
 <div class="figure">
 <img src="/img/2017-08-06-picture1.png" alt="Common Joins" width="400" />
 <p class="caption">Common Joins</p>
 </div>
-<pre class="r"><code>summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit &lt;- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
-## 
-## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932</code></pre>
+<p>If you’re like me, you’re looking at that diagram wondering what the heck is a ‘theta’ join?! Well, that’s the formal name for a ‘fuzzy’ join. In fact, you can read about all the different join types <a href="https://stackoverflow.com/questions/7870155/difference-between-a-theta-join-equijoin-and-natural-join">in this StackOverflow answer</a>.</p>
+<p>An equi join is the most common kind of join because it leverages keys in your data source which are essential in a SQL environment. In SQL it would be something like:</p>
+<blockquote>
+<p>select a.*, b.*<br />
+from dbo.table1 as a<br />
+left join dbo.table2 as b<br />
+on a.key = b.key</p>
+</blockquote>
+<p>Actually this is a ‘natural’ join because the key has the same name in both sources and I’m using an equality to establish the join. But, because I’m joining based on two keys being the same, this fits into the ‘equi’ join category.</p>
+<p>How can we do ‘equi’ joins in R? I’ll present three methods below using three different packages, <code>data.table</code>, <code>dplyr</code>, and <code>sqldf</code>.</p>
+<div id="getting-ready" class="section level2">
+<h2>Getting ready</h2>
+<p>We’ll need to load some packages. Please note the versions I’m using. Also, the ‘live’ code I’m running is on my 64-bit Windows 7 laptop (8Gb RAM, i7-6600U CPU) in R 3.4.1</p>
+<table>
+<thead>
+<tr class="header">
+<th>Package</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>data.table</td>
+<td>1.10.4</td>
+</tr>
+<tr class="even">
+<td>sqldf</td>
+<td>0.4-10</td>
+</tr>
+<tr class="odd">
+<td>dplyr</td>
+<td>0.5.0</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>library(data.table)
+library(sqldf)
+library(dplyr)</code></pre>
+<div id="equijoin-data" class="section level3">
+<h3>equijoin data</h3>
+<p>Two quick tables to demonstrate equijoin behavior in each ecosystem. Here we have some customer id’s in two tables, one which has purchases (df1) and another with their location. I’ll write everything in a function to enable easy benchmarking and profiling.</p>
+<pre class="r"><code>df1 = data.frame(CustomerId = c(1:6), Product = c(rep(&quot;Laptop&quot;, 2), rep(&quot;Tablet&quot;, 2), rep(&quot;Smartphone&quot;, 2)))
+df2 = data.frame(CustomerId = c(2,3,4,6), State = c(rep(&quot;Tennessee&quot;, 3), rep(&quot;North Carolina&quot;, 1)))</code></pre>
 </div>
-<div id="including-plots" class="section level1">
-<h1>Including Plots</h1>
-<p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
-<pre class="r"><code>par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c(&#39;Sky&#39;, &#39;Sunny side of pyramid&#39;, &#39;Shady side of pyramid&#39;),
-  col = c(&#39;#0292D8&#39;, &#39;#F7EA39&#39;, &#39;#C4B632&#39;),
-  init.angle = -50, border = NA
-)</code></pre>
-<div class="figure"><span id="fig:pie"></span>
-<img src="/post/2017-08-06-fuzzy-joining_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
-<p class="caption">
-Figure 1: A fancy pie chart.
-</p>
+</div>
+<div id="different-approaches-for-equijoins" class="section level2">
+<h2>Different Approaches for Equijoins</h2>
+<div id="base-r" class="section level3">
+<h3>Base R</h3>
+<pre class="r"><code>baseR_left = function(){
+  merge(x = df1, y = df2, by = &quot;CustomerId&quot;, all.x = TRUE)
+}
+baseR_left()
+##   CustomerId    Product          State
+## 1          1     Laptop           &lt;NA&gt;
+## 2          2     Laptop      Tennessee
+## 3          3     Tablet      Tennessee
+## 4          4     Tablet      Tennessee
+## 5          5 Smartphone           &lt;NA&gt;
+## 6          6 Smartphone North Carolina</code></pre>
+</div>
+<div id="data.table" class="section level3">
+<h3>data.table</h3>
+<p>Are you not familiar with <code>data.table</code>? I’ll be honest, I don’t use it a lot but it’s described as follows on CRAN:</p>
+<blockquote>
+<p>Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, a fast friendly file reader and parallel file writer. Offers a natural and flexible syntax, for faster development.</p>
+</blockquote>
+<p>The syntax is different from a lot of what I’m used to which is why I don’t use it a bunch, but that’s a bad reason to not consider it.</p>
+<pre class="r"><code>dt1 = data.table(df1)
+dt2 = data.table(df2)
+#left join
+dt_left = function(){
+  dt2[dt1,on=.(CustomerId = CustomerId)]
+}
+dt_left()
+##    CustomerId          State    Product
+## 1:          1             NA     Laptop
+## 2:          2      Tennessee     Laptop
+## 3:          3      Tennessee     Tablet
+## 4:          4      Tennessee     Tablet
+## 5:          5             NA Smartphone
+## 6:          6 North Carolina Smartphone</code></pre>
+<p>I think this sytax is a bit backwards since Y[X] produces a left join of Y onto X meaning you put the left anchors on the right… anyway.</p>
+</div>
+<div id="sqldf" class="section level3">
+<h3>sqldf</h3>
+<p>Are you a lover of SQL and maybe new to R? I have a coworker who lived and breathed SQL for decades before learning R and they swear by this package to manage data. It literally sets up a database in the background to support the SQL language. That’s <em>dedication</em>.</p>
+<blockquote>
+<p>The sqldf() function is typically passed a single argument which is an SQL select statement where the table names are ordinary R data frame names. sqldf() transparently sets up a database, imports the data frames into that database, performs the SQL select or other statement and returns the result using a heuristic to determine which class to assign to each column of the returned data frame. The sqldf() or read.csv.sql() functions can also be used to read filtered files into R even if the original files are larger than R itself can handle. ‘RSQLite’, ‘RH2’, ‘RMySQL’ and ‘RPostgreSQL’ backends are supported.</p>
+</blockquote>
+<pre class="r"><code>sqldf_left = function(){
+  sqldf(&quot;SELECT a.CustomerId, Product, State 
+         FROM df1 a
+         LEFT JOIN df2 b 
+           on a.CustomerID = b.CustomerID&quot;)
+}
+sqldf_left()
+## Loading required package: tcltk
+## Warning: Quoted identifiers should have class SQL, use DBI::SQL() if the
+## caller performs the quoting.
+##   CustomerId    Product          State
+## 1          1     Laptop           &lt;NA&gt;
+## 2          2     Laptop      Tennessee
+## 3          3     Tablet      Tennessee
+## 4          4     Tablet      Tennessee
+## 5          5 Smartphone           &lt;NA&gt;
+## 6          6 Smartphone North Carolina</code></pre>
+</div>
+<div id="dplyr" class="section level3">
+<h3>dplyr</h3>
+<p>If I described myself as having a man crush on Hadley Wickham it would be accurate. I have a signed copy of his book ‘Advanced R’ on my bookshelf which I treasure. I didn’t even get it signed, I sent it with a friend who went to an R conference where I knew Hadley would be present. ANYWAY… dplyr is part of the <a href="https://www.tidyverse.org/">tidyverse</a> which is a collection of packages to support ‘tidy’ data analysis. It includes support for many operations include joins.</p>
+<pre class="r"><code>dplyr_left = function(){
+  left_join(df1,df2,by=&quot;CustomerId&quot;)
+}
+dplyr_left()
+##   CustomerId    Product          State
+## 1          1     Laptop           &lt;NA&gt;
+## 2          2     Laptop      Tennessee
+## 3          3     Tablet      Tennessee
+## 4          4     Tablet      Tennessee
+## 5          5 Smartphone           &lt;NA&gt;
+## 6          6 Smartphone North Carolina</code></pre>
+</div>
+</div>
+<div id="profiling" class="section level2">
+<h2>Profiling</h2>
+<p>Let’s profile these just to get a sense of where they stand.</p>
+<div id="profmem" class="section level3">
+<h3>profmem</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Ecosystem</th>
+<th>profmem bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Base R</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>data.table</td>
+<td>58,048</td>
+</tr>
+<tr class="odd">
+<td>sqldf</td>
+<td>183,888</td>
+</tr>
+<tr class="even">
+<td>dplyr</td>
+<td>5,088</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="microbenchmark" class="section level3">
+<h3>microbenchmark</h3>
+<pre class="r"><code>library(microbenchmark)
+microbenchmark(base = baseR_left(),
+               dt = dt_left(),
+               sqldf = sqldf_left(),
+               dplyr = dplyr_left(),
+               times = 100)
+## Unit: microseconds
+##   expr       min        lq       mean     median        uq       max neval
+##   base   463.473   531.116   629.4952   563.2055   621.002  1894.731   100
+##     dt   625.378   715.630   867.2336   843.6225   950.465  1373.279   100
+##  sqldf 11056.240 11642.235 14009.3788 12388.3125 14234.361 58769.819   100
+##  dplyr   289.899   342.226   403.4877   378.8735   406.587  1629.264   100</code></pre>
+<div id="results" class="section level4">
+<h4>Results</h4>
+<p>Base R has the smallest memory footprint (duh) and performs pretty well. <code>merge</code> is pretty flexible and can do some cool stuff. dplyr has the fastest performance on this toy set and a small memory footprint. data.table takes about twice as long as dplyr and is ~10x the memory footprint. sqldf is slow and bloated - but what else could you expect from a package that is literally spinning up a database in the background? It’s the price you pay to use SQL in R.</p>
+</div>
+</div>
+</div>
+<div id="different-approaches-for-theta-joins" class="section level2">
+<h2>Different Approaches for Theta Joins</h2>
+</div>
+<div id="the-small-data" class="section level2">
+<h2>The (small) data</h2>
+<p>We’ll use the same data for the toy problem and the more realistic version. This is the result of some text mining, specifically, named entity extraction from corpuses of text. It’s a two part, non-sequential process. We identify sentences by extracting the starting and ending characters.</p>
+<pre class="r"><code>sent_df = read.table(text=&quot;id start end
+                            1     1  39
+                            2    42  63&quot;, header=TRUE)</code></pre>
+<p>Then we extract entities by getting the type, starting and ending characters.</p>
+<pre class="r"><code>ent_df = read.table(text=&quot;start end     ent_type
+                              1   9 organization
+                             23  31        money
+                             45  50 organization&quot;, header=TRUE)</code></pre>
+<p>But, to help our users get the context of where entities appear as well as to get co-occurence information, we need to know what sentence the entity appeared in. Additionally, we only want to keep the sentence id and the entity type.</p>
+<p>In this case, we can see the first entity (an organization) starts at location 1 and ends at 9 which puts it in sentence 1 (which starts at location 1 and ends at 39). The second entity (money!) is also in sentence 1 (starts at 23 and ends at 31) while the last entity belongs in sentence 2. An equi join won’t work because I need to check if entity.start &gt;= sentence.start AND entity.end &lt;= sentence.end. Luckily, we have a few approaches.</p>
+</div>
+<div id="base-r-1" class="section level2">
+<h2>Base R</h2>
+<p>What we’ll do is cross join the data together, then do some filtering. I’m doing this all with base R functionality which I’m not totally used to doing, so this may not be the most perfect form of filtering. I decided to try using the <code>%between%</code> operator as well. Since an entity cannot be extracted which spans sentences all we really need to check is that the entity start is between the sentence start and end.</p>
+<pre class="r"><code>baseR_fuzzy = function(){
+  tmp = merge(x = sent_df, y = ent_df, by = NULL)
+  tmp[tmp$start.x &lt;= tmp$start.y &amp; tmp$end.x &gt;= tmp$end.y,c(&quot;id&quot;,&quot;ent_type&quot;)]
+}
+
+baseR_fuzzy_between = function(){
+  tmp = merge(x = sent_df, y = ent_df, by = NULL)
+  tmp[tmp$start.y %between% tmp[,c(&quot;start.x&quot;,&quot;end.x&quot;)],c(&quot;id&quot;,&quot;ent_type&quot;)]
+}
+  
+baseR_fuzzy()
+##   id     ent_type
+## 1  1 organization
+## 3  1        money
+## 6  2 organization</code></pre>
+</div>
+<div id="data.table-1" class="section level2">
+<h2>data.table</h2>
+<p>One great thing about data.table is that it supports fuzzy joins right out of the gate. However, there’s a lot of ambiguity in the join logic. Because doing a left join takes Y[X] and we’re joining the entities onto the sentences we list column names in the left-to-right order, not the left join order. So, where we have <code>on=.(start &gt;= start)</code> you can think of it as <code>on=.(start.Y &gt;= start.X)</code> which is equivalent to <code>on=.(start.ent &gt;= start.sent)</code>.</p>
+<pre class="r"><code>sent_dt = data.table(sent_df)
+ent_dt  = data.table(ent_df)
+
+dt_fuzzy = function(){
+  ent_dt[sent_dt, on=.(start &gt;= start, end &lt;= end)][,.(id, ent_type)]
+}
+dt_fuzzy()
+##    id     ent_type
+## 1:  1 organization
+## 2:  1        money
+## 3:  2 organization</code></pre>
+</div>
+<div id="sqldf-1" class="section level2">
+<h2>sqldf</h2>
+<p>sqldf also has the <code>BETWEEN</code> operator which lets us simplify the inequality of our join.</p>
+<pre class="r"><code>sqldf_fuzzy = function() {
+  sqldf(
+      &quot;
+      SELECT id, ent_type
+      FROM sent_df a, ent_df b
+      WHERE b.start BETWEEN a.start AND a.end 
+      &quot;
+  )
+}
+sqldf_fuzzy()
+##   id     ent_type
+## 1  1 organization
+## 2  1        money
+## 3  2 organization</code></pre>
+</div>
+<div id="fuzzyjoin" class="section level2">
+<h2>fuzzyjoin</h2>
+<p>Here I’ll introduce a new package aptly named <code>fuzzyjoin</code> (I’m using version 0.1.2). This adds ‘fuzzy’ versions of all the <code>dplyr</code> joins and is fully compatible in the <code>tidyverse</code>. In addition to providing both tables we need to provide match functions which provide logical indicators of fuzzy matching. What’s interesting is that each row is returned twice which must be a function of providing two match functions.</p>
+<p>This is also the first time I use the <code>magrittr</code> pipes (%&gt;%). If you’re not familiar with them I’d suggest learning about them because they’re great and I have stickers of them on my truck and motorcycle.</p>
+<pre class="r"><code>library(fuzzyjoin)
+startMatch = function(x,y){
+  x &lt;= y
+}
+endMatch = function(x,y){
+  x &gt;= y
+}
+fuzzy_fuzzy = function(){
+  fuzzy_join(sent_df,ent_df,by=c(&quot;start&quot;,&quot;end&quot;),match_fun = list(start = startMatch,end = endMatch)) %&gt;% 
+    select(id,ent_type) %&gt;% 
+    distinct()
+}
+fuzzy_fuzzy()
+##   id     ent_type
+## 1  1 organization
+## 2  1        money
+## 3  2 organization</code></pre>
+</div>
+<div id="pure-tidyverse" class="section level2">
+<h2>Pure tidyverse</h2>
+<p>I’m a fan of limiting the number of packages your code relies upon. Adding <code>fuzzyjoin</code> to handle this problem feels unnecessary (it provides great value in other applications because of the flexibility of the match functions) so I’d like to try and avoid it but also leverage the tidyverse. So I’m going to load the <code>tidyr</code> package (I’m using version 0.6.1) which is a solid compliment to <code>dplyr</code> and does lots of useful stuff. I know it looks like I’m just swapping out one package for another, but given the general practicality of tidyr compared to fuzzyjoin, I think it’s OK.</p>
+<p>tidyr adds a cross_join function (not present in dplyr!!) which has a funky problem of not adjusting the names of duplicate columns. This impacts the ability of dplyr and other things to work on the resulting tibble (data.frame). So, I manually adjust the names using <code>names&lt;-</code>, filter down to what I want and then select the columns. The approach is identical to the base R code, just using the tidyverse.</p>
+<pre class="r"><code>library(tidyr)
+tidy_fuzzy = function(){
+  sent_df %&gt;% 
+    crossing(ent_df) %&gt;% 
+    `names&lt;-`(c(&quot;id&quot;,&quot;start.x&quot;,&quot;end.x&quot;,&quot;start.y&quot;,&quot;end.y&quot;,&quot;ent_type&quot;)) %&gt;% 
+    filter(end.x &gt;= end.y &amp; start.x &lt;= start.y) %&gt;% 
+    select(id,ent_type)
+}</code></pre>
+</div>
+<div id="profiling-1" class="section level2">
+<h2>Profiling</h2>
+<p>Let’s profile these (small) fuzzy joins just to get a sense of where they stand.</p>
+<div id="profmem-1" class="section level3">
+<h3>profmem</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Ecosystem</th>
+<th>profmem bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Base R</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>Base R (%between%)</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>data.table</td>
+<td>83,136</td>
+</tr>
+<tr class="even">
+<td>sqldf</td>
+<td>184,480</td>
+</tr>
+<tr class="odd">
+<td>fuzzyjoin</td>
+<td>117,104</td>
+</tr>
+<tr class="even">
+<td>tidyverse</td>
+<td>41,848</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="microbenchmark-1" class="section level3">
+<h3>microbenchmark</h3>
+<pre class="r"><code>microbenchmark(base = baseR_fuzzy(),
+               base_between = baseR_fuzzy_between(),
+               dt = dt_fuzzy(),
+               sqldf = sqldf_fuzzy(),
+               fuzzyjoin = fuzzy_fuzzy(),
+               tidyverse = tidy_fuzzy(),
+               times = 100)
+## Unit: microseconds
+##          expr       min         lq       mean     median         uq
+##          base   423.726   466.0255   508.3179   504.8610   529.4750
+##  base_between   440.865   487.7225   586.8492   527.6515   552.4475
+##            dt  1156.676  1364.8920  1476.3477  1423.0540  1511.6640
+##         sqldf 11166.000 11633.4840 12311.0500 11830.7600 12533.9910
+##     fuzzyjoin 11848.627 12514.1170 13356.1782 12924.1675 13904.8985
+##     tidyverse  1225.595  1334.0790  1647.3803  1428.8885  1513.4870
+##        max neval
+##    847.815   100
+##   4153.383   100
+##   3007.283   100
+##  17823.082   100
+##  19507.772   100
+##  14810.329   100</code></pre>
+<div id="results-1" class="section level4">
+<h4>Results</h4>
+<p>Both base R functions have no memory footprint and actually run the fastest with the <code>%between%</code> function being a touch slower but not enough to ignore it’s improved readability. <code>fuzzyjoin</code> has a large footprint and runs the slowest being in the same ballpark as <code>sqldf</code> - neither of these are great choices for the task we have. <code>data.table</code> and <code>tidyverse</code> are in the same ballpark, but are substantially slower than base R. BUT this was a very small toy problem. Let’s do something more meaningful.</p>
+</div>
+</div>
+</div>
+<div id="bigger-data" class="section level2">
+<h2>Bigger Data</h2>
+<p>It turned out that in the real-world case we only needed to do fuzzy joining on a per-document basis which meant the data never got so big that scaling issues of each approach would matter. It was scaling how much parallel processing we could do to slam documents through.</p>
+<p>But that’s boring. We have scaling issues we need to test and solve.</p>
+<div class="figure">
+<img src="/img/2017-08-06-picture2.png" alt="Common Joins" width="400" />
+<p class="caption">Common Joins</p>
+</div>
+<p>Originally I created 5000 sentences with ~23,000 entities, but this proved to be too much for some of the functions to handle on my laptop (having closed all other applications first!). So, I shrunk it to 2000 sentences and ~9,000 entities.</p>
+<pre class="r"><code>set.seed(2300)
+nsent = 2000
+sentence_length = floor(rnorm(nsent,100,10))
+sent_df = data.frame(id = 1:nsent,
+                     start = Reduce(sum,sentence_length,init=1,accumulate = T)[1:nsent],
+                     end = cumsum(sentence_length))
+stop = FALSE
+i = 1
+ent_df = data.frame(start = NA, end = NA, ent_type = NA)
+while(!stop){
+  ent_start = as.logical(rbinom(n=1,size=1,prob = 0.2))
+  if(ent_start){
+    sent = max(which(sent_df$start &lt;= i))
+    sent_end = sent_df$end[sent_df$id == sent]
+    ent_end = min(c(i+rpois(1,1)+3,sent_end))
+    if(ent_end-i &lt; 3){
+      i = i+3
+      next
+    }
+    ent_type = sample(c(&quot;organization&quot;,&quot;person&quot;,&quot;money&quot;),size = 1)
+    ent_df = rbind(ent_df,data.frame(start=i, end=ent_end, ent_type=ent_type))
+    i = ent_end+2
+  }
+  i = i+3
+  if(i &gt; max(sent_df$end)) stop = TRUE
+}</code></pre>
+<p>Now we have a bunch of data - so let’s test stuff!</p>
+<div id="microbenchmark-2" class="section level3">
+<h3>microbenchmark</h3>
+<p>I suspect some of these are going to run very poorly, so we’ll start with an n of 1. This isn’t a good benchmark but when you see the eval times, you’ll realize why.</p>
+<pre class="r"><code>microbenchmark(base = baseR_fuzzy(),
+               base_between = baseR_fuzzy_between(),
+               dt = dt_fuzzy(),
+               sqldf = sqldf_fuzzy(),
+               fuzzyjoin = fuzzy_fuzzy(),
+               tidyverse = tidy_fuzzy(),
+               times = 1)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Eval Time (ms)</th>
+<th>Scale Up</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Base</td>
+<td>42,564</td>
+<td>67,669</td>
+</tr>
+<tr class="even">
+<td>Base (%between%)</td>
+<td>53,239</td>
+<td>81,280x</td>
+</tr>
+<tr class="odd">
+<td>data.table</td>
+<td>17</td>
+<td>9x</td>
+</tr>
+<tr class="even">
+<td>sqldf</td>
+<td>1,296</td>
+<td>798x</td>
+</tr>
+<tr class="odd">
+<td>fuzzyjoin</td>
+<td>355,983</td>
+<td>16,100x</td>
+</tr>
+<tr class="even">
+<td>tidyverse</td>
+<td>65,113</td>
+<td>38,301x</td>
+</tr>
+</tbody>
+</table>
+<p>The ‘scale up’ column is simply dividing the execution time of the 1000x sentence (3000x entities) data by the execution time of the original data. I find the results to be somewhat surprising.</p>
+<div id="results-2" class="section level4">
+<h4>Results</h4>
+<ul>
+<li><code>data.table</code> is the clear winner overall - it was middle of the pack on the toy data and scales better than the data.</li>
+<li><code>sqldf</code> has a lot of overhead and ran (relatively) poorly on the toy problem but scales very well with the larger data.</li>
+<li><code>fuzzyjoin</code> took nearly 6 minutes to run where the next slowest was closer to a minute. This is not a good choice for the type of fuzzy joining we’re doing.</li>
+<li>Base R (both versions) and <code>tidyverse</code> were in the same rough ballpark, ~1 minute with ridiculous scaling problems.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>I’ve shown you 6 different approaches to doing fuzzy joins (aka theta joins) and demonstrated their relative merits. We’ve seen that performance on small joins is no indication of performance on large joins but <code>data.table</code> scales very well on a variety of sizes and <code>sqldf</code> leverages it’s bloat in small sizes to perform well on larger sizes. Also important to note - base R has reasonable performance and beats a ‘tidy’ solution at the (potential) cost of readability.</p>
+<p>Should you pick up <code>data.table</code> and replace all your tidy work with it? I’m begining to believe that maybe I should. <code>data.table</code> has at least one other practical advantage over the tidyverse. Stability. <code>data.table</code> is past version 1.0 where <code>dplyr</code> and <code>tidyr</code> are not. This is especially apparent with the fairly frequent breaking changes made to the tidyverse which can have a strong, negative impact in an enterprise environment.</p>
+<p>Well - I hope you have fun with theta joins (and start calling them that!)</p>
 </div>
 </div>

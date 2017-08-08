@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Fuzzyjoin on YARB - Yet Another R Blog</title>
+    <title>Fuzzyjoin on Thug R Life</title>
     <link>/tags/fuzzyjoin/</link>
-    <description>Recent content in Fuzzyjoin on YARB - Yet Another R Blog</description>
+    <description>Recent content in Fuzzyjoin on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Aug 2017 20:43:14 -0500</lastBuildDate>
+    <lastBuildDate>Sun, 06 Aug 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/fuzzyjoin/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Fuzzy Joining</title>
-      <link>/2017/08/06/fuzzy-joining/</link>
-      <pubDate>Sun, 06 Aug 2017 20:43:14 -0500</pubDate>
+      <title>Theta Joins in R</title>
+      <link>/post/2017-08-06-fuzzy-joining/</link>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/08/06/fuzzy-joining/</guid>
-      <description>Fuzzy Joining What is fuzzy joining? Well, I’ll assume you’re familiar with common joins (outer, left, innter, cross, etc)
-Common Joins
- summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.:19.0 3rd Qu.: 56.00 ## Max. :25.0 Max. :120.00 fit &amp;lt;- lm(dist ~ speed, data = cars) fit ## ## Call: ## lm(formula = dist ~ speed, data = cars) ## ## Coefficients: ## (Intercept) speed ## -17.</description>
+      <guid>/post/2017-08-06-fuzzy-joining/</guid>
+      <description>Theta JoinsCommon Joins
+If you’re like me, you’re looking at that diagram wondering what the heck is a ‘theta’ join?! Well, that’s the formal name for a ‘fuzzy’ join. In fact, you can read about all the different join types in this StackOverflow answer.
+An equi join is the most common kind of join because it leverages keys in your data source which are essential in a SQL environment.</description>
     </item>
     
   </channel>

@@ -1,47 +1,83 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on YARB - Yet Another R Blog</title>
+    <title>Tags on Thug R Life</title>
     <link>/tags/</link>
-    <description>Recent content in Tags on YARB - Yet Another R Blog</description>
+    <description>Recent content in Tags on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Aug 2017 20:43:14 -0500</lastBuildDate>
+    <lastBuildDate>Sun, 20 Mar 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Data Munging</title>
+      <title>Cloud</title>
+      <link>/tags/cloud/</link>
+      <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data munging</title>
       <link>/tags/data-munging/</link>
-      <pubDate>Sun, 06 Aug 2017 20:43:14 -0500</pubDate>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>/tags/data-munging/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Data.Table</title>
+      <title>Data.table</title>
       <link>/tags/data.table/</link>
-      <pubDate>Sun, 06 Aug 2017 20:43:14 -0500</pubDate>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>/tags/data.table/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Digital ocean</title>
+      <link>/tags/digital-ocean/</link>
+      <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/digital-ocean/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Distributed computing</title>
+      <link>/tags/distributed-computing/</link>
+      <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/distributed-computing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Fuzzyjoin</title>
       <link>/tags/fuzzyjoin/</link>
-      <pubDate>Sun, 06 Aug 2017 20:43:14 -0500</pubDate>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>/tags/fuzzyjoin/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Spark</title>
+      <link>/tags/spark/</link>
+      <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/spark/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Sqldf</title>
       <link>/tags/sqldf/</link>
-      <pubDate>Sun, 06 Aug 2017 20:43:14 -0500</pubDate>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>/tags/sqldf/</guid>
       <description></description>
@@ -50,7 +86,7 @@
     <item>
       <title>Tidyverse</title>
       <link>/tags/tidyverse/</link>
-      <pubDate>Sun, 06 Aug 2017 20:43:14 -0500</pubDate>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>/tags/tidyverse/</guid>
       <description></description>

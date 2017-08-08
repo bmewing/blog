@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>YARB - Yet Another R Blog</title>
+    <title>Thug R Life</title>
     <link>/</link>
-    <description>Recent content on YARB - Yet Another R Blog</description>
+    <description>Recent content on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Aug 2017 21:48:51 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 06 Aug 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>About</title>
+      <title>About Me</title>
       <link>/about/</link>
-      <pubDate>Sun, 06 Aug 2017 21:48:51 -0700</pubDate>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
       <description>I&amp;rsquo;m Mark Ewing. I&amp;rsquo;m just some guy who currently lives in the northeast part of Tennessee, just barely too far from Asheville, NC to drink Wicked Weed beer every weekend. I work for a big company doing a bunch of stuff and often that stuff involves R. I love R. I mean, not in a creepy way, yet most people still find it creepy. I first learned R in a linear algebra class in college back in 2006 and used it until I finished my masters degree in Applied Statistics.</description>
     </item>
     
     <item>
-      <title>Fuzzy Joining</title>
-      <link>/2017/08/06/fuzzy-joining/</link>
-      <pubDate>Sun, 06 Aug 2017 20:43:14 -0500</pubDate>
+      <title>Theta Joins in R</title>
+      <link>/post/2017-08-06-fuzzy-joining/</link>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/08/06/fuzzy-joining/</guid>
-      <description>Fuzzy Joining What is fuzzy joining? Well, I’ll assume you’re familiar with common joins (outer, left, innter, cross, etc)
-Common Joins
- summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.:19.0 3rd Qu.: 56.00 ## Max. :25.0 Max. :120.00 fit &amp;lt;- lm(dist ~ speed, data = cars) fit ## ## Call: ## lm(formula = dist ~ speed, data = cars) ## ## Coefficients: ## (Intercept) speed ## -17.</description>
+      <guid>/post/2017-08-06-fuzzy-joining/</guid>
+      <description>Theta JoinsCommon Joins
+If you’re like me, you’re looking at that diagram wondering what the heck is a ‘theta’ join?! Well, that’s the formal name for a ‘fuzzy’ join. In fact, you can read about all the different join types in this StackOverflow answer.
+An equi join is the most common kind of join because it leverages keys in your data source which are essential in a SQL environment.</description>
+    </item>
+    
+    <item>
+      <title>Installing Your First Spark Cluster</title>
+      <link>/post/2016-03-20-installing-your-first-spark-cluster/</link>
+      <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016-03-20-installing-your-first-spark-cluster/</guid>
+      <description>Installing your first spark clusterSo, if you’re like me you’ve been using a lot of traditional tools for data science/analytics/whatever you want to call it. R is great, it’s flexible, it’s powerful but it’s slow and memory constrained. At work I’ve got a VM with 16Gb and one call can increase it. At home I’ve got an 8 Gb machine and honestly, it works fine for what I do here.</description>
     </item>
     
   </channel>
