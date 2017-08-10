@@ -81,6 +81,16 @@
         
         
             
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-36686553-3', 'auto');
+ga('send', 'pageview');
+</script>
+
         
     </head>
     <body>
@@ -199,11 +209,11 @@
 
                 
                     <li>
-                        <a href="http://thug-r.life/post/2017-08-08-making-the-blog/"><p>Making this Blog</p></a>
+                        <a href="http://thug-r.life/post/2017-08-10-legislate-by-executive-order/"><p>Legislate by Executive Order</p></a>
                     </li>
                 
                     <li>
-                        <a href="http://thug-r.life/post/2017-08-06-fuzzy-joining/"><p>Theta Joins in R</p></a>
+                        <a href="http://thug-r.life/post/2017-08-08-making-the-blog/"><p>Making this Blog</p></a>
                     </li>
                 
             </ul>
@@ -522,10 +532,10 @@ microbenchmark(base = baseR_left(),
                times = 100)
 ## Unit: microseconds
 ##   expr       min         lq       mean     median         uq       max
-##   base   507.961   590.9185   675.9810   615.8975   706.5135  1165.792
-##     dt   681.535   873.3415  1067.0553   925.4870  1163.2400  3161.166
-##  sqldf 12538.549 13796.4150 16108.4890 15309.5370 17238.9095 28922.349
-##  dplyr   299.745   360.6415   463.3125   413.1510   495.5625  2038.039
+##   base   491.558   581.9930   700.0580   624.6580   811.9090  1767.857
+##     dt   639.608   850.9275  1057.7682   907.6320  1140.8300  3336.976
+##  sqldf 11970.956 13132.9355 15615.2898 14596.1215 16575.4790 28036.644
+##  dplyr   280.787   367.0280   416.9859   404.5875   444.1525   738.795
 ##  neval
 ##    100
 ##    100
@@ -691,20 +701,20 @@ tidy_fuzzy = function(){
                tidyverse = tidy_fuzzy(),
                times = 100)
 ## Unit: microseconds
-##          expr       min        lq       mean    median         uq
-##          base   424.820   485.352   546.7338   519.812   552.2655
-##  base_between   449.251   506.137   639.4538   565.028   609.6985
-##            dt  1220.854  1450.038  1565.6582  1526.432  1605.3795
-##         sqldf 11706.779 12316.841 13189.2771 12732.726 13721.4790
-##     fuzzyjoin 12791.617 13286.631 14569.1409 13703.429 14229.2565
-##     tidyverse  1258.778  1401.722  1689.1073  1496.349  1613.2200
+##          expr       min        lq       mean     median         uq
+##          base   424.826   498.669   566.9656   543.8865   573.9705
+##  base_between   450.716   513.984   617.7185   561.7540   616.8180
+##            dt  1217.954  1444.224  1594.6634  1516.2435  1650.6200
+##         sqldf 11475.388 12378.643 13693.6101 12855.9785 13942.1095
+##     fuzzyjoin 12761.168 13396.583 14915.2690 14068.0985 15362.9950
+##     tidyverse  1297.450  1426.903  1841.6455  1511.3210  1733.3970
 ##        max neval
-##   1849.879   100
-##   4171.251   100
-##   2933.988   100
-##  20371.997   100
-##  67170.665   100
-##  15325.947   100</code></pre>
+##    971.082   100
+##   3905.111   100
+##   2892.459   100
+##  31250.366   100
+##  24206.653   100
+##  18239.044   100</code></pre>
 <div id="results-1" class="section level4">
 <h4>Results</h4>
 <p>Both base R functions have no memory footprint and actually run the fastest with the <code>%between%</code> function being a touch slower but not enough to ignore it’s improved readability. <code>fuzzyjoin</code> has a large footprint and runs the slowest being in the same ballpark as <code>sqldf</code> - neither of these are great choices for the task we have. <code>data.table</code> and <code>tidyverse</code> are in the same ballpark, but are substantially slower than base R. BUT this was a very small toy problem. Let’s do something more meaningful.</p>
@@ -995,13 +1005,13 @@ while(!stop){
                     <li>
                         <article>
                             <header>
-                                <h3><a href="http://thug-r.life/post/2017-08-08-making-the-blog/">Making this Blog</a></h3>
+                                <h3><a href="http://thug-r.life/post/2017-08-10-legislate-by-executive-order/">Legislate by Executive Order</a></h3>
                                 
                                     
                                 
                                 <time class="published" datetime=
-                                    '2017-08-08'>
-                                    August 8, 2017</time>
+                                    '2017-08-10'>
+                                    August 10, 2017</time>
                             </header>
                         </article>
                     </li>
@@ -1009,13 +1019,13 @@ while(!stop){
                     <li>
                         <article>
                             <header>
-                                <h3><a href="http://thug-r.life/post/2017-08-06-fuzzy-joining/">Theta Joins in R</a></h3>
+                                <h3><a href="http://thug-r.life/post/2017-08-08-making-the-blog/">Making this Blog</a></h3>
                                 
                                     
                                 
                                 <time class="published" datetime=
-                                    '2017-08-06'>
-                                    August 6, 2017</time>
+                                    '2017-08-08'>
+                                    August 8, 2017</time>
                             </header>
                         </article>
                     </li>
@@ -1054,7 +1064,16 @@ while(!stop){
                         <article>
                             <header>
                                 <a href="/categories/r/">R</a>
-                                <span style="float:right;">2</span>
+                                <span style="float:right;">3</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/analysis/">Analysis</a>
+                                <span style="float:right;">1</span>
                             </header>
                         </article>
                     </li>
@@ -1094,7 +1113,7 @@ while(!stop){
         
         <section class="blurb">
             <h2>About</h2>
-            <p>I guess I&#39;m starting ths blog because I want to do more technical writing or something. Also, I&#39;ve started publishing packages and so I need a platform to promote them on and starting a blog seems like a great way to get r-bloggers to publish my content. We&#39;ll see how it goes.</p>
+            <p>I guess I&#39;m starting this blog because I want to do more technical writing or something. Also, I&#39;ve started publishing packages and so I need a platform to promote them on and starting a blog seems like a great way to get r-bloggers to publish my content. We&#39;ll see how it goes.</p>
 
             <ul class="actions">
                 <li><a href="/about/" class="button">Learn More</a></li>

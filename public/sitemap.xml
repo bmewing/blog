@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://thug-r.life/post/2017-08-10-legislate-by-executive-order/</loc>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://thug-r.life/post/2017-08-08-making-the-blog/</loc>
     <lastmod>2017-08-08T00:00:00+00:00</lastmod>
   </url>
@@ -23,6 +28,12 @@
   </url>
   
   <url>
+    <loc>http://thug-r.life/categories/analysis/</loc>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://thug-r.life/tags/blogdown/</loc>
     <lastmod>2017-08-08T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -36,6 +47,7 @@
   
   <url>
     <loc>http://thug-r.life/categories/</loc>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -82,14 +94,26 @@
   </url>
   
   <url>
+    <loc>http://thug-r.life/tags/plotly/</loc>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://thug-r.life/tags/politics/</loc>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://thug-r.life/post/</loc>
-    <lastmod>2017-08-08T00:00:00+00:00</lastmod>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://thug-r.life/categories/r/</loc>
-    <lastmod>2017-08-08T00:00:00+00:00</lastmod>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -131,13 +155,13 @@
   
   <url>
     <loc>http://thug-r.life/</loc>
-    <lastmod>2017-08-08T00:00:00+00:00</lastmod>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://thug-r.life/tags/tidyverse/</loc>
-    <lastmod>2017-08-06T00:00:00+00:00</lastmod>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

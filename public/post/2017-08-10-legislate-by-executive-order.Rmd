@@ -1,0 +1,250 @@
+---
+title: "Legislate by Executive Order"
+author: "Mark Ewing"
+description: "How have modern presidents issued executive orders?"
+date: 2017-08-10
+categories: ["R","Analysis"]
+tags: ["plotly", "politics", "tidyverse"]
+type: "post"
+---
+
+# Executive Orders in the USA
+
+From Wikipedia:
+
+> Executive orders are orders issued by United States Presidents and directed towards officers and agencies of the U.S. federal government. Executive orders have the full force of law, based on the authority derived from statute or the Constitution itself. The ability to make such orders is also based on express or implied Acts of Congress that delegate to the President some degree of discretionary power (delegated legislation).
+> 
+> Like both legislative statutes and regulations promulgated by government agencies, executive orders are subject to judicial review and may be overturned if the orders lack support by statute or the Constitution. Major policy initiatives require approval by the legislative branch, but executive orders have significant influence over the internal affairs of government, deciding how and to what degree legislation will be enforced, dealing with emergencies, waging wars, and in general fine-tuning policy choices in the implementation of broad statutes.
+
+Executive Orders are a way for a President to enact certain policies without having to go through the tedious process of writing bills [and making them laws](https://www.bing.com/videos/search?q=youtube+how+a+bill+becomes+a+law&view=detail&mid=129019FC2CC536DD451C129019FC2CC536DD451C&FORM=VIRE).  For the party in power they are a great way of getting stuff done.  In 2014, Obama [said](http://washington.cbslocal.com/2014/01/14/obama-on-executive-actions-ive-got-a-pen-and-ive-got-a-phone/) "We’re not just going to be waiting for legislation. ... I’ve got a pen and I’ve got a phone. And I can use that pen to sign executive orders and take executive actions and administrative actions that move the ball forward.".  However, the opposition party usually gets pretty upset and decries their use.  In 2016, Marc Thiessen, former speechwriter for George W. Bush, [called Obama's use of executive rders](https://www.washingtonpost.com/opinions/the-fall-of-the-house-of-obama-is-coming-and-its-his-own-fault/2016/11/14/d0151cac-aa7d-11e6-977a-1030f822fc35_story.html?utm_term=.5e5d2fdcdf18) "unlawful" and said they "[twist] the meaning of the law".  
+
+Donald Trump, the current President of the USA had the following to say about Obama's use of exeutive orders (from [CNN](http://www.cnn.com/2017/04/27/politics/trump-executive-orders/index.html)):
+
+> "I don't think he even tries anymore," Trump said of President Barack Obama in December 2015. "I think he just signs executive actions."
+> A month later, as contests in Iowa and New Hampshire loomed, Trump said Obama's executive orders show he "doesn't talk to anybody."
+> "You know, it's supposed to be negotiated," Trump told CNN in January 2016. "You're supposed to cajole, get people in a room, you have Republicans, Democrats, you're supposed to get together and pass a law. (Obama) doesn't want to do that because it's too much work. So he doesn't want to work too hard. He wants to go back and play golf."
+
+All this made me ask - how have presidents actually used Executive Orders?  There are several ways to measure this:
+
+* Analyze the content of the orders
+* Analyze when/how many orders
+* Analyze how efficacious the orders are
+
+The first one could be done with some text mining (maybe later). The third one would be very difficult.  For example, Trump has signed 4 different orders trying to accomplish his purported "Muslim Ban" - if he is eventually successful though the courts of enacting the ban, which are considered to have accomplished their intended result?  All four?  Just the last one?  So, I'm taking the easy route and analyzing counts of signed orders over time.
+
+## Needed R Libraries
+
+I use 7 packages in this analysis.  Versions and purpose listed below.
+
+Package | Version | Purpose
+--------|---------|--------
+httr|1.2.1|Access online APIs
+jsonlite|1.3|Process JSON from APIs
+purrr|0.2.2|Improves functional programming
+magrittr|1.5|Pipes make everything better
+dplyr|0.5.0|Data munging
+readr|1.0.0|Load CSV files
+lubridate|1.6.0|Helps with managing dates
+plotly|4.5.6|Make beautiful, interactive visualizations
+
+```{r,message=FALSE}
+library(httr)
+library(jsonlite)
+library(purrr)
+library(magrittr)
+library(dplyr)
+library(readr)
+library(lubridate)
+library(plotly)
+```
+
+## The Data
+
+The Federal Register is where all executive orders are recorded and stored.  Luckily, they make a lot of their data easily available.
+
+### Post-1994
+
+The Federal Register makes [all orders since 1994](https://www.federalregister.gov/executive-orders) (Bill Clinton) available through an API.
+
+```{r}
+getPresident = function(url){
+  httr::GET(url) %>% 
+    httr::content(as="text") %>% 
+    jsonlite::fromJSON() %>% 
+    `$`("results")
+}
+trump = getPresident("https://www.federalregister.gov/documents/search.json?conditions%5Bcorrection%5D=0&conditions%5Bpresident%5D=donald-trump&conditions%5Bpresidential_document_type_id%5D=2&conditions%5Btype%5D=PRESDOCU&fields%5B%5D=citation&fields%5B%5D=document_number&fields%5B%5D=end_page&fields%5B%5D=executive_order_notes&fields%5B%5D=executive_order_number&fields%5B%5D=html_url&fields%5B%5D=pdf_url&fields%5B%5D=publication_date&fields%5B%5D=signing_date&fields%5B%5D=start_page&fields%5B%5D=title&fields%5B%5D=full_text_xml_url&fields%5B%5D=body_html_url&fields%5B%5D=json_url&order=executive_order_number&per_page=1000")
+head(trump)
+```
+
+What do we get from this?
+
+Field | Content
+------|------------------------------------------------------------------------------------
+citation|Document Citation (reference)
+document_number|Document Number (reference)
+end_page|The final page (used for citations) in the published register
+executive_order_notes|Notes, if any, attached to the order
+executive_order_number|UID of Executive Orders
+html_url|URL to view the order online
+pdf_url|URL to view a PDF copy of the order
+publication_date|Date the Register published the Order
+signing_date|Date the order was signed by the president
+start_page|The first page (used for citations) in the published register
+title|Title of the Order
+full_text_xml_url|Machine readable version of the orders text
+body_html_url|A basic HTML version of the orders text
+json_url|JSON encoded header information (similar to what we have already)
+
+We can three other presidents this way
+
+```{r}
+obama = getPresident("https://www.federalregister.gov/documents/search.json?conditions%5Bcorrection%5D=0&conditions%5Bpresident%5D=barack-obama&conditions%5Bpresidential_document_type_id%5D=2&conditions%5Btype%5D=PRESDOCU&fields%5B%5D=citation&fields%5B%5D=document_number&fields%5B%5D=end_page&fields%5B%5D=executive_order_notes&fields%5B%5D=executive_order_number&fields%5B%5D=html_url&fields%5B%5D=pdf_url&fields%5B%5D=publication_date&fields%5B%5D=signing_date&fields%5B%5D=start_page&fields%5B%5D=title&fields%5B%5D=full_text_xml_url&fields%5B%5D=body_html_url&fields%5B%5D=json_url&order=executive_order_number&per_page=1000")
+
+gw_bush = getPresident("https://www.federalregister.gov/documents/search.json?conditions%5Bcorrection%5D=0&conditions%5Bpresident%5D=george-w-bush&conditions%5Bpresidential_document_type_id%5D=2&conditions%5Btype%5D=PRESDOCU&fields%5B%5D=citation&fields%5B%5D=document_number&fields%5B%5D=end_page&fields%5B%5D=executive_order_notes&fields%5B%5D=executive_order_number&fields%5B%5D=html_url&fields%5B%5D=pdf_url&fields%5B%5D=publication_date&fields%5B%5D=signing_date&fields%5B%5D=start_page&fields%5B%5D=title&fields%5B%5D=full_text_xml_url&fields%5B%5D=body_html_url&fields%5B%5D=json_url&order=executive_order_number&per_page=1000")
+
+clinton = getPresident("https://www.federalregister.gov/documents/search.json?conditions%5Bcorrection%5D=0&conditions%5Bpresident%5D=william-j-clinton&conditions%5Bpresidential_document_type_id%5D=2&conditions%5Btype%5D=PRESDOCU&fields%5B%5D=citation&fields%5B%5D=document_number&fields%5B%5D=end_page&fields%5B%5D=executive_order_notes&fields%5B%5D=executive_order_number&fields%5B%5D=html_url&fields%5B%5D=pdf_url&fields%5B%5D=publication_date&fields%5B%5D=signing_date&fields%5B%5D=start_page&fields%5B%5D=title&fields%5B%5D=full_text_xml_url&fields%5B%5D=body_html_url&fields%5B%5D=json_url&order=executive_order_number&per_page=1000")
+```
+
+### Pre-1994
+
+Sadly, before 1994 the information isn't really machine readable. It is [available online](https://www.archives.gov/federal-register/executive-orders/disposition) but the way it's setup doesn't contribute to machine readability.  Why not?  Each year of each president can actually be formatted differently and none of the pre-1994 dispositions use modern HTML structures (e.g. <div> tags) to markup the pages.  So, I manually copied and pasted and did regex matching in Sublime Text to generate basic .csv files to use for a few additional presidents.  I also needed to get Clinton's first year as president and bind that up.
+
+```{r,message=FALSE,warning=FALSE,error=FALSE}
+pre94clinton = read_csv("https://raw.githubusercontent.com/bmewing/legislate-by-order/master/data/pre94_clinton.csv") %>% select(executive_order_number=id,everything())
+clinton %<>% 
+  mutate(signing_date = lubridate::as_date(signing_date)) %>% 
+  bind_rows(pre94clinton)
+nixon = read_csv("https://raw.githubusercontent.com/bmewing/legislate-by-order/master/data/nixon.csv")
+ford = read_csv("https://raw.githubusercontent.com/bmewing/legislate-by-order/master/data/ford.csv")
+carter = read_csv("https://raw.githubusercontent.com/bmewing/legislate-by-order/master/data/carter.csv")
+reagan = read_csv("https://raw.githubusercontent.com/bmewing/legislate-by-order/master/data/reagan.csv")
+ghw_bush = read_csv("https://raw.githubusercontent.com/bmewing/legislate-by-order/master/data/george%20h%20w%20bush.csv")
+```
+
+### Data Issues
+
+There's a time lag between when orders are signed and when orders are published.  It's important to know this because when we look at this today (August 10, 2017) we won't see orders published in the last couple days.  So, we'll look at the current president and how long it's taken the register, on average, to publish his orders.
+
+```{r}
+timeToPublish = difftime(lubridate::as_date(trump$publication_date),lubridate::as_date(trump$signing_date),unit="days") %>% 
+  as.numeric() %>% 
+  median()
+print(sprintf("%d days, on average",timeToPublish))
+```
+
+Now we can adjust 'when' we're looking at the analysis to reflect this typical delta.  What I mean is, Trump today has been in office 201 days but we'll only consider him to have been in office for 196 as far as looking at his use of Executive Orders.
+
+```{r}
+trumpDaysInOffice = difftime(Sys.Date(),lubridate::as_date("2017-01-20"),units="days") %>% 
+  as.numeric() %>% 
+  `-`(timeToPublish)
+```
+
+## Data Munging
+
+Now we need to create two new columns for each president.
+
+* How many days they've been in office as of the signing date
+* How many orders they've signed to date
+
+```{r}
+processPresident = function(president,inaugurationDate){
+  s = get(president,envir = globalenv()) %>% 
+    dplyr::mutate(start_date = lubridate::as_date(inaugurationDate),
+         signing_date = lubridate::as_date(signing_date)) %>% 
+    dplyr::mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+    dplyr::group_by(daysInOffice) %>% 
+    dplyr::summarise(orders = n())
+  names(s) = c("daysInOffice",paste0(president,"Orders"))
+  return(s)
+}
+
+presidents = c("nixon","ford","carter","reagan","ghw_bush","clinton","gw_bush","obama","trump")
+inauguartionDates = c("1969-01-20","1974-08-09","1977-01-20","1981-01-20","1989-01-20","1993-01-20","2001-01-20","2009-01-20","2017-01-20")
+munged = purrr::map2(presidents,inauguartionDates,processPresident)
+
+allDaysInOffice = data_frame(daysInOffice = seq(0,8*365.25,1))
+
+orders = purrr::reduce(munged,dplyr::left_join,by="daysInOffice",.init=allDaysInOffice)
+
+orders[is.na(orders)] = 0
+
+for(i in 2:ncol(orders)){
+  orders[[i]] = cumsum(orders[[i]])
+}
+```
+
+## Data Visualization
+
+With the data now calculated, it's time to make the plot.  We'll be plotting lines showing the total to date number of executive orders signed by each president.  Using plotly we can create a visualization that enables interactivity (zooming, hovering, etc.) very easily.  We'll add one line per president so we can format the name correctly.
+
+```{r}
+orders %>% 
+  plot_ly(x = ~daysInOffice) %>% 
+  add_lines(y = ~nixonOrders,name="Nixon") %>% 
+  add_lines(y = ~fordOrders,name="Ford") %>% 
+  add_lines(y = ~carterOrders,name="Carter") %>% 
+  add_lines(y = ~reaganOrders,name="Reagan") %>% 
+  add_lines(y = ~ghw_bushOrders,name="G.H.W. Bush") %>% 
+  add_lines(y = ~clintonOrders,name="Clinton") %>% 
+  add_lines(y = ~gw_bushOrders,name="G.W. Bush") %>% 
+  add_lines(y = ~obamaOrders,name="Obama") %>% 
+  add_lines(y = ~trumpOrders,name="Trump") %>% 
+  layout(shapes=list(type='line', x0= trumpDaysInOffice, x1= trumpDaysInOffice, y0=0, y1=400, line=list(dash='dot', width=1)),
+         xaxis = list(title="Days in Office"),
+         yaxis = list(title="# of Executive Orders Signed"),
+         title = 'How have presidents used Executive Orders over the course of their terms?')
+```
+
+My only issue with this plot is that the period I'm most interested in (while Trump has been in office) isn't immediately clear. I can drag to zoom, but I'd rather make the plot auto zoomed.  To do this, I need to calculate the maximum orders signed by any president as of Trump being in office.  I'll pad his time in office to make the graph prettier.
+
+```{r}
+ymax = orders %>% 
+  filter(daysInOffice <= ceiling(trumpDaysInOffice*1.1)) %>% 
+  select(-daysInOffice) %>% 
+  lapply(max) %>% 
+  unlist() %>% 
+  max() %>% 
+  `*`(1.1) %>% 
+  ceiling()
+print(sprintf("%d orders signed as of %d days in office!",ymax,ceiling(trumpDaysInOffice*1.1)))
+```
+
+We'll draw the plot again, but filter out all the later information.
+
+```{r}
+orders %>% 
+  filter(daysInOffice <= ceiling(trumpDaysInOffice*1.1)) %>% 
+  plot_ly(x = ~daysInOffice) %>% 
+  add_lines(y = ~nixonOrders,name="Nixon") %>% 
+  add_lines(y = ~fordOrders,name="Ford") %>% 
+  add_lines(y = ~carterOrders,name="Carter") %>% 
+  add_lines(y = ~reaganOrders,name="Reagan") %>% 
+  add_lines(y = ~ghw_bushOrders,name="G.H.W. Bush") %>% 
+  add_lines(y = ~clintonOrders,name="Clinton") %>% 
+  add_lines(y = ~gw_bushOrders,name="G.W. Bush") %>% 
+  add_lines(y = ~obamaOrders,name="Obama") %>% 
+  add_lines(y = ~trumpOrders,name="Trump") %>% 
+  layout(shapes=list(type='line', x0= trumpDaysInOffice, x1= trumpDaysInOffice, y0=0, y1=ymax, line=list(dash='dot', width=1)),
+         xaxis = list(title="Days in Office"),
+         yaxis = list(title="# of Executive Orders Signed"),
+         title = 'How have presidents used Executive Orders over the course of their terms?')
+```
+
+Now we can clearly see Trumps behavior in office.  Interesting notes:
+
+* Clinton, Obama and Trump were in an early presidency arms race to sign the most with Obama (mostly) staying ahead until around day 66.
+* Trump and Clinton continued to be neck and neck until around day 161 when Clinton became the clear leader in use of orders
+* Despite a lot of early use, Obama whent from being the most prolific user to being in the bottom third of modern presidents.
+* Trump shows a big spike in the use of orders just prior to day 100 (despite [calling it a "Ridiculous Standard"](http://time.com/4750064/trump-100-days-standard/))
+* Trump isn't #1, but he's in the top third of modern presidents
+
+## Conclusion
+
+What we've done is visualize how presidents have issued exeucitve orders by looking at the total to date in office.  We haven't looked at the content of the orders or how efficacious they were nor at their legality.  Still, we can tell an interesting story about how important orders have become in early presidencies.
+
+#### Notes
+I failed to realize for a long time that the pre-94 orders being unavailable through the API meant I was missing the first year of Clinton's presidency. My narrative around this has been shattered by how prolificly Clinton used executive orders.
+
+Final note, I'm not terribly concerned about the use of orders one way or another - they're very fragile and the extreme ones rarely survive changes in the presidency.  This isn't meant to be party aligned, just an objective look at the rate of signing them.

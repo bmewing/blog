@@ -5,7 +5,7 @@ theme = "hugo-future-imperfect"
 preserveTaxonomyNames = true
 paginate = 3
 disqusShortname = "thugrlife"
-googleAnalytics = ""
+googleAnalytics = "UA-36686553-3"
 
 [params]
     # Sets the meta tag description, usually reserved for the main page
@@ -45,7 +45,7 @@ googleAnalytics = ""
 
     paragraph = "Just a blog, by a guy trying to make a difference."
 
-    about     = "I guess I'm starting ths blog because I want to do more technical writing or something. Also, I've started publishing packages and so I need a platform to promote them on and starting a blog seems like a great way to get r-bloggers to publish my content. We'll see how it goes."
+    about     = "I guess I'm starting this blog because I want to do more technical writing or something. Also, I've started publishing packages and so I need a platform to promote them on and starting a blog seems like a great way to get r-bloggers to publish my content. We'll see how it goes."
 
 # This will also appear on the sidebar.
 # A width of less than 100px is recommended
