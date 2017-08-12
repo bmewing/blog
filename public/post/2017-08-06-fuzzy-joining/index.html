@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.26" />
+        <meta name="generator" content="Hugo 0.25.1" />
         
 
 
@@ -21,7 +21,14 @@
             <meta name="description" content="Learn how to do theta joins (fuzzy joins) in R six different ways.">
         
 
-        <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Theta Joins in R"/>
+        
+
+  <meta name="twitter:card" content="summary"/>
+
+
+
+<meta name="twitter:text:title" content="Theta Joins in R"/>
+<meta name="twitter:title" content="Theta Joins in R"/>
 <meta name="twitter:description" content="Learn how to do theta joins (fuzzy joins) in R six different ways."/>
 <meta name="twitter:site" content="@pofigster"/>
 
@@ -51,7 +58,7 @@
 
 
 <meta itemprop="dateModified" content="2017-08-06T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="2696">
+<meta itemprop="wordCount" content="2703">
 
 
 
@@ -403,6 +410,10 @@ on a.key = b.key</p>
 </table>
 <pre class="r"><code>library(data.table)
 library(sqldf)
+## Warning in doTryCatch(return(expr), name, parentenv, handler): unable to load shared object &#39;/Library/Frameworks/R.framework/Resources/modules//R_X11.so&#39;:
+##   dlopen(/Library/Frameworks/R.framework/Resources/modules//R_X11.so, 6): Library not loaded: /opt/X11/lib/libSM.6.dylib
+##   Referenced from: /Library/Frameworks/R.framework/Resources/modules//R_X11.so
+##   Reason: image not found
 library(dplyr)</code></pre>
 <div id="equijoin-data" class="section level3">
 <h3>equijoin data</h3>
@@ -463,9 +474,6 @@ dt_left()
            on a.CustomerID = b.CustomerID&quot;)
 }
 sqldf_left()
-## Loading required package: tcltk
-## Warning: Quoted identifiers should have class SQL, use DBI::SQL() if the
-## caller performs the quoting.
 ##   CustomerId    Product          State
 ## 1          1     Laptop           &lt;NA&gt;
 ## 2          2     Laptop      Tennessee
@@ -531,11 +539,11 @@ microbenchmark(base = baseR_left(),
                dplyr = dplyr_left(),
                times = 100)
 ## Unit: microseconds
-##   expr       min         lq       mean     median         uq       max
-##   base   491.558   581.9930   700.0580   624.6580   811.9090  1767.857
-##     dt   639.608   850.9275  1057.7682   907.6320  1140.8300  3336.976
-##  sqldf 11970.956 13132.9355 15615.2898 14596.1215 16575.4790 28036.644
-##  dplyr   280.787   367.0280   416.9859   404.5875   444.1525   738.795
+##   expr       min         lq       mean     median        uq       max
+##   base   595.390   685.6295   864.3785   728.7895   812.380  2394.315
+##     dt   815.208   966.9655  1178.1003  1027.2675  1172.784  2810.865
+##  sqldf 21736.361 23523.4475 25562.4722 24865.0920 26148.733 82726.900
+##  dplyr   342.572   417.7980   555.9631   465.5195   533.334  2015.828
 ##  neval
 ##    100
 ##    100
@@ -701,20 +709,20 @@ tidy_fuzzy = function(){
                tidyverse = tidy_fuzzy(),
                times = 100)
 ## Unit: microseconds
-##          expr       min        lq       mean     median         uq
-##          base   424.826   498.669   566.9656   543.8865   573.9705
-##  base_between   450.716   513.984   617.7185   561.7540   616.8180
-##            dt  1217.954  1444.224  1594.6634  1516.2435  1650.6200
-##         sqldf 11475.388 12378.643 13693.6101 12855.9785 13942.1095
-##     fuzzyjoin 12761.168 13396.583 14915.2690 14068.0985 15362.9950
-##     tidyverse  1297.450  1426.903  1841.6455  1511.3210  1733.3970
+##          expr       min         lq       mean    median         uq
+##          base   585.085   661.6945   801.3405   707.679   849.1025
+##  base_between   622.893   710.4015   898.0713   748.740   885.5785
+##            dt  1559.701  1733.8020  2159.0954  1837.229  2057.3675
+##         sqldf 21353.835 23608.2860 24959.6869 24576.936 26260.4675
+##     fuzzyjoin 16499.456 19213.5585 20576.5871 20235.870 21642.0095
+##     tidyverse  1636.186  1831.7445  2350.3897  1915.119  2328.0910
 ##        max neval
-##    971.082   100
-##   3905.111   100
-##   2892.459   100
-##  31250.366   100
-##  24206.653   100
-##  18239.044   100</code></pre>
+##   2482.125   100
+##   4830.258   100
+##   5851.992   100
+##  33051.887   100
+##  27648.196   100
+##   8547.028   100</code></pre>
 <div id="results-1" class="section level4">
 <h4>Results</h4>
 <p>Both base R functions have no memory footprint and actually run the fastest with the <code>%between%</code> function being a touch slower but not enough to ignore it’s improved readability. <code>fuzzyjoin</code> has a large footprint and runs the slowest being in the same ballpark as <code>sqldf</code> - neither of these are great choices for the task we have. <code>data.table</code> and <code>tidyverse</code> are in the same ballpark, but are substantially slower than base R. BUT this was a very small toy problem. Let’s do something more meaningful.</p>
@@ -869,8 +877,8 @@ while(!stop){
     
 
     
-        <li><a href="http://thug-r.life/post/2017-08-08-making-the-blog/"
-                class="button big next">Making this Blog</a></li>
+        <li><a href="http://thug-r.life/post/2017-08-12-automatic-twitter-updates/"
+                class="button big next">Automatic Twitter Updates</a></li>
     
 </ul>
 
@@ -1072,6 +1080,15 @@ while(!stop){
                     <li>
                         <article>
                             <header>
+                                <a href="/categories/aws/">AWS</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <a href="/categories/analysis/">Analysis</a>
                                 <span style="float:right;">1</span>
                             </header>
@@ -1082,6 +1099,15 @@ while(!stop){
                         <article>
                             <header>
                                 <a href="/categories/cloud/">Cloud</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/python/">Python</a>
                                 <span style="float:right;">1</span>
                             </header>
                         </article>

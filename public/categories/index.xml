@@ -6,10 +6,19 @@
     <description>Recent content in Categories on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Aug 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Aug 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://thug-r.life/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AWS</title>
+      <link>http://thug-r.life/categories/aws/</link>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/categories/aws/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Analysis</title>
@@ -26,6 +35,15 @@
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
       <guid>http://thug-r.life/categories/cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>http://thug-r.life/categories/python/</link>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/categories/python/</guid>
       <description></description>
     </item>
     

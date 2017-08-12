@@ -6,10 +6,19 @@
     <description>Recent content in Tags on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 08 Aug 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Aug 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://thug-r.life/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Automation</title>
+      <link>http://thug-r.life/tags/automation/</link>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/tags/automation/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Blogdown</title>
@@ -134,6 +143,15 @@
       <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>http://thug-r.life/tags/tidyverse/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Twitter</title>
+      <link>http://thug-r.life/tags/twitter/</link>
+      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/tags/twitter/</guid>
       <description></description>
     </item>
     
