@@ -2,156 +2,156 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Thug R Life</title>
-    <link>http://thug-r.life/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Aug 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 12 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://thug-r.life/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Automation</title>
-      <link>http://thug-r.life/tags/automation/</link>
-      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
+      <link>/tags/automation/</link>
+      <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/automation/</guid>
+      <guid>/tags/automation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Blogdown</title>
-      <link>http://thug-r.life/tags/blogdown/</link>
+      <link>/tags/blogdown/</link>
       <pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/blogdown/</guid>
+      <guid>/tags/blogdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Blogging</title>
-      <link>http://thug-r.life/tags/blogging/</link>
+      <link>/tags/blogging/</link>
       <pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/blogging/</guid>
+      <guid>/tags/blogging/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Cloud</title>
-      <link>http://thug-r.life/tags/cloud/</link>
+      <link>/tags/cloud/</link>
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/cloud/</guid>
+      <guid>/tags/cloud/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Data munging</title>
-      <link>http://thug-r.life/tags/data-munging/</link>
+      <link>/tags/data-munging/</link>
       <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/data-munging/</guid>
+      <guid>/tags/data-munging/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Data.table</title>
-      <link>http://thug-r.life/tags/data.table/</link>
+      <link>/tags/data.table/</link>
       <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/data.table/</guid>
+      <guid>/tags/data.table/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Digital ocean</title>
-      <link>http://thug-r.life/tags/digital-ocean/</link>
+      <link>/tags/digital-ocean/</link>
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/digital-ocean/</guid>
+      <guid>/tags/digital-ocean/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Distributed computing</title>
-      <link>http://thug-r.life/tags/distributed-computing/</link>
+      <link>/tags/distributed-computing/</link>
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/distributed-computing/</guid>
+      <guid>/tags/distributed-computing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Fuzzyjoin</title>
-      <link>http://thug-r.life/tags/fuzzyjoin/</link>
+      <link>/tags/fuzzyjoin/</link>
       <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/fuzzyjoin/</guid>
+      <guid>/tags/fuzzyjoin/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Plotly</title>
-      <link>http://thug-r.life/tags/plotly/</link>
+      <link>/tags/plotly/</link>
       <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/plotly/</guid>
+      <guid>/tags/plotly/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Politics</title>
-      <link>http://thug-r.life/tags/politics/</link>
+      <link>/tags/politics/</link>
       <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/politics/</guid>
+      <guid>/tags/politics/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Rmarkdown</title>
-      <link>http://thug-r.life/tags/rmarkdown/</link>
+      <link>/tags/rmarkdown/</link>
       <pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/rmarkdown/</guid>
+      <guid>/tags/rmarkdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spark</title>
-      <link>http://thug-r.life/tags/spark/</link>
+      <link>/tags/spark/</link>
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/spark/</guid>
+      <guid>/tags/spark/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sqldf</title>
-      <link>http://thug-r.life/tags/sqldf/</link>
+      <link>/tags/sqldf/</link>
       <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/sqldf/</guid>
+      <guid>/tags/sqldf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tidyverse</title>
-      <link>http://thug-r.life/tags/tidyverse/</link>
+      <link>/tags/tidyverse/</link>
       <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/tidyverse/</guid>
+      <guid>/tags/tidyverse/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Twitter</title>
-      <link>http://thug-r.life/tags/twitter/</link>
-      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
+      <link>/tags/twitter/</link>
+      <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/tags/twitter/</guid>
+      <guid>/tags/twitter/</guid>
       <description></description>
     </item>
     
