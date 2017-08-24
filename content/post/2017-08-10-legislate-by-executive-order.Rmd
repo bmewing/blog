@@ -4,7 +4,7 @@ author: "Mark Ewing"
 description: "How have modern presidents issued executive orders?"
 date: 2017-08-10
 categories: ["R","Analysis"]
-tags: ["plotly", "politics", "tidyverse"]
+tags: ["RStudio"]
 type: "post"
 ---
 

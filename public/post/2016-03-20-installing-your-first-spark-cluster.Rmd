@@ -4,7 +4,6 @@ author: "Mark Ewing"
 description: "Learn how to install and configure a small spark cluster on Digital Ocean"
 date: 2016-03-20
 categories: ["Spark","Cloud"]
-tags: ["distributed computing", "spark", "cloud", "digital ocean"]
 type: "post"
 ---
 

@@ -2,23 +2,69 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>RMarkdown on Thug R Life</title>
-    <link>/categories/rmarkdown/</link>
+    <link>http://thug-r.life/categories/rmarkdown/</link>
     <description>Recent content in RMarkdown on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 08 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/rmarkdown/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://thug-r.life/categories/rmarkdown/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Making this Blog</title>
-      <link>/post/2017-08-08-making-the-blog/</link>
+      <link>http://thug-r.life/post/2017-08-08-making-the-blog/</link>
       <pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-08-08-making-the-blog/</guid>
-      <description>blogdown magic I made this blog using the magic of blogdown which is a framework that joins together a few technologies to make ‘static websites’
- RMarkdown Hugo  RMarkdown RMarkdown is an interface from R to markdown which is a way of marking up a text document with formating so other tools can convert it from a text file to a pretty format (PDF, Word, etc.) It’s a great way of documenting your code by having your narrative right next to the code that generated the insights/results.</description>
+      <guid>http://thug-r.life/post/2017-08-08-making-the-blog/</guid>
+      <description>&lt;div id=&#34;blogdown-magic&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;blogdown magic&lt;/h1&gt;
+&lt;p&gt;I made this blog using the magic of &lt;code&gt;blogdown&lt;/code&gt; which is a framework that joins together a few technologies to make ‘static websites’&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RMarkdown&lt;/li&gt;
+&lt;li&gt;Hugo&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&#34;rmarkdown&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;RMarkdown&lt;/h2&gt;
+&lt;p&gt;RMarkdown is an interface from R to markdown which is a way of marking up a text document with formating so other tools can convert it from a text file to a pretty format (PDF, Word, etc.) It’s a great way of documenting your code by having your narrative right next to the code that generated the insights/results.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hugo&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hugo&lt;/h2&gt;
+&lt;p&gt;Hugo is a static website generator written in Go. That’s all I know.&lt;/p&gt;
+&lt;div id=&#34;static-website&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Static website?&lt;/h3&gt;
+&lt;p&gt;Most content on the web uses ‘server-side’ technology to render dynamic websites. It means that each time you access the same URL you could get different content based on who you are, where you’re from, etc. Contrast this with a ‘static site’ which is just a set of HTML files being served up. Granted - with Javascript you can do a lot of changing on the fly but that’s neither here nor there.&lt;/p&gt;
+&lt;p&gt;Wordpress as a blogging platform is an example of a dynamic website - each blog post is stored in a database and served from there.&lt;/p&gt;
+&lt;p&gt;Having a dynamic website means you need a server that can execute the code and serve up the pages. Provders like GoDaddy will sell you webhosting for $7/mo which is pretty cheap. In fact, for Wordpress, you’re essentially buying a SaaS solution (Software as a Solution) even though it’s really PaaS (Platform as a Service). You could buy a server from Digital Ocean, setup your own webserver and host it there. I actually ran servers out of my apartment when I was in college doing essentially this (granted, DO is Infrastructure as a Service where I was running bare metal). But then you have to administer the service which is…ugh. A pain.&lt;/p&gt;
+&lt;p&gt;But often times I like to do things differently not to necessarily save money but because they’re more novel. So, I wanted to host a static website with an Amazon S3 bucket because you can. And it’s supposed to be cheap. Pennies a month.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;domain-name&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Domain Name&lt;/h2&gt;
+&lt;p&gt;I bought my domain name from GoDaddy despite the myriad of ethical reasons not to. I’ve used them for years and while I know they’re evil, I already have an account and domains there.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;aws-s3&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;AWS S3&lt;/h2&gt;
+&lt;p&gt;I already have an AWS account to manage my Lambda programs and hosting a bucket of pictures of miniature figures I scrape from Twitter so it wasn’t a big deal to make a few extra buckets.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cloudflare&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Cloudflare&lt;/h2&gt;
+&lt;p&gt;I’m trying to use Cloudflare to manage my DNS and direct traffic from the domain name to the S3 bucket. This part isn’t going well right now.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;github&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;GitHub&lt;/h2&gt;
+&lt;p&gt;I’m using GitHub as a…backup? It gives me a place to commit changes to and lets me work across multiple computers without missing a beat.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;travis-ci&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Travis CI&lt;/h2&gt;
+&lt;p&gt;Travis CI is a ‘continuous integration’ system which will build your code to test it each time you commit to GitHub. I’ve used it to test builds of my package &lt;code&gt;readOffice&lt;/code&gt; as I’m developing it. Here, I’m using it to auto migrate new content to the S3 bucket.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;I’m stitching together a bunch of technologies that I’ve never/rarely used to make a blog. Which I’ve done lots of times using other solutions before.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
     </item>
     
   </channel>
