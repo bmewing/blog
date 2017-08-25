@@ -34,7 +34,7 @@
         <meta property="og:title" content="Posts" />
 <meta property="og:description" content="Yet Another R Blog - but thuggish" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://thug-r.life/post/" />
+<meta property="og:url" content="/post/" />
 
 
 
@@ -89,6 +89,10 @@ ga('send', 'pageview');
 </script>
 
         
+        <script src="//yihui.name/js/math-code.js"></script>
+		<script async
+		src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
     </head>
     <body>
 
@@ -132,7 +136,7 @@ ga('send', 'pageview');
                 <a class="fa-search" href="#search">Search</a>
                 <form id="search" method="get" action="//google.com/search">
                     <input type="text" name="q" placeholder="Search" />
-                    <input type="hidden" name="q" value="site:http://thug-r.life/">
+                    <input type="hidden" name="q" value="site:/">
                 </form>
             </li>
             <li class="menu">
@@ -149,7 +153,7 @@ ga('send', 'pageview');
         <section>
             <form class="search" method="get" action="//google.com/search">
                 <input type="text" name="q" placeholder="Search" />
-                <input type="hidden" name="q" value="site:http://thug-r.life/">
+                <input type="hidden" name="q" value="site:/">
             </form>
         </section>
 
@@ -201,11 +205,11 @@ ga('send', 'pageview');
 
                 
                     <li>
-                        <a href="http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/"><p>purrr Tricks with All Subset Regression</p></a>
+                        <a href="/post/2017-08-24-purrr-tricks-with-all-subset-regression/"><p>purrr Tricks with All Subset Regression</p></a>
                     </li>
                 
                     <li>
-                        <a href="http://thug-r.life/post/2017-08-12-automatic-twitter-updates/"><p>Automatic Twitter Updates</p></a>
+                        <a href="/post/2017-08-12-automatic-twitter-updates/"><p>Automatic Twitter Updates</p></a>
                     </li>
                 
             </ul>
@@ -227,7 +231,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/">purrr Tricks with All Subset Regression</a></h2>
+            <h2><a href="/post/2017-08-24-purrr-tricks-with-all-subset-regression/">purrr Tricks with All Subset Regression</a></h2>
         
         
             <p>See how this one clickbaity purrr trick helped me solve an issue with all subsets regression!</p>
@@ -252,13 +256,13 @@ ga('send', 'pageview');
     
 
     <p>All Subsets Regression
-What is all subsets regression? It’s a technique for model building which involves taking a set of independent variables (X<em>{1..i}) and regressing them in sets of (k), where (k) is in ({1,2,\dots,i}), against the response variable (Y). The ‘all’ part of ‘all subsets’ means it’s every combination of (X</em>{1..i}) being drawn (k) at a time.
+What is all subsets regression? It’s a technique for model building which involves taking a set of independent variables (X<em>1..i) and regressing them in sets of (k), where (k) is in ({1,2,\dots,i}), against the response variable (Y). The ‘all’ part of ‘all subsets’ means it’s every combination of (X</em>{1..i}) being drawn (k) at a time.
 But…why?
 You’re probably familiar with forward, backward or stepwise model building where terms are added (or removed) from a model one at a time while attempting to maximize or minimize some ‘goodness’ criteria.</p>
 
     <footer>
         <ul class="actions">
-            <li><a href="http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/" class="button big">Continue Reading</a></li>
+            <li><a href="/post/2017-08-24-purrr-tricks-with-all-subset-regression/" class="button big">Continue Reading</a></li>
         </ul>
         <ul class="stats">
     
@@ -299,7 +303,7 @@ You’re probably familiar with forward, backward or stepwise model building whe
     <header>
     <div class="title">
         
-            <h2><a href="http://thug-r.life/post/2017-08-12-automatic-twitter-updates/">Automatic Twitter Updates</a></h2>
+            <h2><a href="/post/2017-08-12-automatic-twitter-updates/">Automatic Twitter Updates</a></h2>
         
         
             <p>Use the serverless magic of AWS Lambda to auto-tweet my posts</p>
@@ -328,7 +332,7 @@ One of my goals with this site is to have as much as possible to automatic. Beca
 
     <footer>
         <ul class="actions">
-            <li><a href="http://thug-r.life/post/2017-08-12-automatic-twitter-updates/" class="button big">Continue Reading</a></li>
+            <li><a href="/post/2017-08-12-automatic-twitter-updates/" class="button big">Continue Reading</a></li>
         </ul>
         <ul class="stats">
     
@@ -369,7 +373,7 @@ One of my goals with this site is to have as much as possible to automatic. Beca
     <header>
     <div class="title">
         
-            <h2><a href="http://thug-r.life/post/2017-08-10-legislate-by-executive-order/">Legislate by Executive Order</a></h2>
+            <h2><a href="/post/2017-08-10-legislate-by-executive-order/">Legislate by Executive Order</a></h2>
         
         
             <p>How have modern presidents issued executive orders?</p>
@@ -400,7 +404,7 @@ From Wikipedia:</p>
 
     <footer>
         <ul class="actions">
-            <li><a href="http://thug-r.life/post/2017-08-10-legislate-by-executive-order/" class="button big">Continue Reading</a></li>
+            <li><a href="/post/2017-08-10-legislate-by-executive-order/" class="button big">Continue Reading</a></li>
         </ul>
         <ul class="stats">
     
@@ -470,7 +474,7 @@ From Wikipedia:</p>
             
             <ul class="icons">
                 
-                    <li><a href="http://thug-r.life/post/index.xml" type="application/rss+xml"
+                    <li><a href="/post/index.xml" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 
@@ -556,7 +560,7 @@ From Wikipedia:</p>
                     <li>
                         <article>
                             <header>
-                                <h3><a href="http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/">purrr Tricks with All Subset Regression</a></h3>
+                                <h3><a href="/post/2017-08-24-purrr-tricks-with-all-subset-regression/">purrr Tricks with All Subset Regression</a></h3>
                                 
                                     
                                 
@@ -570,7 +574,7 @@ From Wikipedia:</p>
                     <li>
                         <article>
                             <header>
-                                <h3><a href="http://thug-r.life/post/2017-08-12-automatic-twitter-updates/">Automatic Twitter Updates</a></h3>
+                                <h3><a href="/post/2017-08-12-automatic-twitter-updates/">Automatic Twitter Updates</a></h3>
                                 
                                     
                                 
@@ -712,7 +716,7 @@ From Wikipedia:</p>
         <section id="footer">
             <ul class="icons">
                 
-                    <li><a href="http://thug-r.life/post/index.xml" type="application/rss+xml"
+                    <li><a href="/post/index.xml" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 

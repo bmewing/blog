@@ -6,6 +6,7 @@ preserveTaxonomyNames = true
 paginate = 3
 disqusShortname = "thugrlife"
 googleAnalytics = "UA-36686553-3"
+math = true
 
 [params]
     # Sets the meta tag description, usually reserved for the main page

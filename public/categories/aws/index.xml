@@ -2,93 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>AWS on Thug R Life</title>
-    <link>http://thug-r.life/categories/aws/</link>
+    <link>/categories/aws/</link>
     <description>Recent content in AWS on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 12 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="http://thug-r.life/categories/aws/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/aws/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Automatic Twitter Updates</title>
-      <link>http://thug-r.life/post/2017-08-12-automatic-twitter-updates/</link>
+      <link>/post/2017-08-12-automatic-twitter-updates/</link>
       <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-12-automatic-twitter-updates/</guid>
-      <description>&lt;div id=&#34;automatic-twitter-updates&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Automatic Twitter Updates&lt;/h1&gt;
-&lt;p&gt;One of my goals with this site is to have as much as possible to automatic. Because it’s a static site, each time I write a post I have to copy all the files (new and updated) to the hosting location so you, the illustrious reader, can enjoy the content I create. Then, I need to promote it. This involves the laborious process of switching to my pinned Chrome tab with Twitter open and writing a tweet remember to paste in a link. I’d like to make it easier for me, so I turned to AWS Lambda.&lt;/p&gt;
-&lt;div id=&#34;aws-lambda&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;AWS Lambda&lt;/h2&gt;
-&lt;p&gt;Maybe you’re not familiar with the serverless magic that is AWS Lambda - if so, I’m sorry. It will change your life. Unless you only know R, then you’ll mostly just be frustrated.&lt;/p&gt;
-&lt;p&gt;One of the big points of the ‘cloud’ or IASS (Infrastructure as a Service) is the ability to scale (up or down) on demand - if you just partition an EC2 server on AWS and never spin up/down, you’re probably wasting money. And by probably I mean, almost certainly. Many Fortune 500 companies claim they’re saving money by switching to the cloud but this is often because they have big renewals coming up with their bare metal providers (maybe EMC storage contract is coming up) and so they get to trade infrequent-but-massive capital costs with frequent-but-smaller expense costs. Classic business internal shell games. If you’re a startup or a tech company that deals with highly flexible demand, IASS makes a ton of sense - did you just land a big client? Spin up more servers! Did you just lose a big client or they’ve been with you long enough you don’t care about their performance? Spin some servers down! If you’re writing a little blog, use S3 because you only pay for exactly what you’re storing/using and nothing more keeping your costs at pennies!&lt;/p&gt;
-&lt;p&gt;So how does AWS Lambda fit into all this? And what do you mean by serverless?&lt;/p&gt;
-&lt;div id=&#34;serverless&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Serverless&lt;/h3&gt;
-&lt;p&gt;Serverless is a bit of a misnomer because lambda (I’m going to stop saying AWS Lambda all the time) &lt;em&gt;does&lt;/em&gt; run on a server. But, you don’t have to partition the server. Or configure it. Or spin it down. Lambda handles all that. It’s brilliant!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;lambda-for-scale&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Lambda for Scale&lt;/h3&gt;
-&lt;p&gt;With lambda you write a function that does a small block of work in one of the (few) supportedl languages. These are (as of now):&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Python (2/3)&lt;/li&gt;
-&lt;li&gt;Node.js (4/6)&lt;/li&gt;
-&lt;li&gt;Java 8&lt;/li&gt;
-&lt;li&gt;C#&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Then, you create a trigger for the lambda code to run. Examples include:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Call from an API Gateway&lt;/li&gt;
-&lt;li&gt;File being uploaded to S3&lt;/li&gt;
-&lt;li&gt;AWS IoT button being pushed&lt;/li&gt;
-&lt;li&gt;Alexa Skill&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The trigger will cause AWS to spin up a container, load your function (and any additional components you included), execute your function and then spin down the container. You, as the developer, only pay by the millisecond that your code is &lt;em&gt;actually running&lt;/em&gt; and you can, by default, have 100 of these running simultaneously without you having to manage or own a single server. Again - you only pay when they’re running so you can have an API which gets used once a month and only pay for the 2 seconds it runs but have 100% availability. This is &lt;strong&gt;incredible&lt;/strong&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&#34;auto-tweeting&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Auto Tweeting&lt;/h2&gt;
-&lt;p&gt;There are lots of options for hosting a static website (including GitHub), so why choose AWS S3 which costs pennies a month? The main reason is the ability to integrate with lambda. I just finished writing a module in Python 2.7 using the &lt;code&gt;tweepy&lt;/code&gt; library that is trigger each time I upload new posts to my S3 bucket which tweets out the title and the link. The Python code is pretty simple.&lt;/p&gt;
-&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;from __future__ import print_function
-
-import json
-import urllib
-import boto3
-import datetime
-import tweepy
-from titlecase import titlecase
-
-now = datetime.datetime.now()
-
-s3 = boto3.client(&amp;#39;s3&amp;#39;)
-
-
-def lambda_handler(event, context):
-    key = urllib.unquote_plus(event[&amp;#39;Records&amp;#39;][0][&amp;#39;s3&amp;#39;][&amp;#39;object&amp;#39;][&amp;#39;key&amp;#39;].encode(&amp;#39;utf8&amp;#39;))
-    postDate = key[5:15]
-    today = str(now.strftime(&amp;quot;%Y-%m-%d&amp;quot;))
-    if postDate == today:
-        auth = tweepy.OAuthHandler(&amp;#39;XXXX&amp;#39;,&amp;#39;XXXX&amp;#39;)
-        auth.set_access_token(&amp;#39;XXXX&amp;#39;,&amp;#39;XXXX&amp;#39;)
-        api = tweepy.API(auth)
-        postTitle = titlecase(key[16:][:-4].replace(&amp;#39;-&amp;#39;,&amp;#39; &amp;#39;))
-        url = &amp;#39;http://thug-r.life/&amp;#39;+key[:-4]+&amp;#39;/&amp;#39;
-        
-        post = &amp;#39;I just wrote a post called &amp;quot;&amp;#39;+postTitle+&amp;#39;&amp;quot; at &amp;#39;+url
-        print(post)
-        api.update_status(post)
-    else:
-        print(&amp;#39;Old post - ignore!&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;I’m not going to go into how to get it all setup - I plan to write a tutorial on how I did everything with this blog in September so I can have at least the full first month costs.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;AWS Lambda is pretty cool and you should learn about it. By using S3 to host this site, I can integrate with lambda to get extra automation around promoting my site.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
+      <guid>/post/2017-08-12-automatic-twitter-updates/</guid>
+      <description>Automatic Twitter UpdatesOne of my goals with this site is to have as much as possible to automatic. Because it’s a static site, each time I write a post I have to copy all the files (new and updated) to the hosting location so you, the illustrious reader, can enjoy the content I create. Then, I need to promote it. This involves the laborious process of switching to my pinned Chrome tab with Twitter open and writing a tweet remember to paste in a link.</description>
     </item>
     
   </channel>

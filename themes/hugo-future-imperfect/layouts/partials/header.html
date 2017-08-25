@@ -73,6 +73,10 @@
         {{ if not (in (printf "%#v" .Site.BaseURL) "localhost") }}
             {{ template "_internal/google_analytics.html" . }}
         {{ end }}
+        <script src="//yihui.name/js/math-code.js"></script>
+		<script async
+		src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
     </head>
     <body>
 
