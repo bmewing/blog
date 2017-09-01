@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Life on Thug R Life</title>
+    <link>/categories/life/</link>
+    <description>Recent content in Life on Thug R Life</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 Sep 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/life/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Bucket List</title>
+      <link>/post/2017-09-01-bucket-list/</link>
+      <pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2017-09-01-bucket-list/</guid>
+      <description>Bucket ListMost people end up having a list of things they’d like to do in their life before they ‘kick the bucket’. Often this is made up of big events - a foreign trip, some daredevil adventure. But sometimes that list is a bunch of little things.
+RI’ve published a package on CRAN - readOffice - which was designed to enable the importing of text from modern Microsoft Word and PowerPoint files.</description>
+    </item>
+    
+  </channel>
+</rss>
