@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Functional Programming on Thug R Life</title>
-    <link>/categories/functional-programming/</link>
+    <link>http://thug-r.life/categories/functional-programming/</link>
     <description>Recent content in Functional Programming on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 24 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/functional-programming/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://thug-r.life/categories/functional-programming/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>purrr Tricks with All Subset Regression</title>
-      <link>/post/2017-08-24-purrr-tricks-with-all-subset-regression/</link>
+      <link>http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/</link>
       <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-08-24-purrr-tricks-with-all-subset-regression/</guid>
+      <guid>http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/</guid>
       <description>All Subsets RegressionWhat is all subsets regression? It’s a technique for model building which involves taking a set of independent variables \(X_1..i\) and regressing them in sets of \(k\), where \(k\) is in \(\{1,2,\dots,i\}\), against the response variable \(Y\). The ‘all’ part of ‘all subsets’ means it’s every combination of \(X_{1..i}\) being drawn \(k\) at a time.
 But…why?You’re probably familiar with forward, backward or stepwise model building where terms are added (or removed) from a model one at a time while attempting to maximize or minimize some ‘goodness’ criteria.</description>
     </item>

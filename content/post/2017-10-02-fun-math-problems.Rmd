@@ -1,0 +1,42 @@
+---
+title: "Fun Math Problems"
+author: "Mark Ewing"
+description: "Math is hidden in plain sight!"
+date: 2017-09-01
+categories: ["Life"]
+type: "post"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+## Meme Me Up, Scotty!
+
+Every now and then on Twitter or Facebook there's a math problem posted which challenges users to get the right answer.  They're almost always based on order of operations and the reason most people get them wrong is because they don't remember that elementary rule.  It's hard to blame most people since a lot of math that's used day to day doesn't require order of operations.
+
+## The trolling post
+
+![Troll Math](/img/2017-10-02.jpg){width=400px}
+
+### Response #1
+
+Of course it's 5!  How is this for math nerds only?
+
+### Response #2
+
+What kind of idiot posts something so clearly wrong?  It's 120!!
+
+### Response #3
+
+Are you just trolling?
+
+### Response #4
+
+LOLOLOLOLOL.
+
+```{r}
+230 - 220 * 1/2 == factorial(5) #5!
+```
+
+Sometimes, math is hidden in plain sight.
