@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Sep 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Oct 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://thug-r.life/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Fun Math Problems</title>
+      <link>http://thug-r.life/post/2017-10-02-fun-math-problems/</link>
+      <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/post/2017-10-02-fun-math-problems/</guid>
+      <description>Meme Me Up, Scotty!Every now and then on Twitter or Facebook there’s a math problem posted which challenges users to get the right answer. They’re almost always based on order of operations and the reason most people get them wrong is because they don’t remember that elementary rule. It’s hard to blame most people since a lot of math that’s used day to day doesn’t require order of operations.</description>
+    </item>
     
     <item>
       <title>Bucket List</title>
@@ -19,15 +28,6 @@
       <guid>http://thug-r.life/post/2017-09-01-bucket-list/</guid>
       <description>Bucket ListMost people end up having a list of things they’d like to do in their life before they ‘kick the bucket’. Often this is made up of big events - a foreign trip, some daredevil adventure. But sometimes that list is a bunch of little things.
 RI’ve published a package on CRAN - readOffice - which was designed to enable the importing of text from modern Microsoft Word and PowerPoint files.</description>
-    </item>
-    
-    <item>
-      <title>Fun Math Problems</title>
-      <link>http://thug-r.life/post/2017-10-02-fun-math-problems/</link>
-      <pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://thug-r.life/post/2017-10-02-fun-math-problems/</guid>
-      <description>Meme Me Up, Scotty!Every now and then on Twitter or Facebook there’s a math problem posted which challenges users to get the right answer. They’re almost always based on order of operations and the reason most people get them wrong is because they don’t remember that elementary rule. It’s hard to blame most people since a lot of math that’s used day to day doesn’t require order of operations.</description>
     </item>
     
     <item>
