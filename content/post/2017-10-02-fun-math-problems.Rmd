@@ -2,7 +2,7 @@
 title: "Fun Math Problems"
 author: "Mark Ewing"
 description: "Math is hidden in plain sight!"
-date: 2017-09-01
+date: 2017-10-02
 categories: ["Life"]
 type: "post"
 ---
@@ -17,7 +17,8 @@ Every now and then on Twitter or Facebook there's a math problem posted which ch
 
 ## The trolling post
 
-![Troll Math](/img/2017-10-02.jpg){width=400px}
+<blockquote class="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">You will either be really angry or lol <a href="https://t.co/yLECGwpXdQ">pic.twitter.com/yLECGwpXdQ</a></p>&mdash; John May (@3j0hn) <a href="https://twitter.com/3j0hn/status/914212307642621952?ref_src=twsrc%5Etfw">September 30, 2017</a></blockquote>
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ### Response #1
 
