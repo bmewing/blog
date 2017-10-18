@@ -1,0 +1,42 @@
+---
+title: "The Value of Learning the Basics"
+author: "Mark Ewing"
+description: "Why fancy packages aren't always the answer."
+date: 2017-10-18
+categories: ["r"]
+type: "post"
+---
+
+
+
+<div id="learning-the-hard-way" class="section level2">
+<h2>Learning the hard way</h2>
+<p>About a month ago David Robinson made a tweet that I both agree and disagree with.</p>
+<blockquote class="twitter-tweet" data-partner="tweetdeck">
+<p lang="en" dir="ltr">
+New blog post: “Don't teach students the hard way first” <a href="https://t.co/X2drh1tQe5">https://t.co/X2drh1tQe5</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/GXAEpx5eET">pic.twitter.com/GXAEpx5eET</a>
+</p>
+— David Robinson (<span class="citation">@drob</span>) <a href="https://twitter.com/drob/status/910869810178936832?ref_src=twsrc%5Etfw">September 21, 2017</a>
+</blockquote>
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>His example is simple enough - you’re going to a friends new house and are provided with directions involving a lot of back roads, twisting and turning. When you arrive you’re told to just take the highway back because it’s easier. “Why,” you exclaim, “did you give me such complex directions them?!” The host replies, “I just wanted to show you how much easier the highway is!”</p>
+<p>This is a parable for how students are often taught base R and then later are introduced to packages like <code>dplyr</code>, <code>data.table</code> or <code>purrr</code>. David’s argument is that you lose the trust and attention of students when they are forced to do things the hard way only for the purpose of showing them how much easier it can be done. I agree that doing something hard to appreciate how easy something else is sucks. It can be useful for a moral lesson, but not helping people appreciate productivity. However, I disagree strongly with his blanket statement, <strong>“Don’t teach students the hard way first.”</strong></p>
+<div id="the-directions-parable" class="section level3">
+<h3>The directions parable</h3>
+<p>It’s true, if you only visit a friend infrequently and when it’s convenient, you should only learn the highway. But, the homeowner or long-term resident of the home should know multiple routes and paths to get home. A few years ago I lived in a more rural town in Tennessee. It started snowing outside and my wife called and told me I should head home. Being from Alaska and loving winter, I disregarded her suggestions because it was only a few inches of snow, nothing I couldn’t handle. Of course, hell is other people and I discovered that the road to my house (which has many hills, twists and no shoulder) was blocked due to idiots. There are only two ways to get to my house and the other one was even more rural with even more hills and turns and fewer shoulders. I was able to extricate myself from the traffic jam, take the back road and arrive home just in time for the power to go out (and stay out for 2 days). Knowing the back-road to get home let me be with my family literally days earlier than many people in our neighborhood.</p>
+<p>A casual R user, someone in a random discipline who brushes off their skills every few months, does not really need to know base R or even basic programming paradigms. They can be well served with a few canned examples they know how to manipulate and a stack of packages they learned. They probably don’t care about the difference between a <code>matrix</code>, <code>data.frame</code>, <code>data.table</code> or <code>tibble</code> as long as the get their results. And that’s fine. Someone who uses R day-in and day-out to analyze data? That won’t cut it. You need to <strong>master your craft</strong> and that involves learning to do things the hard way. You need to know the back roads to get home.</p>
+</div>
+</div>
+<div id="why-the-hard-way-first" class="section level2">
+<h2>Why the hard way first?</h2>
+<p>My experience with education, both personal and having taught at university for a few years, is that the way people first learn something frames their mental framework of the whole problem set to match. I first learned to program in BASIC on a TI Calculator, complete with <code>GOTO</code> statements and then I did some web development in HTML for a while (in the 90’s and early 00’s, before CSS and HTML5). Next I learned R, but I learned it as a scripting language. The common theme here is everything I did was a script with sequential execution. It was years after I first learned R that I learned how to write functions and even longer after that before I realized the value. I repeated myself a lot. Why? Because mentally I struggled with the concept of functional programming - computer code executes sequentially. I have only started to grok object oriented programming. I led a team which included several people with traditional IT backgrounds. They had learned object oriented programming first and they struggled with learning R - especially the vectorization aspect. By learning the ‘easy’ way of programming first (scripting) I struggled to learn the (valuable) ‘hard’ way of functional (or object oriented) programming. How many lines of code did I write that could have been avoided? How inefficient was my code for so long? And what was the push to learn the ‘hard’ way? I could do all the analysis I wanted the ‘easy’ way - learning the ‘hard’ way was more expensive now because I would have to reduce my productivity during the learning period and then continue operating at a reduced productivity level while mastering the new mode of writing code. Even if it had been introduced in school, I would have questioned why I need to learn the ‘hard’ way when the ‘easy’ way works great. The only answer would have been that at some random time in the future, I would benefit from knowing it. And that’s not an inspirational answer for people who are already too busy.</p>
+<p>Now, the argument here isn’t to teach scripting over functional programming. It’s essentially an argument to teach the tidyverse instead of base methods. Recently I’ve had a 180 flip on my opinion about aspects of the tidyverse (<code>dplyr</code> specifically) because the APIs will undergo too many breaking changes. I write code for a large company - we can’t afford to break code because Hadley decided to change how <code>group_by</code> should work. But that’s not really the point I want to make. If someone learns the ‘five verb’ approach to data munging they will think reframe everything they do around those verbs. Again, if that person is an infrequent user of R, that’s not a problem. But if they really need to master R because it will be their primary tool for analyzing data, they need to know how base R works to ensure they’re writing performant code.</p>
+</div>
+<div id="non-r-example" class="section level2">
+<h2>Non R Example</h2>
+<p>I have a GPS watch that I take hiking with me. It produces a .gpx file which is hard to work with. I want to convert it to a .csv file so I can analyze and visualize hikes in Shiny. Turns out there’s a Python package called <code>gpxpy</code> and I found a script online that read in .gpx files and output a .csv file. I’ve been running this script on my laptop for a year or so and decided I’d rather implement it as a AWS Lambda function that triggers off .gpx files uploaded to an S3 bucket. The script I had found online used <code>pandas</code> to convert a list of dictionaries to a data frame and write it to a csv file. Turns out, <code>pandas</code>+dependencies are too big for a lambda function. Because I understood what dictionaries are and how python iterates over lists I was able to remove the dependency on the ‘easy’ way and replace it with the ‘hard’ way which reduced my (zipped) Lambda package from 75MB to 1MB.</p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>Don’t teach people the ‘hard’ way to make them appreciate how easy the ‘easy’ way is. Teach people the ‘hard’ way first to ensure they learn the fundamentals of how something works and then teach them the ‘easy’ way to enable higher productivity.</p>
+</div>
