@@ -2,51 +2,51 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on Thug R Life</title>
-    <link>http://thug-r.life/categories/r/</link>
+    <link>/categories/r/</link>
     <description>Recent content in R on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 24 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://thug-r.life/categories/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>purrr Tricks with All Subset Regression</title>
-      <link>http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/</link>
+      <link>/post/2017-08-24-purrr-tricks-with-all-subset-regression/</link>
       <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/</guid>
+      <guid>/post/2017-08-24-purrr-tricks-with-all-subset-regression/</guid>
       <description>All Subsets RegressionWhat is all subsets regression? It’s a technique for model building which involves taking a set of independent variables \(X_1..i\) and regressing them in sets of \(k\), where \(k\) is in \(\{1,2,\dots,i\}\), against the response variable \(Y\). The ‘all’ part of ‘all subsets’ means it’s every combination of \(X_{1..i}\) being drawn \(k\) at a time.
 But…why?You’re probably familiar with forward, backward or stepwise model building where terms are added (or removed) from a model one at a time while attempting to maximize or minimize some ‘goodness’ criteria.</description>
     </item>
     
     <item>
       <title>Legislate by Executive Order</title>
-      <link>http://thug-r.life/post/2017-08-10-legislate-by-executive-order/</link>
+      <link>/post/2017-08-10-legislate-by-executive-order/</link>
       <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-10-legislate-by-executive-order/</guid>
+      <guid>/post/2017-08-10-legislate-by-executive-order/</guid>
       <description>Executive Orders in the USAFrom Wikipedia:
 Executive orders are orders issued by United States Presidents and directed towards officers and agencies of the U.S. federal government. Executive orders have the full force of law, based on the authority derived from statute or the Constitution itself. The ability to make such orders is also based on express or implied Acts of Congress that delegate to the President some degree of discretionary power (delegated legislation).</description>
     </item>
     
     <item>
       <title>Making this Blog</title>
-      <link>http://thug-r.life/post/2017-08-08-making-the-blog/</link>
+      <link>/post/2017-08-08-making-the-blog/</link>
       <pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-08-making-the-blog/</guid>
+      <guid>/post/2017-08-08-making-the-blog/</guid>
       <description>blogdown magicI made this blog using the magic of blogdown which is a framework that joins together a few technologies to make ‘static websites’
 RMarkdownHugoRMarkdownRMarkdown is an interface from R to markdown which is a way of marking up a text document with formating so other tools can convert it from a text file to a pretty format (PDF, Word, etc.) It’s a great way of documenting your code by having your narrative right next to the code that generated the insights/results.</description>
     </item>
     
     <item>
       <title>Theta Joins in R</title>
-      <link>http://thug-r.life/post/2017-08-06-fuzzy-joining/</link>
+      <link>/post/2017-08-06-fuzzy-joining/</link>
       <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-06-fuzzy-joining/</guid>
+      <guid>/post/2017-08-06-fuzzy-joining/</guid>
       <description>Theta JoinsCommon Joins
 If you’re like me, you’re looking at that diagram wondering what the heck is a ‘theta’ join?! Well, that’s the formal name for a ‘fuzzy’ join. In fact, you can read about all the different join types in this StackOverflow answer.
 An equi join is the most common kind of join because it leverages keys in your data source which are essential in a SQL environment.</description>

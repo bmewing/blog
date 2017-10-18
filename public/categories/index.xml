@@ -2,102 +2,102 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Thug R Life</title>
-    <link>http://thug-r.life/categories/</link>
+    <link>/categories/</link>
     <description>Recent content in Categories on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 12 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://thug-r.life/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>AWS</title>
-      <link>http://thug-r.life/categories/aws/</link>
+      <link>/categories/aws/</link>
       <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/aws/</guid>
+      <guid>/categories/aws/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Analysis</title>
-      <link>http://thug-r.life/categories/analysis/</link>
+      <link>/categories/analysis/</link>
       <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/analysis/</guid>
+      <guid>/categories/analysis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Cloud</title>
-      <link>http://thug-r.life/categories/cloud/</link>
+      <link>/categories/cloud/</link>
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/cloud/</guid>
+      <guid>/categories/cloud/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Data Munging</title>
-      <link>http://thug-r.life/categories/data-munging/</link>
+      <link>/categories/data-munging/</link>
       <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/data-munging/</guid>
+      <guid>/categories/data-munging/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Functional Programming</title>
-      <link>http://thug-r.life/categories/functional-programming/</link>
+      <link>/categories/functional-programming/</link>
       <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/functional-programming/</guid>
+      <guid>/categories/functional-programming/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Life</title>
-      <link>http://thug-r.life/categories/life/</link>
+      <link>/categories/life/</link>
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/life/</guid>
+      <guid>/categories/life/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>http://thug-r.life/categories/python/</link>
+      <link>/categories/python/</link>
       <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/python/</guid>
+      <guid>/categories/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>http://thug-r.life/categories/r/</link>
+      <link>/categories/r/</link>
       <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/r/</guid>
+      <guid>/categories/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>RMarkdown</title>
-      <link>http://thug-r.life/categories/rmarkdown/</link>
+      <link>/categories/rmarkdown/</link>
       <pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/rmarkdown/</guid>
+      <guid>/categories/rmarkdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spark</title>
-      <link>http://thug-r.life/categories/spark/</link>
+      <link>/categories/spark/</link>
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/categories/spark/</guid>
+      <guid>/categories/spark/</guid>
       <description></description>
     </item>
     
