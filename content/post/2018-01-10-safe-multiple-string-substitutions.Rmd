@@ -1,0 +1,128 @@
+---
+title: "Safe, Multiple String Substitutions with mgsub::mgsub"
+author: "Mark Ewing"
+description: "Solving an infrequent problem with a package."
+date: 2018-01-10
+categories: ["r"]
+type: "post"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+## String substitutions
+
+Note - the package I wrote was originally inspired by a challenge a coworker tossed out. It also happened to provide a solution to [this SO question](https://stackoverflow.com/questions/48169135/str-replace-all-replacing-named-vector-elements-iteratively-not-all-at-once/48189012#48189012) which was really cool!
+
+Substitutions in strings are best handled with *regular expressions* which are an amazingly powerful and flexible tool.  Regular expressions are a way of expressing patterns in strings.  In the example below I want to find the four letters, "dopa" and replace them with "meta". I accomplish this with the internal function `sub`.
+
+```{r}
+sub("dopa","meta","The chemical dopaziamine is fake, long live dopaziamine!")
+```
+
+## Multiple substitutions
+
+Sometimes you need to substitute many things, all at once.
+
+### Multiple instances of the same pattern
+
+In the first example, only the first instance of "dopa" was replaced with "meta".  If the goal is to replace all of them, I can use the internal function `gsub` (the *g* stand for global!).
+
+```{r}
+gsub("dopa","meta","The chemical dopaziamine is fake, long live dopaziamine!")
+```
+
+However, the internal regex functions aren't vectorized, so I can't have multiple patterns.
+
+```{r}
+gsub(c("dopa","fake"),c("meta","real"),"The chemical dopaziamine is fake, long live dopaziamine!")
+```
+
+### Multiple patterns
+
+There are a few string substitution methods that handle multiple patterns.
+
+#### stringr
+
+The function `str_replace_all` in the `stringr` package supports vectorized patterns and replacements. However, it applies each set individually giving `n` responses (where `n` is the longer length of the pattern or replacement vector).  So, this doesn't really work.
+
+```{r}
+stringr::str_replace_all("The chemical dopaziamine is fake, long live dopaziamine!"
+                         ,c("dopa","fake"),c("meta","real"))
+```
+
+#### qdap
+
+The function `mgsub` in the `qdap` package also supports vectorized patterns and replacements.  It works by using placeholders and then iteratively applying internal regex functions.
+
+```{r}
+qdap::mgsub(c("dopa","fake"),c("meta","real"),"The chemical dopaziamine is fake, long live dopaziamine!")
+```
+
+#### chartr
+
+There's a special case which is mostly for transliteration, so it only works on single characters.  `chartr`, an internal function, takes a string of old characters and a string of new characters and does simultaneous replacement, characterwise, on the string.  This does not support regex or anything other than single characters, so it's pretty limited.
+
+```{r}
+chartr("ho","oh","ho ho hoot")
+```
+
+### Problems with safety
+
+I noted that `qdap::mgsub` uses placeholders.  This can actually cause a problem in certain cases where patterns are the same length.  Consider the phrase "Hey, how are you?" where I want to shift each word to the left. So, "hey" shoudl be replaced by "how", "how" by "are", etc.  Note, each pattern to match is 3 characters long.  Note also that I pass in the `ignore.case=T` argument so my patterns won't be bothered by capitalization.
+
+```{r}
+qdap::mgsub(c("hey","how","are","you"),c("how","are","you","hey"),"Hey, how are you?"
+            ,fixed=F,ignore.case=T)
+```
+
+The placeholders became indistinguishable and so every word was replaced with the same word.
+
+### A safer option
+
+I just published a [github repo](https://github.com/bmewing/mgsub) which contains a new R package called `mgsub`.  It is a safe alternative to `qdap::mgsub`, fully supporting regular expression matching and replacement in a way that guarantees safety.  It also replaces with the longer match first, so sub-matches won't mess things up.
+
+Rather than passing in vectors (which could be recylced) of matches and replacements, I require named lists.
+
+Finally, the code is pure R (for now) with no dependencies, so you won't get a lot of bloat.
+
+#### Installing from github
+
+```{r,eval=F}
+devtools::install_github("bmewing/mgsub")
+```
+
+#### Examples
+
+First, the case that broke `qdap`.
+
+```{r}
+mgsub::mgsub("Hey, how are you?",list("hey"="how","how"="are","are"="you","you"="hey")
+            ,ignore.case=T)
+```
+
+We can also try a complex regular expression.  Note we use regular expressions in the match and the replacement and it works exactly as expected.  We only replaced "dopa" with "meta" with it's a -mine group as opposed to a -ride group.  Disclaimer - I know nothing about chemistry and stuff, so I don't know if those are real.
+
+```{r}
+mgsub::mgsub("Dopazamine is not the same as Dopachloride and is still fake.",
+             list("[Dd]opa(.*?mine)"="Meta\\1","fake"="real"),
+             ignore.case=F)
+```
+
+We can see the substring protection here. Even though "the" is a substring of "they" and appears in the list first, "they" is given priority when it is also matched.
+
+```{r}
+mgsub::mgsub("They don't understand the value of what they seek.",
+             list("the"="a","they"="we"),ignore.case=T)
+```
+
+You can also use it on single characters.
+
+```{r}
+mgsub::mgsub("ho ho hoot",list("h"="o","o"="h"))
+```
+
+### Development plans
+
+Once I write unit tests and get some error handling in place I will submit to CRAN.  Then I'll start working on getting the code into C++ to test the performance enhancements.  Overall goal will be *low* overhead.

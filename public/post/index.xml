@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Oct 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://thug-r.life/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Safe, Multiple String Substitutions with mgsub::mgsub</title>
+      <link>http://thug-r.life/post/2018-01-10-safe-multiple-string-substitutions/</link>
+      <pubDate>Wed, 10 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/post/2018-01-10-safe-multiple-string-substitutions/</guid>
+      <description>String substitutionsNote - the package I wrote was originally inspired by a challenge a coworker tossed out. It also happened to provide a solution to this SO question which was really cool!
+Substitutions in strings are best handled with regular expressions which are an amazingly powerful and flexible tool. Regular expressions are a way of expressing patterns in strings. In the example below I want to find the four letters, “dopa” and replace them with “meta”.</description>
+    </item>
     
     <item>
       <title>How many random numbers does it take?</title>
