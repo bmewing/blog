@@ -1,0 +1,102 @@
+---
+title: "Safe, Multiple String Substitutions with mgsub::mgsub"
+author: "Mark Ewing"
+description: "Solving an infrequent problem with a package."
+date: 2018-01-10
+categories: ["r"]
+type: "post"
+---
+
+
+
+<div id="string-substitutions" class="section level2">
+<h2>String substitutions</h2>
+<p>Note - the package I wrote was originally inspired by a challenge a coworker tossed out. It also happened to provide a solution to <a href="https://stackoverflow.com/questions/48169135/str-replace-all-replacing-named-vector-elements-iteratively-not-all-at-once/48189012#48189012">this SO question</a> which was really cool!</p>
+<p>Substitutions in strings are best handled with <em>regular expressions</em> which are an amazingly powerful and flexible tool. Regular expressions are a way of expressing patterns in strings. In the example below I want to find the four letters, “dopa” and replace them with “meta”. I accomplish this with the internal function <code>sub</code>.</p>
+<pre class="r"><code>sub(&quot;dopa&quot;,&quot;meta&quot;,&quot;The chemical dopaziamine is fake, long live dopaziamine!&quot;)
+## [1] &quot;The chemical metaziamine is fake, long live dopaziamine!&quot;</code></pre>
+</div>
+<div id="multiple-substitutions" class="section level2">
+<h2>Multiple substitutions</h2>
+<p>Sometimes you need to substitute many things, all at once.</p>
+<div id="multiple-instances-of-the-same-pattern" class="section level3">
+<h3>Multiple instances of the same pattern</h3>
+<p>In the first example, only the first instance of “dopa” was replaced with “meta”. If the goal is to replace all of them, I can use the internal function <code>gsub</code> (the <em>g</em> stand for global!).</p>
+<pre class="r"><code>gsub(&quot;dopa&quot;,&quot;meta&quot;,&quot;The chemical dopaziamine is fake, long live dopaziamine!&quot;)
+## [1] &quot;The chemical metaziamine is fake, long live metaziamine!&quot;</code></pre>
+<p>However, the internal regex functions aren’t vectorized, so I can’t have multiple patterns.</p>
+<pre class="r"><code>gsub(c(&quot;dopa&quot;,&quot;fake&quot;),c(&quot;meta&quot;,&quot;real&quot;),&quot;The chemical dopaziamine is fake, long live dopaziamine!&quot;)
+## Warning in gsub(c(&quot;dopa&quot;, &quot;fake&quot;), c(&quot;meta&quot;, &quot;real&quot;), &quot;The chemical
+## dopaziamine is fake, long live dopaziamine!&quot;): argument &#39;pattern&#39; has
+## length &gt; 1 and only the first element will be used
+## Warning in gsub(c(&quot;dopa&quot;, &quot;fake&quot;), c(&quot;meta&quot;, &quot;real&quot;), &quot;The chemical
+## dopaziamine is fake, long live dopaziamine!&quot;): argument &#39;replacement&#39; has
+## length &gt; 1 and only the first element will be used
+## [1] &quot;The chemical metaziamine is fake, long live metaziamine!&quot;</code></pre>
+</div>
+<div id="multiple-patterns" class="section level3">
+<h3>Multiple patterns</h3>
+<p>There are a few string substitution methods that handle multiple patterns.</p>
+<div id="stringr" class="section level4">
+<h4>stringr</h4>
+<p>The function <code>str_replace_all</code> in the <code>stringr</code> package supports vectorized patterns and replacements. However, it applies each set individually giving <code>n</code> responses (where <code>n</code> is the longer length of the pattern or replacement vector). So, this doesn’t really work.</p>
+<pre class="r"><code>stringr::str_replace_all(&quot;The chemical dopaziamine is fake, long live dopaziamine!&quot;
+                         ,c(&quot;dopa&quot;,&quot;fake&quot;),c(&quot;meta&quot;,&quot;real&quot;))
+## [1] &quot;The chemical metaziamine is fake, long live metaziamine!&quot;
+## [2] &quot;The chemical dopaziamine is real, long live dopaziamine!&quot;</code></pre>
+</div>
+<div id="qdap" class="section level4">
+<h4>qdap</h4>
+<p>The function <code>mgsub</code> in the <code>qdap</code> package also supports vectorized patterns and replacements. It works by using placeholders and then iteratively applying internal regex functions.</p>
+<pre class="r"><code>qdap::mgsub(c(&quot;dopa&quot;,&quot;fake&quot;),c(&quot;meta&quot;,&quot;real&quot;),&quot;The chemical dopaziamine is fake, long live dopaziamine!&quot;)
+## [1] &quot;The chemical metaziamine is real, long live metaziamine!&quot;</code></pre>
+</div>
+<div id="chartr" class="section level4">
+<h4>chartr</h4>
+<p>There’s a special case which is mostly for transliteration, so it only works on single characters. <code>chartr</code>, an internal function, takes a string of old characters and a string of new characters and does simultaneous replacement, characterwise, on the string. This does not support regex or anything other than single characters, so it’s pretty limited.</p>
+<pre class="r"><code>chartr(&quot;ho&quot;,&quot;oh&quot;,&quot;ho ho hoot&quot;)
+## [1] &quot;oh oh ohht&quot;</code></pre>
+</div>
+</div>
+<div id="problems-with-safety" class="section level3">
+<h3>Problems with safety</h3>
+<p>I noted that <code>qdap::mgsub</code> uses placeholders. This can actually cause a problem in certain cases where patterns are the same length. Consider the phrase “Hey, how are you?” where I want to shift each word to the left. So, “hey” shoudl be replaced by “how”, “how” by “are”, etc. Note, each pattern to match is 3 characters long. Note also that I pass in the <code>ignore.case=T</code> argument so my patterns won’t be bothered by capitalization.</p>
+<pre class="r"><code>qdap::mgsub(c(&quot;hey&quot;,&quot;how&quot;,&quot;are&quot;,&quot;you&quot;),c(&quot;how&quot;,&quot;are&quot;,&quot;you&quot;,&quot;hey&quot;),&quot;Hey, how are you?&quot;
+            ,fixed=F,ignore.case=T)
+## [1] &quot;hey, hey hey hey?&quot;</code></pre>
+<p>The placeholders became indistinguishable and so every word was replaced with the same word.</p>
+</div>
+<div id="a-safer-option" class="section level3">
+<h3>A safer option</h3>
+<p>I just published a <a href="https://github.com/bmewing/mgsub">github repo</a> which contains a new R package called <code>mgsub</code>. It is a safe alternative to <code>qdap::mgsub</code>, fully supporting regular expression matching and replacement in a way that guarantees safety. It also replaces with the longer match first, so sub-matches won’t mess things up.</p>
+<p>Rather than passing in vectors (which could be recylced) of matches and replacements, I require named lists.</p>
+<p>Finally, the code is pure R (for now) with no dependencies, so you won’t get a lot of bloat.</p>
+<div id="installing-from-github" class="section level4">
+<h4>Installing from github</h4>
+<pre class="r"><code>devtools::install_github(&quot;bmewing/mgsub&quot;)</code></pre>
+</div>
+<div id="examples" class="section level4">
+<h4>Examples</h4>
+<p>First, the case that broke <code>qdap</code>.</p>
+<pre class="r"><code>mgsub::mgsub(&quot;Hey, how are you?&quot;,list(&quot;hey&quot;=&quot;how&quot;,&quot;how&quot;=&quot;are&quot;,&quot;are&quot;=&quot;you&quot;,&quot;you&quot;=&quot;hey&quot;)
+            ,ignore.case=T)
+## [1] &quot;how, are you hey?&quot;</code></pre>
+<p>We can also try a complex regular expression. Note we use regular expressions in the match and the replacement and it works exactly as expected. We only replaced “dopa” with “meta” with it’s a -mine group as opposed to a -ride group. Disclaimer - I know nothing about chemistry and stuff, so I don’t know if those are real.</p>
+<pre class="r"><code>mgsub::mgsub(&quot;Dopazamine is not the same as Dopachloride and is still fake.&quot;,
+             list(&quot;[Dd]opa(.*?mine)&quot;=&quot;Meta\\1&quot;,&quot;fake&quot;=&quot;real&quot;),
+             ignore.case=F)
+## [1] &quot;Metazamine is not the same as Dopachloride and is still real.&quot;</code></pre>
+<p>We can see the substring protection here. Even though “the” is a substring of “they” and appears in the list first, “they” is given priority when it is also matched.</p>
+<pre class="r"><code>mgsub::mgsub(&quot;They don&#39;t understand the value of what they seek.&quot;,
+             list(&quot;the&quot;=&quot;a&quot;,&quot;they&quot;=&quot;we&quot;),ignore.case=T)
+## [1] &quot;we don&#39;t understand a value of what we seek.&quot;</code></pre>
+<p>You can also use it on single characters.</p>
+<pre class="r"><code>mgsub::mgsub(&quot;ho ho hoot&quot;,list(&quot;h&quot;=&quot;o&quot;,&quot;o&quot;=&quot;h&quot;))
+## [1] &quot;oh oh ohht&quot;</code></pre>
+</div>
+</div>
+<div id="development-plans" class="section level3">
+<h3>Development plans</h3>
+<p>Once I write unit tests and get some error handling in place I will submit to CRAN. Then I’ll start working on getting the code into C++ to test the performance enhancements. Overall goal will be <em>low</em> overhead.</p>
+</div>
+</div>
