@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 10 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 25 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://thug-r.life/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>One Year of Trump Executive Orders</title>
+      <link>http://thug-r.life/post/2018-01-25-one-year-of-trump-eo/</link>
+      <pubDate>Thu, 25 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/post/2018-01-25-one-year-of-trump-eo/</guid>
+      <description>First YearLess than a week ago marked the end of Trump’s first year in office. Back in August I posted code on analyzing the issuing of Executive Orders. Today I’m just going to provide updated commentary.
+NotesThe Federal Register takes time to actually publish Executive Orders. This window is variable but has a median value of 5 days. That’s why this post is coming out on the 25th instead of the 20th.</description>
+    </item>
     
     <item>
       <title>Safe, Multiple String Substitutions with mgsub::mgsub</title>
