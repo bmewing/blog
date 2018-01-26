@@ -1,0 +1,284 @@
+---
+title: "mgsub v1.0 Launched to CRAN"
+author: "Mark Ewing"
+description: "Multiple, simultaneous string substitions done safely."
+date: 2018-01-26
+categories: ["r"]
+type: "post"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(htmlTable)
+library(tableHTML)
+prepTable = function(r,t){
+  dt = data.frame(Library=names(r),
+                  Result =unlist(r,use.names = FALSE),
+                  Correct=unlist(r,use.names = FALSE) == t,
+                  stringsAsFactors = FALSE)
+  return(dt)
+}
+```
+
+## Official CRAN Launch
+
+Earlier this week I submitted `mgsub` to CRAN and after a couple of days [it was accepted](https://cran.r-project.org/web/packages/mgsub/index.html)! Now it's live!  I'm very excited to have published my second package and one that I think is a more valuable contribution than my first.  The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette.  Woot!
+
+In my nervous anticipation after submission I worried I might have missed the email indicating it went live so I did a quick search for `mgsub` to see what would come back.  Turns out, there are at least 4 other implementations of `mgsub` in packages on CRAN already.  Nothing kicks imposter syndrome into overdrive like seeing that 4 other people already did what you did.  But the focus of my implementation is *safety* - it's important to know that a string manipulation function is going to work the way you intend.  If your processing enough strings (or even a big enough string) it is difficult to do QA on a function.  Spot checking could miss things and if the process isn't safe enough, there may be no way of accomplishing your goal.
+
+So, I decided to download all 4 implementations and test them to see how they stack up.  Get ready for lots of examples!
+
+## Contenders
+
+The 4 contenders are `qdap` (which I covered in a [previous post](http://thug-r.life/post/2018-01-10-safe-multiple-string-substitutions/)), `bayesbio` (which actually doesn't export their function), `bazar` and `textclean`.  Note that I'm not actually loading the libraries because they will all have a namespace collision on `mgsub` so I'm calling by reference.
+
+```{r}
+# library(mgsub)
+# library(qdap)
+# library(bayesbio) #not exported
+# library(bazar)
+# library(textclean)
+```
+
+To make testing/comparing easier I wrote a function for each package which accepts a list of the string to be modified, the vector of matches and the vector of replacements.  This way I can put the functions in a list and just `lapply` (the name of `f` for my list is super expressive).  One thing to note is that I have ensured that each function accepts regular expression input (by setting `fixed=FALSE` where necessary).
+
+```{r}
+mgsub = function(a){
+  replace = a$replace
+  names(replace) = a$match
+  mgsub::mgsub(a$orig,replace)
+}
+qdap = function(a){
+  qdap::mgsub(a$match,a$replace,a$orig,fixed=FALSE)
+}
+bayesbio = function(a){
+  bayesbio:::mgsub(a$match,a$replace,a$orig)
+}
+bazar = function(a){
+  bazar::mgsub(a$match,a$replace,a$orig)
+}
+textclean = function(a){
+  textclean::mgsub(a$orig,a$match,a$replace,fixed = FALSE)
+}
+f = list(mgsub,qdap,bayesbio,bazar,textclean)
+names(f) = c("mgsub","qdap","bayesbio","bazar","textclean")
+```
+
+Each test will cover how well each package handles different scenarios in multiple, global string substition.  For each test I provide the original string, the matches, the replacements *and* the target result.  Each test will return a table which contains the result of the call and indicates how successful each library was.
+
+## Simple Test
+
+We'll start off nice and easy.  We'll modify a string by replacing "hey" with "yo" and "let's" with "we".
+
+```{r}
+a = list(
+orig = "hey ho, let's go!",
+match = c("hey","let's"),
+replace = c("yo","we")
+)
+simple_target = "yo ho, we go!"
+simple = lapply(f,function(x) x(a))
+
+htmlTable(prepTable(simple,simple_target),
+          align="llr",
+          css.cell = "padding-left: 1em; padding-right: 1em")
+```
+
+Right away we see that `bayesbio` is doing something very different from expected. Spoiler Alert: it continues. Given that it's not an exported function, it may have a very specific use case in mind.  Otherwise, the other packages all make the correct substitutions.
+
+## Substring
+
+Next we'll test how the libraries protect against substring substitution. In this case we want to replace "the" with "any" and "they" with "we".  I specifically put "the" earlier in the list of matches.  If the functions aren't safe, they may detect "the" as a substring of "they" and the result would be "any".  What's very problematic about this example is that "any" is a real word which would make detection even more difficult when scanning results.
+
+```{r}
+a = list(
+orig = "they don't know the answer",
+match = c("the","they"),
+replace = c("an","we")
+)
+substring_target = "we don't know an answer"
+substring = lapply(f,function(x) x(a))
+
+htmlTable(prepTable(substring,substring_target),
+          align="llr",
+          css.cell = "padding-left: 1em; padding-right: 1em")
+```
+
+The other packages have made the substring mistake.  Now, this was an engineered example - by providing "the" before "they", anything that just matches in order will have this problem.  It could be avoided by the user simply sorting their matches by `nchar`.  `qdap` actually does this by default - *if* `fixed = TRUE` (the actual argument is `order.pattern` but it seems to ignore setting it to `TRUE` if `fixed = FALSE`).  So, just know that if you're only working with fixed matches, `qdap` would have worked correctly here.
+
+```{r}
+qdap::mgsub(c("the","they"),c("an","we"),"they don't know the answer",fixed=TRUE)
+```
+
+## Transpose words
+
+Transposing words means taking a pair of words and replacing each with the other.  Here, we replace "hey" with "ho" and "ho" with "hey".
+
+```{r}
+a = list(
+orig = "hey ho, let's go!",
+match = c("hey","ho"),
+replace = c("ho","hey")
+)
+transpose_target = "ho hey, let's go!"
+transpose = lapply(f,function(x) x(a))
+
+htmlTable(prepTable(transpose,transpose_target),
+          align="llr",
+          css.cell = "padding-left: 1em; padding-right: 1em")
+```
+
+The failure is amongst all the contenders again.  Note, in this case, `qdap` fails even if `fixed = TRUE`. The problem (at least for `bazar` and `textclean`) is that they're simply looping through matches. "hey" is replaced with "ho" leaving "ho ho, let's go" and then "ho" is replaced with "hey" generating the result.
+
+```{r}
+qdap::mgsub(c("hey","ho"),c("ho","hey"),"hey ho, let's go!",fixed=TRUE)
+```
+
+## Shifting Words
+
+This is similar to shifting words except it's a chain of shifts.  By shifting each word one spot to the left (with wraparound) we check if it's a simple looping problem or something else.  Also note, each match here is the same number of characters so any placeholder work done based on `nchar` would fail.
+
+```{r}
+a = list(
+orig = "hey, how are you?",
+match = c("hey","how","are","you"),
+replace = c("how","are","you","hey")
+)
+shift_target = "how, are you hey?"
+shift = lapply(f,function(x) x(a))
+
+htmlTable(prepTable(shift,shift_target),
+          align="llr",
+          css.cell = "padding-left: 1em; padding-right: 1em")
+```
+In this case, every word has been replaced with the last replacement value (again, due to the looping).
+
+## Regex
+
+Next I test regular expression support (including backreferences.)
+
+```{r}
+a = list(
+orig = "Dopazamine is not the same as dopachloride or dopamezamine and is still fake.",
+match = c("[Dd]opa([^ ]*?mine)","fake"),
+replace = c("Meta\\1","real")
+)
+regex_target = "Metazamine is not the same as dopachloride or Metamezamine and is still real."
+regex = lapply(f,function(x) x(a))
+
+htmlTable(prepTable(regex,regex_target),
+          align="llr",
+          css.cell = "padding-left: 1em; padding-right: 1em")
+```
+
+This one passes easily (everything is working with a form of `gsub` turned on) though remember we did have to explicitly flag `fixed = FALSE` for `qdap` and `textclean`.  Forgetting to do so would have resulted in failure to match or weird replacements.
+
+## Regex Susbtring
+
+Most things failed to protect against substring matches, but what about when the smaller string (in terms of `nchar`) is a regular expression that matches a variable number of characters?  Does the function actively determine what is a substring and what is a longer string?  The example below is *super* engineered to create the scenario.
+
+```{r}
+a = list(
+orig = "Dopazamine is a fake chemical",
+match = c("Dopazamin","Do.*ne"),
+replace = c("freakout","metazamine")
+)
+regex_substring_target = "metazamine is a fake chemical"
+regex_substring = lapply(f,function(x) x(a))
+
+htmlTable(prepTable(regex_substring,regex_substring_target),
+          align="llr",
+          css.cell = "padding-left: 1em; padding-right: 1em")
+```
+
+Note that only `mgsub::mgsub` correctly protects substrings in the presence of variable length regular expressions - even when that variable length is presented later in the list of inputs.
+
+## Speed
+
+So I've shown several examples of cases where other implementations of `mgsub` fail to safely perform substitutions. But what is the performance cost?
+
+### Simple
+
+```{r}
+library(microbenchmark)
+
+s = "Hi, my name is Mark"
+m = c("Hi","Mark")
+r = c("Goodbye","Tom")
+names(r) = m
+
+smb = microbenchmark(
+  mgsub = mgsub::mgsub(s,r,fixed=TRUE),
+  qdap = qdap::mgsub(m,r,s),
+  bayesbio = bayesbio:::mgsub(m,r,s),
+  bazar = bazar::mgsub(m,r,s),
+  textclean = textclean::mgsub(s,m,r)
+)
+smb = print(smb)
+```
+
+`mgsub` and `qdap` in this simple case are in the same order of magnitude.  The other three are significantly faster - the slowest of them is still 2x faster than `mgsub` or `qdap`.
+
+### Regex
+
+```{r}
+s = "Dopazamine is not the same as Dopachloride and is still fake."
+m = c("[Dd]opa(.*?mine)","fake")
+r = c("Meta\\1","real")
+names(r) = m
+
+rmb = microbenchmark(
+  mgsub = mgsub::mgsub(s,r),
+  qdap = qdap::mgsub(m,r,s,fixed=FALSE),
+  bayesbio = bayesbio:::mgsub(m,r,s),
+  bazar = bazar::mgsub(m,r,s),
+  textclean = textclean::mgsub(s,m,r,fixed=FALSE)
+)
+rmb = print(rmb)
+```
+
+When we add regular expressions (with backreferences) the speed difference grows even bigger.
+
+All that being said, things are still in microseconds, so it's not necessarily a practical difference.  And, is it worth being so much faster knowing you could be getting wrong results?
+
+## Conclusion
+
+```{r,warning=FALSE,echo=F}
+final = dplyr::tibble(
+  `Library&nbsp;&nbsp;` = names(f),
+  `&nbsp;&nbsp;Simple&nbsp;&nbsp;` = ifelse(unlist(simple) == simple_target,"Y","N"),
+  `&nbsp;&nbsp;Substring&nbsp;&nbsp;` = ifelse(unlist(substring) == substring_target,"Y","N"),
+  `&nbsp;&nbsp;Transpose&nbsp;&nbsp;` = ifelse(unlist(transpose) == transpose_target,"Y","N"),
+  `&nbsp;&nbsp;Shift&nbsp;&nbsp;` = ifelse(unlist(shift) == shift_target,"Y","N"),
+  `&nbsp;&nbsp;Regex&nbsp;&nbsp;` = ifelse(unlist(regex) == regex_target,"Y","N"),
+  `Regex<br>Substring` = ifelse(unlist(regex_substring) == regex_substring_target,"Y","N"),
+  `Simple ` = round(smb$median,0),
+  `Regex ` = round(rmb$median,0)
+)
+rownames(final) = names(f)
+# htmlTable(final,
+#           cgroup = c("Correctness Results","Median Runtime (microseconds)"),
+#           n.cgroup = c(6,2),
+#           align="llllllrr",
+#           css.cell = "padding-left: 1em; padding-right: 1em")
+tableHTML(final,border = 0,rownames=FALSE,escape=FALSE,collapse="collapse",
+          second_header = list(c(1,6,2),c("","Correctness Results","Median Runtime (microseconds)"))) %>% 
+  add_css_row(css = list("border-top","2px solid black"),rows=1) %>% 
+  add_css_row(css = list("border-bottom","1px solid black"),rows=2) %>% 
+  add_css_second_header(css = list("border-bottom","1px solid black"), second_headers=c(2,3)) %>% 
+  add_css_header(css = list("text-align","right"), headers = c(8,9)) %>% 
+  add_css_row(css = list("border-bottom","2px solid black"),rows=7) %>% 
+  add_css_column(css = list("text-align","center"),columns = c(2:7)) %>% 
+  add_css_column(css = list("text-align","right"),columns = c(8,9)) %>% 
+  add_css_conditional_column(conditional = '==',
+                             value = "Y",
+                             css = list('background-color','#8df086'),
+                             columns = 1:9) %>% 
+  add_css_conditional_column(conditional = '==',
+                             value = "N",
+                             css = list('background-color','#6f87fc'),
+                             columns = 1:9)
+```
+
+I've shown that only `mgsub::mgsub` provides actual correct multiple, global string substitution from the 5 packages that have a function named `mgsub` in every possible scenario. While it is on the slower end of runtime, it's a small price to pay for safety.
+
