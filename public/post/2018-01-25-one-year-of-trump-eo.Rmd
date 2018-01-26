@@ -1,0 +1,172 @@
+---
+title: "One Year of Trump Executive Orders"
+author: "Mark Ewing"
+description: "How does Trump's use of Executive Orders in his first year line up?"
+date: 2018-01-25
+categories: ["r"]
+type: "post"
+---
+
+# First Year
+
+Less than a week ago marked the end of Trump's first year in office. [Back in August](http://thug-r.life/post/2017-08-10-legislate-by-executive-order/) I posted code on analyzing the issuing of Executive Orders.  Today I'm just going to provide updated commentary.
+
+## Notes
+
+The Federal Register takes time to actually publish Executive Orders. This window is variable but has a median value of 5 days. That's why this post is coming out on the 25th instead of the 20th. There is a chance that Executive Orders are not caputred in this analysis which should be.
+
+## Back in August...
+
+Trump was second most prolific user of executive orders coming in just behind Ford having signed 46.  Carter was catching up quickly and looked to overtake Trump.  We saw a spike in Trumps usage of Executive Orders just before his 100 days in office mark.  Will we see something similar at the end of his first year?
+
+## Chart
+
+```{r,message=FALSE,echo=FALSE}
+library(readr)
+library(dplyr)
+library(plotly)
+library(lubridate)
+library(magrittr)
+
+#pre-1994 data source: https://www.archives.gov/federal-register/executive-orders/disposition
+#data source: https://www.federalregister.gov/executive-orders
+#trump data is being sourced from the federal register through their api
+
+nixon = read_csv("C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/nixon.csv")
+ford = read_csv("C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/ford.csv")
+carter = read_csv("C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/carter.csv")
+reagan = read_csv("C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/reagan.csv")
+ghw_bush = read_csv("C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/george h w bush.csv")
+pre94clinton = read_csv("C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/pre94_clinton.csv") %>% select(executive_order_number=id,everything())
+clinton = read_csv("C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/documents_signed_by_william_j_clinton_of_type_presidential_document_and_of_presidential_document_type_executive_order.csv")
+clinton %<>%
+  mutate(signing_date = lubridate::as_date(signing_date,format="%m/%d/%Y")) %>% 
+  bind_rows(pre94clinton)
+gw_bush = read_csv("C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/documents_signed_by_george_w_bush_of_type_presidential_document_and_of_presidential_document_type_executive_order.csv")
+obama = read_csv("C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/documents_signed_by_barack_obama_of_type_presidential_document_and_of_presidential_document_type_executive_order.csv")
+trump = httr::GET("https://www.federalregister.gov/documents/search.json?conditions%5Bcorrection%5D=0&conditions%5Bpresident%5D=donald-trump&conditions%5Bpresidential_document_type_id%5D=2&conditions%5Btype%5D=PRESDOCU&fields%5B%5D=citation&fields%5B%5D=document_number&fields%5B%5D=end_page&fields%5B%5D=executive_order_notes&fields%5B%5D=executive_order_number&fields%5B%5D=html_url&fields%5B%5D=pdf_url&fields%5B%5D=publication_date&fields%5B%5D=signing_date&fields%5B%5D=start_page&fields%5B%5D=title&fields%5B%5D=full_text_xml_url&fields%5B%5D=body_html_url&fields%5B%5D=json_url&order=executive_order_number&per_page=1000") %>% 
+  httr::content(as="text") %>% 
+  jsonlite::fromJSON() %>% 
+  `$`("results")
+
+#There's a delta between when executive orders are signed and when they're published meaning the chart created later has a chance of under-reporting the number of orders signed. This is a simple correction to account for that.
+timeToPublish = difftime(lubridate::as_date(trump$publication_date),lubridate::as_date(trump$signing_date),unit="days") %>% 
+  as.numeric() %>% 
+  median()
+#Now when we calculate how long Trump has been in office, we can apply the time it takes the regsiter to publish orders and adjust the view to reflect reality.
+trumpDaysInOffice = difftime(Sys.Date(),lubridate::as_date("2017-01-20"),units="days") %>% 
+  as.numeric() %>% 
+  `-`(timeToPublish)
+
+write_csv(trump,"C:/Users/u772700/OneDrive - Eastman Chemical Company/R Stuff/legislate-by-order/data/documents_signed_by_donald_trump_of_type_presidential_document_and_of_presidential_document_type_executive_order.csv")
+
+nixon %<>%
+  mutate(start_date = lubridate::as_date("1969-01-20"),
+         signing_date = lubridate::as_date(signing_date,format="%m/%d/%Y")) %>% 
+  mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+  group_by(daysInOffice) %>% 
+  summarise(nixonOrders = n())
+
+ford %<>%
+  mutate(start_date = lubridate::as_date("1974-08-09"),
+         signing_date = lubridate::as_date(signing_date,format="%m/%d/%Y")) %>% 
+  mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+  group_by(daysInOffice) %>% 
+  summarise(fordOrders = n())
+
+carter %<>%
+  mutate(start_date = lubridate::as_date("1977-01-20"),
+         signing_date = lubridate::as_date(signing_date,format="%m/%d/%Y")) %>% 
+  mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+  group_by(daysInOffice) %>% 
+  summarise(carterOrders = n())
+
+reagan %<>%
+  mutate(start_date = lubridate::as_date("1981-01-20"),
+         signing_date = lubridate::as_date(signing_date,format="%m/%d/%Y")) %>% 
+  mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+  group_by(daysInOffice) %>% 
+  summarise(reaganOrders = n())
+
+ghw_bush %<>%
+  mutate(start_date = lubridate::as_date("1989-01-20"),
+         signing_date = lubridate::as_date(signing_date,format="%m/%d/%Y")) %>% 
+  mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+  group_by(daysInOffice) %>% 
+  summarise(ghw_bushOrders = n())
+
+clinton %<>%
+  mutate(start_date = lubridate::as_date("1993-01-20"),
+         signing_date = lubridate::as_date(signing_date,format="%m/%d/%Y")) %>% 
+  mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+  group_by(daysInOffice) %>% 
+  summarise(clintonOrders = n())
+
+gw_bush %<>%
+  mutate(start_date = lubridate::as_date("2001-01-20"),
+         signing_date = lubridate::as_date(signing_date,format="%m/%d/%Y")) %>% 
+  mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+  group_by(daysInOffice) %>% 
+  summarise(gw_bushOrders = n())
+
+obama %<>%
+  mutate(start_date = lubridate::as_date("2009-01-20"),
+         signing_date = lubridate::as_date(signing_date,format="%m/%d/%Y")) %>% 
+  mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+  group_by(daysInOffice) %>% 
+  summarise(obamaOrders = n())
+
+trump %<>%
+  mutate(start_date = lubridate::as_date("2017-01-20"),
+         signing_date = lubridate::as_date(signing_date)) %>% 
+  mutate(daysInOffice = difftime(signing_date,start_date,units="days")) %>% 
+  group_by(daysInOffice) %>% 
+  summarise(trumpOrders = n())
+
+orders = data_frame(daysInOffice = seq(0,8*365.25,1)) %>% 
+  left_join(nixon) %>% 
+  left_join(ford) %>% 
+  left_join(carter) %>% 
+  left_join(reagan) %>% 
+  left_join(ghw_bush) %>% 
+  left_join(clinton) %>% 
+  left_join(gw_bush) %>% 
+  left_join(obama) %>% 
+  left_join(trump)
+
+orders[is.na(orders)] = 0
+
+for(i in 2:ncol(orders)){
+  orders[[i]] = cumsum(orders[[i]])
+}
+
+ymax = orders %>% 
+  filter(daysInOffice <= ceiling(trumpDaysInOffice*1.1)) %>% 
+  select(-daysInOffice) %>% 
+  lapply(max) %>% 
+  unlist() %>% 
+  max() %>% 
+  `*`(1.1) %>% 
+  ceiling()
+
+orders %>% 
+  filter(daysInOffice <= ceiling(trumpDaysInOffice*1.1)) %>% 
+  plot_ly(x = ~daysInOffice) %>% 
+  add_lines(y = ~nixonOrders,name="Nixon") %>% 
+  add_lines(y = ~fordOrders,name="Ford") %>% 
+  add_lines(y = ~carterOrders,name="Carter") %>% 
+  add_lines(y = ~reaganOrders,name="Reagan") %>% 
+  add_lines(y = ~ghw_bushOrders,name="G.H.W. Bush") %>% 
+  add_lines(y = ~clintonOrders,name="Clinton") %>% 
+  add_lines(y = ~gw_bushOrders,name="G.W. Bush") %>% 
+  add_lines(y = ~obamaOrders,name="Obama") %>% 
+  add_lines(y = ~trumpOrders,name="Trump") %>% 
+  layout(shapes=list(type='line', x0= trumpDaysInOffice, x1= trumpDaysInOffice, y0=0, y1=ymax, line=list(dash='dot', width=1)),
+         xaxis = list(title="Days in Office"),
+         yaxis = list(title="# of Executive Orders Signed"),
+         title = 'How have presidents used Executive Orders over the course of their terms?')
+```
+
+There is no real indication that Trump used a surge of Executive Orders to bolster his 'wins' at the end of his first year (in fact, the only president who looks even remotely like they have a first year surge is G.W. Bush and that happened in month 11, shortly after the 9/11 attacks).  Rather, his cummulative usage at this point is decidedly average.  Clinton and Carter both overtook him in terms of usage. Furthermore, G.W. Bush, Nixon and Reagan are all tightly grouped and in the same space.
+
+So, while Trump came out of the gates using Executive Orders much like Obama did initially followed by a surge for his 100th day in office, Trump has tempered his usage of Executive Orders.  Granted, he's still ~50% higher than Obama at this relative point in the presidency, but that doesn't mean he can't be decidedly average.
