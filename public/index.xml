@@ -6,10 +6,19 @@
     <description>Recent content on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 25 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 26 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://thug-r.life/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>mgsub v1.0 Launched to CRAN</title>
+      <link>http://thug-r.life/post/2018-01-26-mgsub-launched/</link>
+      <pubDate>Fri, 26 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/post/2018-01-26-mgsub-launched/</guid>
+      <description>Official CRAN LaunchEarlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette.</description>
+    </item>
     
     <item>
       <title>One Year of Trump Executive Orders</title>
