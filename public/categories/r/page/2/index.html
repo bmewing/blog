@@ -40,7 +40,7 @@
 
 
 
-<meta property="og:updated_time" content="2017-08-06T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2017-10-30T00:00:00&#43;00:00"/>
 
 
 
@@ -230,10 +230,10 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="http://thug-r.life/post/2017-08-06-fuzzy-joining/">Theta Joins in R</a></h2>
+            <h2><a href="http://thug-r.life/post/2017-10-30-how-many-random-numbers-does-it-take/">How many random numbers does it take?</a></h2>
         
         
-            <p>Learn how to do theta joins (fuzzy joins) in R six different ways.</p>
+            <p>Simulating our way into fun math outcomes.</p>
         
     </div>
     <div class="meta">
@@ -242,11 +242,11 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2017-08-06'>
-            August 6, 2017</time>
+            datetime='2017-10-30'>
+            October 30, 2017</time>
         <span class="author">Mark Ewing</span>
         
-            <p>13 minute read</p>
+            <p>3 minute read</p>
         
         
     </div>
@@ -254,16 +254,17 @@ ga('send', 'pageview');
 
     
 
-    <p><p>Theta Joins
-Common Joins</p>
+    <p><p>Fermat and his library
+This morning I woke up to a delightful tweet from fermatslibrary about sample random uniform numbers and how many it takes, on average, to sum to 1.
+Pick a uniformly random number in [0,1] and repeat until the sum of the numbers picked is &gt;1. You&rsquo;ll on average pick e≈2.718… numbers! pic.twitter.com/8ak1hYENCi
+— Fermat&rsquo;s Library (@fermatslibrary) October 28, 2017</p>
 
-<p>If you’re like me, you’re looking at that diagram wondering what the heck is a ‘theta’ join?! Well, that’s the formal name for a ‘fuzzy’ join. In fact, you can read about all the different join types in this StackOverflow answer.
-An equi join is the most common kind of join because it leverages keys in your data source which are essential in a SQL environment.</p>
+<p>If you look at the embedded picture, you can see the math sketched out but of course it’s alwasy more fun to simulate.</p>
 </p>
 
     <footer>
         <ul class="actions">
-            <li><a href="http://thug-r.life/post/2017-08-06-fuzzy-joining/" class="button big">Continue Reading</a></li>
+            <li><a href="http://thug-r.life/post/2017-10-30-how-many-random-numbers-does-it-take/" class="button big">Continue Reading</a></li>
         </ul>
         <ul class="stats">
     
@@ -281,7 +282,7 @@ An equi join is the most common kind of join because it leverages keys in your d
                     
 
                     
-                        Categories
+                        Category
                     
                 
             </li>
@@ -290,9 +291,150 @@ An equi join is the most common kind of join because it leverages keys in your d
 
     
     
-        <li><a href='/categoriesr'>R</a></li>
+        <li><a href='/categoriesr'>r</a></li>
     
-        <li><a href='/categoriesdata-munging'>Data Munging</a></li>
+</ul>
+
+    </footer>
+</article>
+
+        
+            <article class="post">
+    <header>
+    <div class="title">
+        
+            <h2><a href="http://thug-r.life/post/2017-10-18-the-value-of-learning-the-basics/">The Value of Learning the Basics</a></h2>
+        
+        
+            <p>Why fancy packages aren&#39;t always the answer.</p>
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2017-10-18'>
+            October 18, 2017</time>
+        <span class="author">Mark Ewing</span>
+        
+            <p>6 minute read</p>
+        
+        
+    </div>
+</header>
+
+    
+
+    <p><p>Learning the hard way
+About a month ago David Robinson made a tweet that I both agree and disagree with.
+New blog post: “Don&rsquo;t teach students the hard way first” <a href="https://t.co/X2drh1tQe5">https://t.co/X2drh1tQe5</a> #rstats pic.twitter.com/GXAEpx5eET
+— David Robinson (@drob) September 21, 2017</p>
+
+<p>His example is simple enough - you’re going to a friends new house and are provided with directions involving a lot of back roads, twisting and turning. When you arrive you’re told to just take the highway back because it’s easier.</p>
+</p>
+
+    <footer>
+        <ul class="actions">
+            <li><a href="http://thug-r.life/post/2017-10-18-the-value-of-learning-the-basics/" class="button big">Continue Reading</a></li>
+        </ul>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+
+                    
+
+                    
+                        Category
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categoriesr'>r</a></li>
+    
+</ul>
+
+    </footer>
+</article>
+
+        
+            <article class="post">
+    <header>
+    <div class="title">
+        
+            <h2><a href="http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/">purrr Tricks with All Subset Regression</a></h2>
+        
+        
+            <p>See how this one clickbaity purrr trick helped me solve an issue with all subsets regression!</p>
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2017-08-24'>
+            August 24, 2017</time>
+        <span class="author">Mark Ewing</span>
+        
+            <p>14 minute read</p>
+        
+        
+    </div>
+</header>
+
+    
+
+    <p>All Subsets Regression
+What is all subsets regression? It’s a technique for model building which involves taking a set of independent variables (X<em>1..i) and regressing them in sets of (k), where (k) is in ({1,2,\dots,i}), against the response variable (Y). The ‘all’ part of ‘all subsets’ means it’s every combination of (X</em>{1..i}) being drawn (k) at a time.
+But…why?
+You’re probably familiar with forward, backward or stepwise model building where terms are added (or removed) from a model one at a time while attempting to maximize or minimize some ‘goodness’ criteria.</p>
+
+    <footer>
+        <ul class="actions">
+            <li><a href="http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/" class="button big">Continue Reading</a></li>
+        </ul>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+
+                    
+
+                    
+                        Category
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categoriesr'>r</a></li>
     
 </ul>
 
@@ -309,7 +451,8 @@ An equi join is the most common kind of join because it leverages keys in your d
     
 
     
-        <li><a href="#" class="disabled button big next">Next Page</a></li>
+        <li><a href="/categories/r/page/3/"
+                class="button big next">Next Page</a></li>
     
 </ul>
 
@@ -478,7 +621,7 @@ An equi join is the most common kind of join because it leverages keys in your d
                         <article>
                             <header>
                                 <a href="/categories/r/">r</a>
-                                <span style="float:right;">5</span>
+                                <span style="float:right;">9</span>
                             </header>
                         </article>
                     </li>
@@ -486,16 +629,7 @@ An equi join is the most common kind of join because it leverages keys in your d
                     <li>
                         <article>
                             <header>
-                                <a href="/categories/r/">R</a>
-                                <span style="float:right;">4</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/life/">Life</a>
+                                <a href="/categories/cloud/">cloud</a>
                                 <span style="float:right;">2</span>
                             </header>
                         </article>
@@ -504,7 +638,16 @@ An equi join is the most common kind of join because it leverages keys in your d
                     <li>
                         <article>
                             <header>
-                                <a href="/categories/aws/">AWS</a>
+                                <a href="/categories/life/">life</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/python/">python</a>
                                 <span style="float:right;">1</span>
                             </header>
                         </article>
@@ -513,61 +656,7 @@ An equi join is the most common kind of join because it leverages keys in your d
                     <li>
                         <article>
                             <header>
-                                <a href="/categories/analysis/">Analysis</a>
-                                <span style="float:right;">1</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/cloud/">Cloud</a>
-                                <span style="float:right;">1</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/data-munging/">Data Munging</a>
-                                <span style="float:right;">1</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/functional-programming/">Functional Programming</a>
-                                <span style="float:right;">1</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/python/">Python</a>
-                                <span style="float:right;">1</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/rmarkdown/">RMarkdown</a>
-                                <span style="float:right;">1</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/spark/">Spark</a>
+                                <a href="/categories/spark/">spark</a>
                                 <span style="float:right;">1</span>
                             </header>
                         </article>

@@ -6,28 +6,9 @@
     <description>Recent content in Tags on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://thug-r.life/tags/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://thug-r.life/tags/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>RStudio</title>
-      <link>http://thug-r.life/tags/rstudio/</link>
-      <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://thug-r.life/tags/rstudio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Rstudio</title>
-      <link>http://thug-r.life/tags/rstudio/</link>
-      <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://thug-r.life/tags/rstudio/</guid>
-      <description></description>
-    </item>
     
   </channel>
 </rss>

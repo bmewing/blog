@@ -6,54 +6,18 @@
     <description>Recent content in Categories on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 12 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://thug-r.life/categories/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://thug-r.life/categories/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>AWS</title>
-      <link>http://thug-r.life/categories/aws/</link>
-      <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://thug-r.life/categories/aws/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Analysis</title>
-      <link>http://thug-r.life/categories/analysis/</link>
-      <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://thug-r.life/categories/analysis/</guid>
-      <description></description>
-    </item>
     
     <item>
       <title>Cloud</title>
       <link>http://thug-r.life/categories/cloud/</link>
-      <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>http://thug-r.life/categories/cloud/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>Data Munging</title>
-      <link>http://thug-r.life/categories/data-munging/</link>
-      <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://thug-r.life/categories/data-munging/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Functional Programming</title>
-      <link>http://thug-r.life/categories/functional-programming/</link>
-      <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://thug-r.life/categories/functional-programming/</guid>
-      <description></description>
+      <content:encoded></content:encoded>
     </item>
     
     <item>
@@ -63,6 +27,7 @@
       
       <guid>http://thug-r.life/categories/life/</guid>
       <description></description>
+      <content:encoded></content:encoded>
     </item>
     
     <item>
@@ -72,33 +37,17 @@
       
       <guid>http://thug-r.life/categories/python/</guid>
       <description></description>
+      <content:encoded></content:encoded>
     </item>
     
     <item>
       <title>R</title>
       <link>http://thug-r.life/categories/r/</link>
-      <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 26 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>http://thug-r.life/categories/r/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>R</title>
-      <link>http://thug-r.life/categories/r/</link>
-      <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://thug-r.life/categories/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>RMarkdown</title>
-      <link>http://thug-r.life/categories/rmarkdown/</link>
-      <pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://thug-r.life/categories/rmarkdown/</guid>
-      <description></description>
+      <content:encoded></content:encoded>
     </item>
     
     <item>
@@ -108,6 +57,7 @@
       
       <guid>http://thug-r.life/categories/spark/</guid>
       <description></description>
+      <content:encoded></content:encoded>
     </item>
     
   </channel>
