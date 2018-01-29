@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Thug R Life</title>
-    <link>http://thug-r.life/post/</link>
+    <link>/post/</link>
     <description>Recent content in Posts on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 26 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="http://thug-r.life/post/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>mgsub v1.0 Launched to CRAN</title>
-      <link>http://thug-r.life/post/2018-01-26-mgsub-launched/</link>
+      <link>/post/2018-01-26-mgsub-launched/</link>
       <pubDate>Fri, 26 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2018-01-26-mgsub-launched/</guid>
+      <guid>/post/2018-01-26-mgsub-launched/</guid>
       <description>Official CRAN LaunchEarlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette.</description>
       <content:encoded><div id="official-cran-launch" class="section level2">
 <h2>Official CRAN Launch</h2>
@@ -547,10 +547,10 @@ rmb = print(rmb)
     
     <item>
       <title>One Year of Trump Executive Orders</title>
-      <link>http://thug-r.life/post/2018-01-25-one-year-of-trump-eo/</link>
+      <link>/post/2018-01-25-one-year-of-trump-eo/</link>
       <pubDate>Thu, 25 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2018-01-25-one-year-of-trump-eo/</guid>
+      <guid>/post/2018-01-25-one-year-of-trump-eo/</guid>
       <description>First YearLess than a week ago marked the end of Trump’s first year in office. Back in August I posted code on analyzing the issuing of Executive Orders. Today I’m just going to provide updated commentary.
 NotesThe Federal Register takes time to actually publish Executive Orders. This window is variable but has a median value of 5 days. That’s why this post is coming out on the 25th instead of the 20th.</description>
       <content:encoded><script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
@@ -613,10 +613,10 @@ NotesThe Federal Register takes time to actually publish Executive Orders. This
     
     <item>
       <title>Safe, Multiple String Substitutions with mgsub::mgsub</title>
-      <link>http://thug-r.life/post/2018-01-10-safe-multiple-string-substitutions/</link>
+      <link>/post/2018-01-10-safe-multiple-string-substitutions/</link>
       <pubDate>Wed, 10 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2018-01-10-safe-multiple-string-substitutions/</guid>
+      <guid>/post/2018-01-10-safe-multiple-string-substitutions/</guid>
       <description>String substitutionsNote - the package I wrote was originally inspired by a challenge a coworker tossed out. It also happened to provide a solution to this SO question which was really cool!
 Substitutions in strings are best handled with regular expressions which are an amazingly powerful and flexible tool. Regular expressions are a way of expressing patterns in strings. In the example below I want to find the four letters, “dopa” and replace them with “meta”.</description>
       <content:encoded><div id="string-substitutions" class="section level2">
@@ -715,10 +715,10 @@ Substitutions in strings are best handled with regular expressions which are an 
     
     <item>
       <title>How many random numbers does it take?</title>
-      <link>http://thug-r.life/post/2017-10-30-how-many-random-numbers-does-it-take/</link>
+      <link>/post/2017-10-30-how-many-random-numbers-does-it-take/</link>
       <pubDate>Mon, 30 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-10-30-how-many-random-numbers-does-it-take/</guid>
+      <guid>/post/2017-10-30-how-many-random-numbers-does-it-take/</guid>
       <description>Fermat and his libraryThis morning I woke up to a delightful tweet from fermatslibrary about sample random uniform numbers and how many it takes, on average, to sum to 1.
 Pick a uniformly random number in [0,1] and repeat until the sum of the numbers picked is &amp;gt;1. You&#39;ll on average pick e≈2.718… numbers! pic.twitter.com/8ak1hYENCi— Fermat&#39;s Library (@fermatslibrary) October 28, 2017If you look at the embedded picture, you can see the math sketched out but of course it’s alwasy more fun to simulate.</description>
       <content:encoded><div id="fermat-and-his-library" class="section level2">
@@ -801,10 +801,10 @@ abline(h=exp(1),col=&#39;red&#39;)</code></pre>
     
     <item>
       <title>The Value of Learning the Basics</title>
-      <link>http://thug-r.life/post/2017-10-18-the-value-of-learning-the-basics/</link>
+      <link>/post/2017-10-18-the-value-of-learning-the-basics/</link>
       <pubDate>Wed, 18 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-10-18-the-value-of-learning-the-basics/</guid>
+      <guid>/post/2017-10-18-the-value-of-learning-the-basics/</guid>
       <description>Learning the hard wayAbout a month ago David Robinson made a tweet that I both agree and disagree with.
 New blog post: “Don&#39;t teach students the hard way first” https://t.co/X2drh1tQe5 #rstats pic.twitter.com/GXAEpx5eET— David Robinson (@drob) September 21, 2017His example is simple enough - you’re going to a friends new house and are provided with directions involving a lot of back roads, twisting and turning. When you arrive you’re told to just take the highway back because it’s easier.</description>
       <content:encoded><div id="learning-the-hard-way" class="section level2">
@@ -843,10 +843,10 @@ New blog post: “Don't teach students the hard way first” <a href="https://t.
     
     <item>
       <title>Fun Math Problems</title>
-      <link>http://thug-r.life/post/2017-10-02-fun-math-problems/</link>
+      <link>/post/2017-10-02-fun-math-problems/</link>
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-10-02-fun-math-problems/</guid>
+      <guid>/post/2017-10-02-fun-math-problems/</guid>
       <description>Meme Me Up, Scotty!Every now and then on Twitter or Facebook there’s a math problem posted which challenges users to get the right answer. They’re almost always based on order of operations and the reason most people get them wrong is because they don’t remember that elementary rule. It’s hard to blame most people since a lot of math that’s used day to day doesn’t require order of operations.</description>
       <content:encoded><div id="meme-me-up-scotty" class="section level2">
 <h2>Meme Me Up, Scotty!</h2>
@@ -886,10 +886,10 @@ You will either be really angry or lol <a href="https://t.co/yLECGwpXdQ">pic.twi
     
     <item>
       <title>Bucket List</title>
-      <link>http://thug-r.life/post/2017-09-01-bucket-list/</link>
+      <link>/post/2017-09-01-bucket-list/</link>
       <pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-09-01-bucket-list/</guid>
+      <guid>/post/2017-09-01-bucket-list/</guid>
       <description>Bucket ListMost people end up having a list of things they’d like to do in their life before they ‘kick the bucket’. Often this is made up of big events - a foreign trip, some daredevil adventure. But sometimes that list is a bunch of little things.
 RI’ve published a package on CRAN - readOffice - which was designed to enable the importing of text from modern Microsoft Word and PowerPoint files.</description>
       <content:encoded><div id="bucket-list" class="section level2">
@@ -949,10 +949,10 @@ RI’ve published a package on CRAN - readOffice - which was designed to enable
     
     <item>
       <title>purrr Tricks with All Subset Regression</title>
-      <link>http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/</link>
+      <link>/post/2017-08-24-purrr-tricks-with-all-subset-regression/</link>
       <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/</guid>
+      <guid>/post/2017-08-24-purrr-tricks-with-all-subset-regression/</guid>
       <description>All Subsets RegressionWhat is all subsets regression? It’s a technique for model building which involves taking a set of independent variables \(X_1..i\) and regressing them in sets of \(k\), where \(k\) is in \(\{1,2,\dots,i\}\), against the response variable \(Y\). The ‘all’ part of ‘all subsets’ means it’s every combination of \(X_{1..i}\) being drawn \(k\) at a time.
 But…why?You’re probably familiar with forward, backward or stepwise model building where terms are added (or removed) from a model one at a time while attempting to maximize or minimize some ‘goodness’ criteria.</description>
       <content:encoded><div id="all-subsets-regression" class="section level2">
@@ -1329,10 +1329,10 @@ coefs
     
     <item>
       <title>Automatic Twitter Updates</title>
-      <link>http://thug-r.life/post/2017-08-12-automatic-twitter-updates/</link>
+      <link>/post/2017-08-12-automatic-twitter-updates/</link>
       <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-12-automatic-twitter-updates/</guid>
+      <guid>/post/2017-08-12-automatic-twitter-updates/</guid>
       <description>Automatic Twitter UpdatesOne of my goals with this site is to have as much as possible to automatic. Because it’s a static site, each time I write a post I have to copy all the files (new and updated) to the hosting location so you, the illustrious reader, can enjoy the content I create. Then, I need to promote it. This involves the laborious process of switching to my pinned Chrome tab with Twitter open and writing a tweet remember to paste in a link.</description>
       <content:encoded><div id="automatic-twitter-updates" class="section level1">
 <h1>Automatic Twitter Updates</h1>
@@ -1410,10 +1410,10 @@ def lambda_handler(event, context):
     
     <item>
       <title>Legislate by Executive Order</title>
-      <link>http://thug-r.life/post/2017-08-10-legislate-by-executive-order/</link>
+      <link>/post/2017-08-10-legislate-by-executive-order/</link>
       <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-10-legislate-by-executive-order/</guid>
+      <guid>/post/2017-08-10-legislate-by-executive-order/</guid>
       <description>Executive Orders in the USAFrom Wikipedia:
 Executive orders are orders issued by United States Presidents and directed towards officers and agencies of the U.S. federal government. Executive orders have the full force of law, based on the authority derived from statute or the Constitution itself. The ability to make such orders is also based on express or implied Acts of Congress that delegate to the President some degree of discretionary power (delegated legislation).</description>
       <content:encoded><script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
@@ -1823,10 +1823,10 @@ print(sprintf(&quot;%d orders signed as of %d days in office!&quot;,ymax,ceiling
     
     <item>
       <title>Making this Blog</title>
-      <link>http://thug-r.life/post/2017-08-08-making-the-blog/</link>
+      <link>/post/2017-08-08-making-the-blog/</link>
       <pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-08-making-the-blog/</guid>
+      <guid>/post/2017-08-08-making-the-blog/</guid>
       <description>blogdown magicI made this blog using the magic of blogdown which is a framework that joins together a few technologies to make ‘static websites’
 RMarkdownHugoRMarkdownRMarkdown is an interface from R to markdown which is a way of marking up a text document with formating so other tools can convert it from a text file to a pretty format (PDF, Word, etc.) It’s a great way of documenting your code by having your narrative right next to the code that generated the insights/results.</description>
       <content:encoded><div id="blogdown-magic" class="section level1">
@@ -1881,10 +1881,10 @@ print(sprintf(&quot;%d orders signed as of %d days in office!&quot;,ymax,ceiling
     
     <item>
       <title>Theta Joins in R</title>
-      <link>http://thug-r.life/post/2017-08-06-fuzzy-joining/</link>
+      <link>/post/2017-08-06-fuzzy-joining/</link>
       <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-06-fuzzy-joining/</guid>
+      <guid>/post/2017-08-06-fuzzy-joining/</guid>
       <description>Theta JoinsCommon Joins
 If you’re like me, you’re looking at that diagram wondering what the heck is a ‘theta’ join?! Well, that’s the formal name for a ‘fuzzy’ join. In fact, you can read about all the different join types in this StackOverflow answer.
 An equi join is the most common kind of join because it leverages keys in your data source which are essential in a SQL environment.</description>
@@ -2352,10 +2352,10 @@ while(!stop){
     
     <item>
       <title>Installing Your First Spark Cluster</title>
-      <link>http://thug-r.life/post/2016-03-20-installing-your-first-spark-cluster/</link>
+      <link>/post/2016-03-20-installing-your-first-spark-cluster/</link>
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2016-03-20-installing-your-first-spark-cluster/</guid>
+      <guid>/post/2016-03-20-installing-your-first-spark-cluster/</guid>
       <description>Installing your first spark clusterSo, if you’re like me you’ve been using a lot of traditional tools for data science/analytics/whatever you want to call it. R is great, it’s flexible, it’s powerful but it’s slow and memory constrained. At work I’ve got a VM with 16Gb and one call can increase it. At home I’ve got an 8 Gb machine and honestly, it works fine for what I do here.</description>
       <content:encoded><div id="installing-your-first-spark-cluster" class="section level1">
 <h1>Installing your first spark cluster</h1>

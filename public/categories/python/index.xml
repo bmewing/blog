@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on Thug R Life</title>
-    <link>http://thug-r.life/categories/python/</link>
+    <link>/categories/python/</link>
     <description>Recent content in Python on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 12 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="http://thug-r.life/categories/python/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/categories/python/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Automatic Twitter Updates</title>
-      <link>http://thug-r.life/post/2017-08-12-automatic-twitter-updates/</link>
+      <link>/post/2017-08-12-automatic-twitter-updates/</link>
       <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://thug-r.life/post/2017-08-12-automatic-twitter-updates/</guid>
+      <guid>/post/2017-08-12-automatic-twitter-updates/</guid>
       <description>Automatic Twitter UpdatesOne of my goals with this site is to have as much as possible to automatic. Because it’s a static site, each time I write a post I have to copy all the files (new and updated) to the hosting location so you, the illustrious reader, can enjoy the content I create. Then, I need to promote it. This involves the laborious process of switching to my pinned Chrome tab with Twitter open and writing a tweet remember to paste in a link.</description>
       <content:encoded><div id="automatic-twitter-updates" class="section level1">
 <h1>Automatic Twitter Updates</h1>
