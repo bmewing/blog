@@ -45,7 +45,7 @@ ignoreFiles = ["\\.Rmarkdown$", "_files$", "_cache$"]
 [params.intro]
     header    = "Thug R Life"
 
-    paragraph = "Just a blog, by a guy trying to make a difference."
+    paragraph = "Just a blog, by a guy trying to make a difference.<br>Hopefully soon published on <a href='https://www.r-bloggers.com/'>R-bloggers</a>"
 
     about     = "I guess I'm starting this blog because I want to do more technical writing or something. Also, I've started publishing packages and so I need a platform to promote them on and starting a blog seems like a great way to get r-bloggers to publish my content. We'll see how it goes."
 
