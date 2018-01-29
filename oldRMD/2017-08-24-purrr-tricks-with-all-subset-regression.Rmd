@@ -3,8 +3,7 @@ title: "purrr Tricks with All Subset Regression"
 author: "Mark Ewing"
 description: "See how this one clickbaity purrr trick helped me solve an issue with all subsets regression!"
 date: 2017-08-24
-categories: ["R","Functional Programming"]
-tags: ["rstudio"]
+categories: ["r"]
 type: "post"
 ---
 
