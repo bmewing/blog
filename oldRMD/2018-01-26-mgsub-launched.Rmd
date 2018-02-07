@@ -281,4 +281,3 @@ tableHTML(final,border = 0,rownames=FALSE,escape=FALSE,collapse="collapse",
 ```
 
 I've shown that only `mgsub::mgsub` provides actual correct multiple, global string substitution from the 5 packages that have a function named `mgsub` in every possible scenario. While it is on the slower end of runtime, it's a small price to pay for safety.
-
