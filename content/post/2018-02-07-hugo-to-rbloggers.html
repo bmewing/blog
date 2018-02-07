@@ -1,0 +1,31 @@
+---
+title: "Prep Your Hugo Blog for R-bloggers"
+author: "Mark Ewing"
+date: '2018-02-07'
+description: "Configuration steps necessary to grow your audience through r-bloggers"
+categories: ["meta"]
+type: "post"
+---
+
+
+
+<div id="get-ready-for-r-bloggers" class="section level2">
+<h2>Get Ready for R-Bloggers</h2>
+<p>There are lots of reasons to write a technical blog. Getting practice writing, thinking through ideas, etc. are all fulfilling reasons on their own. But life is always better with an audience. Well, not always. But for a blog it is. <a href="https://www.r-bloggers.com">R-bloggers</a> is a great platform to find an audience and share your writing with the world.</p>
+<p>If you’re writing with Hugo via blogdown though, there’s a hurdle you’ll need to clear. R-bloggers requires that your RSS feed contain the complete content of a blog post and not just a preview. By default, Hugo only produces a preview.</p>
+<div class="figure">
+<img src="/img/2018-02-07-rbloggers.png" />
+
+</div>
+<p>So how do make Hugo do the full content RSS? Turns out, R-bloggers actually had a link right on the page, but I missed it. The good news is, it’s pretty easy. You’ll need to modify just one file. From your blog directory, navigate through <code>themes</code> &gt; whatever theme you’re using &gt; <code>layouts</code> and you’ll see a file called rss.xml. Go ahead and edit this.</p>
+<p>In this file you’re looking for the <code>&lt;item&gt;</code> section - this is where each RSS post is contained. Mine was lacking <code>&lt;content:encoded&gt;...</code> which I added below the description. I used safeHTML because I like safe things. Evrything else I left alone. When I rebuilt, the RSS feed included the full content of each post which is exactly what I was looking for.</p>
+<pre class="xml"><code>    &lt;item&gt;
+      &lt;title&gt;{{ .Title }}&lt;/title&gt;
+      &lt;link&gt;{{ .Permalink }}&lt;/link&gt;
+      &lt;pubDate&gt;{{ .Date.Format &quot;Mon, 02 Jan 2006 15:04:05 -0700&quot; | safeHTML }}&lt;/pubDate&gt;
+      {{ with .Site.Author.email }}&lt;author&gt;{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}&lt;/author&gt;{{end}}
+      &lt;guid&gt;{{ .Permalink }}&lt;/guid&gt;
+      &lt;description&gt;{{ .Summary | html }}&lt;/description&gt;
+      &lt;content:encoded&gt;{{ .Content | safeHTML }}&lt;/content:encoded&gt;
+    &lt;/item&gt;</code></pre>
+</div>

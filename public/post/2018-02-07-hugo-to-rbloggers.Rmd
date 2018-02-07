@@ -1,0 +1,36 @@
+---
+title: "Prep Your Hugo Blog for R-bloggers"
+author: "Mark Ewing"
+date: '2018-02-07'
+description: "Configuration steps necessary to grow your audience through r-bloggers"
+categories: ["meta"]
+type: "post"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+## Get Ready for R-Bloggers
+
+There are lots of reasons to write a technical blog. Getting practice writing, thinking through ideas, etc. are all fulfilling reasons on their own. But life is always better with an audience. Well, not always. But for a blog it is.  [R-bloggers](https://www.r-bloggers.com) is a great platform to find an audience and share your writing with the world.
+
+If you're writing with Hugo via blogdown though, there's a hurdle you'll need to clear.  R-bloggers requires that your RSS feed contain the complete content of a blog post and not just a preview. By default, Hugo only produces a preview.
+
+![](/img/2018-02-07-rbloggers.png){}
+
+So how do make Hugo do the full content RSS? Turns out, R-bloggers actually had a link right on the page, but I missed it.  The good news is, it's pretty easy.  You'll need to modify just one file.  From your blog directory, navigate through `themes` > whatever theme you're using > `layouts` and you'll see a file called rss.xml.  Go ahead and edit this.
+
+In this file you're looking for the `<item>` section - this is where each RSS post is contained.  Mine was lacking `<content:encoded>...` which I added below the description. I used safeHTML because I like safe things. Evrything else I left alone.  When I rebuilt, the RSS feed included the full content of each post which is exactly what I was looking for.
+
+```{xml}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{ with .Site.Author.email }}<author>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</author>{{end}}
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ .Summary | html }}</description>
+      <content:encoded>{{ .Content | safeHTML }}</content:encoded>
+    </item>
+```
