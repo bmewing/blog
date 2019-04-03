@@ -1,0 +1,149 @@
+---
+title: "A Tale of Three Assignment Operators"
+author: "Mark Ewing"
+date: '2019-04-03'
+description: "A tale of the oddities and quirks of assigning values to variables in different environments"
+categories: ["r"]
+type: "post"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+## The Players
+
+First, let's meet the players.
+
+* `<-` The classic R assignment operator. It's been around [since the beginning](https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html) ostensibly because there was actually a key for it back then.
+* `=` The assignment operator used by nearly every other programming language in the world
+* `<<-` The deep assignment operator, it exists only to commit sedition. And assign values to variables in other environments.
+* `->` and `->>` The weird cousin that nobody likes to sit next to at family reunions. It's the same thing as `<-` and `<<-` respectively, but it assigns the opposite direction...we'll pretend like it doesn't exist going forward.
+
+## Environments in R
+
+[Environments in R](http://adv-r.had.co.nz/Environments.html) can be a little tricky to wrap your head around intially, but once you've got it, you can leverage that power for good or ill. I'd suggest reading the chapter from Advanced-R (linked earlier) to learn more.
+
+Every R session has multiple environments which are organized in a search path. Whenever you use a variable or call a function in R, it begins by looking in the current environment. If it finds what you need, it stops and returns it. If it doesn't find what you need, it looks through the search path starting with the parent of the current environment and then the grandparent, etc.
+
+```{r}
+search()
+```
+
+When you load a library in R, the library's environment is inserted just after `globalenv()` (`.GlobalEnv` as noted above). Note below how I load the `Matrix` library and it enters the search path at postion #2.
+
+```{r}
+library(Matrix)
+search()
+```
+
+When we do basic assignment in the terminal in R, a variable is created (or changed) in the `globalenv()`.
+
+```{r}
+x = 'equals assign'
+y <- 'arrow assign'
+z <<- 'deep assign'
+```
+
+We can fetch those values directly out of `globalenv()` using the `$`. Note that when I request a variable that hasn't been created, it returns NULL.
+
+```{r}
+cat("x:",globalenv()$x,"\n")
+cat("y:",globalenv()$y,"\n")
+cat("z:",globalenv()$z,"\n")
+cat("not_assigned:",globalenv()$not_assigned,"\n")
+```
+
+When we create a function, the code block that makes up the function has it's own environment. In this function here, I define two inputs, `x`, `y`. These variable names are different from the variables we already defined in our global environment. So when we assign these values in the function call, they are earlier in the search path so they're the value that's used. however, they don't modify the values in `globalenv()` which we can see below. We can also create new variables inside the function which don't exist in `globalenv()` meaning we can't reference those values. Finally, note that we can refernce the variable `z` that we created in the global environment inside the function. While the variable `z` doesn't exist in the function's environment, R looks through the search path and finds it in `globalenv()` and uses that value.
+
+```{r}
+demo = function(x, y){
+  to_print = "%s: %s\n"
+  a = "apple"
+  cat(sprintf(to_print,"a",a))
+  cat(sprintf(to_print,"x",x))
+  cat(sprintf(to_print,"y",y))
+  cat(sprintf(to_print,"z",z))
+}
+demo(x = "arrow assign", y = "equals assign")
+```
+
+```{r}
+cat("From globalenv():\n")
+cat(c("x:", globalenv()$x), "\n")
+cat(c("y:", globalenv()$y), "\n")
+cat(c("a:", globalenv()$a), "\n")
+```
+
+## Player Behavior
+
+We saw earlier that we can use all three of the assignment operators to create new values in the current environment. What are the differences? When should one be used over the other?
+
+### Sedition
+
+I jokingly indicated that the `<<-` operator exists only for sedition. This is because `<<-` doesn't necessarily assign a value to a variable in the current environment, it can modify environments later in the search path. Consider the following example. A simple function `sedition` takes one argument and uses `<<-` to assign it to `x` which at the time of the assignment doesn't already exist in the function's environment. We then print out the value of `x` and then try to print out the local environment's version of `x`.
+
+```{r}
+x = "equals assign"
+sedition = function(new_val){
+  x = "hi there!"
+  x <<- new_val
+  cat("internal:", x, "\n")
+}
+cat(c("x:", x, "\n"))
+sedition("all your base")
+cat(c("x:", x, "\n"))
+```
+
+What's happened here? R started looking through the search path, *starting with the parent environment* and found where we'd already assigned a value to `x` in `globalenv()` and replaced the assignment with `new_val`. When we printed it out though, R found the value assigned to `x` from the function's environment and returned that value. So the `<<-` has modified an environment *outside* the environment where it was used. **But wait!** When we used `<<-` in the global environment, it was assigned in the global environment, right? If R can't find a variable with a value already assigned to it in the search path, it will create a new one in global and assign it there.
+
+```{r}
+dummy_func = function(value){
+  dummy_var <<- value
+}
+cat(c("dummy_var:", globalenv()$dummy_var, "\n"))
+dummy_func("dummy value")
+cat(c("dummy_var:", dummy_var, "\n"))
+```
+
+#### When would this be useful?
+
+The main reason why `<<-` gets used is when you have a function and you want to create **side effects**, that is, have your function do things that affect the world around it beyond the value it returns. Side effects are generally considered bad, but I don't judge your life choices.
+
+### Assigning values to function arguments
+
+While lots of people argue about `<-` vs `=` for assigning values to variables, you've probably never seen someone call a function and assign values to the arguments of the function with anything other than `=`. In fact, *some people* argue that reserving `<-` for variable assignment and `=` for argument assignment results in, and these are big air quotes, "cleaner code". But, did you know that using `<-` actually results in a sometimes useful side effect?
+
+```{r}
+dummy_func = function(arg){
+  cat(arg, "\n")
+}
+
+cat("arg:", globalenv()$arg, "\n")
+dummy_func(arg = "nothing ever changes...")
+cat("arg:", globalenv()$arg, "\n")
+dummy_func(arg <- "new values incoming!")
+cat("arg:", globalenv()$arg, "\n")
+```
+
+When this code block starts to run, no value is attached to `arg`. When I call my dummy function and pass in the argument name of `arg` and use an `=` to assign a value to it, the right text is printed, but my environment is unaffected. However, when I pass in the named argument of `arg` and use `<-` to assign it, now it's popped into my environment!
+
+#### When would this be useful?
+
+[Code golf](https://codegolf.stackexchange.com/). It's where I learned about this trick.
+
+More useful though is to create psuedo-integration tests with `testthat`. The `testthat` package is great for unit tests, but what if you want to make sure the output of one function feeds correctly into another function? What if your function output has several characteristics you want to check but you don't want to have to run the function repeatedly?
+
+```{r, eval=FALSE}
+testthat::test_that("Integration Test",{
+  testthat::expect_type(tmp <- function1(), "list")
+  testthat::expect_length(tmp, 4)
+  testthat::expect_type(function2(tmp), "data.frame")
+})
+```
+
+Because `testthat::expect_*` is a function call, anything you pass in as an argument is only availble for that function call. Using `<-` for argument assignment (and leveraging the way R handles named arguments, argument order and `...`) can save the results into the testing environment for use in other checks.
+
+## Conclusion
+
+I'm an avid `=` assigner because it keeps me consistent across the different languages I use. Also, `<-` is too many keystrokes. I even figured out how to get `lintr` to make `=` the default and complain about `<-` in some of my projects. That being said, knowing the tricks of using the different operators empowers you to do things that might otherwise be impossible or at least take even more keystrokes than `<-`.

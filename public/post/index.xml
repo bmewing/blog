@@ -2,21 +2,160 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Thug R Life</title>
-    <link>/post/</link>
+    <link>http://thug-r.life/post/</link>
     <description>Recent content in Posts on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 07 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Apr 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://thug-r.life/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>A Tale of Three Assignment Operators</title>
+      <link>http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/</link>
+      <pubDate>Wed, 03 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/</guid>
+      <description>The PlayersFirst, let’s meet the players.
+&amp;lt;- The classic R assignment operator. It’s been around since the beginning ostensibly because there was actually a key for it back then.= The assignment operator used by nearly every other programming language in the world&amp;lt;&amp;lt;- The deep assignment operator, it exists only to commit sedition. And assign values to variables in other environments.-&amp;gt; and -&amp;gt;&amp;gt; The weird cousin that nobody likes to sit next to at family reunions.</description>
+      <content:encoded><div id="the-players" class="section level2">
+<h2>The Players</h2>
+<p>First, let’s meet the players.</p>
+<ul>
+<li><code>&lt;-</code> The classic R assignment operator. It’s been around <a href="https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html">since the beginning</a> ostensibly because there was actually a key for it back then.</li>
+<li><code>=</code> The assignment operator used by nearly every other programming language in the world</li>
+<li><code>&lt;&lt;-</code> The deep assignment operator, it exists only to commit sedition. And assign values to variables in other environments.</li>
+<li><code>-&gt;</code> and <code>-&gt;&gt;</code> The weird cousin that nobody likes to sit next to at family reunions. It’s the same thing as <code>&lt;-</code> and <code>&lt;&lt;-</code> respectively, but it assigns the opposite direction…we’ll pretend like it doesn’t exist going forward.</li>
+</ul>
+</div>
+<div id="environments-in-r" class="section level2">
+<h2>Environments in R</h2>
+<p><a href="http://adv-r.had.co.nz/Environments.html">Environments in R</a> can be a little tricky to wrap your head around intially, but once you’ve got it, you can leverage that power for good or ill. I’d suggest reading the chapter from Advanced-R (linked earlier) to learn more.</p>
+<p>Every R session has multiple environments which are organized in a search path. Whenever you use a variable or call a function in R, it begins by looking in the current environment. If it finds what you need, it stops and returns it. If it doesn’t find what you need, it looks through the search path starting with the parent of the current environment and then the grandparent, etc.</p>
+<pre class="r"><code>search()
+## [1] &quot;.GlobalEnv&quot;        &quot;package:stats&quot;     &quot;package:graphics&quot; 
+## [4] &quot;package:grDevices&quot; &quot;package:utils&quot;     &quot;package:datasets&quot; 
+## [7] &quot;package:methods&quot;   &quot;Autoloads&quot;         &quot;package:base&quot;</code></pre>
+<p>When you load a library in R, the library’s environment is inserted just after <code>globalenv()</code> (<code>.GlobalEnv</code> as noted above). Note below how I load the <code>Matrix</code> library and it enters the search path at postion #2.</p>
+<pre class="r"><code>library(Matrix)
+search()
+##  [1] &quot;.GlobalEnv&quot;        &quot;package:Matrix&quot;    &quot;package:stats&quot;    
+##  [4] &quot;package:graphics&quot;  &quot;package:grDevices&quot; &quot;package:utils&quot;    
+##  [7] &quot;package:datasets&quot;  &quot;package:methods&quot;   &quot;Autoloads&quot;        
+## [10] &quot;package:base&quot;</code></pre>
+<p>When we do basic assignment in the terminal in R, a variable is created (or changed) in the <code>globalenv()</code>.</p>
+<pre class="r"><code>x = &#39;equals assign&#39;
+y &lt;- &#39;arrow assign&#39;
+z &lt;&lt;- &#39;deep assign&#39;</code></pre>
+<p>We can fetch those values directly out of <code>globalenv()</code> using the <code>$</code>. Note that when I request a variable that hasn’t been created, it returns NULL.</p>
+<pre class="r"><code>cat(&quot;x:&quot;,globalenv()$x,&quot;\n&quot;)
+## x: equals assign
+cat(&quot;y:&quot;,globalenv()$y,&quot;\n&quot;)
+## y: arrow assign
+cat(&quot;z:&quot;,globalenv()$z,&quot;\n&quot;)
+## z: deep assign
+cat(&quot;not_assigned:&quot;,globalenv()$not_assigned,&quot;\n&quot;)
+## not_assigned:</code></pre>
+<p>When we create a function, the code block that makes up the function has it’s own environment. In this function here, I define two inputs, <code>x</code>, <code>y</code>. These variable names are different from the variables we already defined in our global environment. So when we assign these values in the function call, they are earlier in the search path so they’re the value that’s used. however, they don’t modify the values in <code>globalenv()</code> which we can see below. We can also create new variables inside the function which don’t exist in <code>globalenv()</code> meaning we can’t reference those values. Finally, note that we can refernce the variable <code>z</code> that we created in the global environment inside the function. While the variable <code>z</code> doesn’t exist in the function’s environment, R looks through the search path and finds it in <code>globalenv()</code> and uses that value.</p>
+<pre class="r"><code>demo = function(x, y){
+  to_print = &quot;%s: %s\n&quot;
+  a = &quot;apple&quot;
+  cat(sprintf(to_print,&quot;a&quot;,a))
+  cat(sprintf(to_print,&quot;x&quot;,x))
+  cat(sprintf(to_print,&quot;y&quot;,y))
+  cat(sprintf(to_print,&quot;z&quot;,z))
+}
+demo(x = &quot;arrow assign&quot;, y = &quot;equals assign&quot;)
+## a: apple
+## x: arrow assign
+## y: equals assign
+## z: deep assign</code></pre>
+<pre class="r"><code>cat(&quot;From globalenv():\n&quot;)
+## From globalenv():
+cat(c(&quot;x:&quot;, globalenv()$x), &quot;\n&quot;)
+## x: equals assign
+cat(c(&quot;y:&quot;, globalenv()$y), &quot;\n&quot;)
+## y: arrow assign
+cat(c(&quot;a:&quot;, globalenv()$a), &quot;\n&quot;)
+## a:</code></pre>
+</div>
+<div id="player-behavior" class="section level2">
+<h2>Player Behavior</h2>
+<p>We saw earlier that we can use all three of the assignment operators to create new values in the current environment. What are the differences? When should one be used over the other?</p>
+<div id="sedition" class="section level3">
+<h3>Sedition</h3>
+<p>I jokingly indicated that the <code>&lt;&lt;-</code> operator exists only for sedition. This is because <code>&lt;&lt;-</code> doesn’t necessarily assign a value to a variable in the current environment, it can modify environments later in the search path. Consider the following example. A simple function <code>sedition</code> takes one argument and uses <code>&lt;&lt;-</code> to assign it to <code>x</code> which at the time of the assignment doesn’t already exist in the function’s environment. We then print out the value of <code>x</code> and then try to print out the local environment’s version of <code>x</code>.</p>
+<pre class="r"><code>x = &quot;equals assign&quot;
+sedition = function(new_val){
+  x = &quot;hi there!&quot;
+  x &lt;&lt;- new_val
+  cat(&quot;internal:&quot;, x, &quot;\n&quot;)
+}
+cat(c(&quot;x:&quot;, x, &quot;\n&quot;))
+## x: equals assign
+sedition(&quot;all your base&quot;)
+## internal: hi there!
+cat(c(&quot;x:&quot;, x, &quot;\n&quot;))
+## x: all your base</code></pre>
+<p>What’s happened here? R started looking through the search path, <em>starting with the parent environment</em> and found where we’d already assigned a value to <code>x</code> in <code>globalenv()</code> and replaced the assignment with <code>new_val</code>. When we printed it out though, R found the value assigned to <code>x</code> from the function’s environment and returned that value. So the <code>&lt;&lt;-</code> has modified an environment <em>outside</em> the environment where it was used. <strong>But wait!</strong> When we used <code>&lt;&lt;-</code> in the global environment, it was assigned in the global environment, right? If R can’t find a variable with a value already assigned to it in the search path, it will create a new one in global and assign it there.</p>
+<pre class="r"><code>dummy_func = function(value){
+  dummy_var &lt;&lt;- value
+}
+cat(c(&quot;dummy_var:&quot;, globalenv()$dummy_var, &quot;\n&quot;))
+## dummy_var:
+dummy_func(&quot;dummy value&quot;)
+cat(c(&quot;dummy_var:&quot;, dummy_var, &quot;\n&quot;))
+## dummy_var: dummy value</code></pre>
+<div id="when-would-this-be-useful" class="section level4">
+<h4>When would this be useful?</h4>
+<p>The main reason why <code>&lt;&lt;-</code> gets used is when you have a function and you want to create <strong>side effects</strong>, that is, have your function do things that affect the world around it beyond the value it returns. Side effects are generally considered bad, but I don’t judge your life choices.</p>
+</div>
+</div>
+<div id="assigning-values-to-function-arguments" class="section level3">
+<h3>Assigning values to function arguments</h3>
+<p>While lots of people argue about <code>&lt;-</code> vs <code>=</code> for assigning values to variables, you’ve probably never seen someone call a function and assign values to the arguments of the function with anything other than <code>=</code>. In fact, <em>some people</em> argue that reserving <code>&lt;-</code> for variable assignment and <code>=</code> for argument assignment results in, and these are big air quotes, “cleaner code”. But, did you know that using <code>&lt;-</code> actually results in a sometimes useful side effect?</p>
+<pre class="r"><code>dummy_func = function(arg){
+  cat(arg, &quot;\n&quot;)
+}
+
+cat(&quot;arg:&quot;, globalenv()$arg, &quot;\n&quot;)
+## arg:
+dummy_func(arg = &quot;nothing ever changes...&quot;)
+## nothing ever changes...
+cat(&quot;arg:&quot;, globalenv()$arg, &quot;\n&quot;)
+## arg:
+dummy_func(arg &lt;- &quot;new values incoming!&quot;)
+## new values incoming!
+cat(&quot;arg:&quot;, globalenv()$arg, &quot;\n&quot;)
+## arg: new values incoming!</code></pre>
+<p>When this code block starts to run, no value is attached to <code>arg</code>. When I call my dummy function and pass in the argument name of <code>arg</code> and use an <code>=</code> to assign a value to it, the right text is printed, but my environment is unaffected. However, when I pass in the named argument of <code>arg</code> and use <code>&lt;-</code> to assign it, now it’s popped into my environment!</p>
+<div id="when-would-this-be-useful-1" class="section level4">
+<h4>When would this be useful?</h4>
+<p><a href="https://codegolf.stackexchange.com/">Code golf</a>. It’s where I learned about this trick.</p>
+<p>More useful though is to create psuedo-integration tests with <code>testthat</code>. The <code>testthat</code> package is great for unit tests, but what if you want to make sure the output of one function feeds correctly into another function? What if your function output has several characteristics you want to check but you don’t want to have to run the function repeatedly?</p>
+<pre class="r"><code>testthat::test_that(&quot;Integration Test&quot;,{
+  testthat::expect_type(tmp &lt;- function1(), &quot;list&quot;)
+  testthat::expect_length(tmp, 4)
+  testthat::expect_type(function2(tmp), &quot;data.frame&quot;)
+})</code></pre>
+<p>Because <code>testthat::expect_*</code> is a function call, anything you pass in as an argument is only availble for that function call. Using <code>&lt;-</code> for argument assignment (and leveraging the way R handles named arguments, argument order and <code>...</code>) can save the results into the testing environment for use in other checks.</p>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>I’m an avid <code>=</code> assigner because it keeps me consistent across the different languages I use. Also, <code>&lt;-</code> is too many keystrokes. I even figured out how to get <code>lintr</code> to make <code>=</code> the default and complain about <code>&lt;-</code> in some of my projects. That being said, knowing the tricks of using the different operators empowers you to do things that might otherwise be impossible or at least take even more keystrokes than <code>&lt;-</code>.</p>
+</div>
+</content:encoded>
+    </item>
+    
+    <item>
       <title>Prep Your Hugo Blog for R-bloggers</title>
-      <link>/post/2018-02-07-hugo-to-rbloggers/</link>
+      <link>http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/</link>
       <pubDate>Wed, 07 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2018-02-07-hugo-to-rbloggers/</guid>
+      <guid>http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/</guid>
       <description>Get Ready for R-BloggersThere are lots of reasons to write a technical blog. Getting practice writing, thinking through ideas, etc. are all fulfilling reasons on their own. But life is always better with an audience. Well, not always. But for a blog it is. R-bloggers is a great platform to find an audience and share your writing with the world.
 If you’re writing with Hugo via blogdown though, there’s a hurdle you’ll need to clear.</description>
       <content:encoded><div id="get-ready-for-r-bloggers" class="section level2">
@@ -44,10 +183,10 @@ If you’re writing with Hugo via blogdown though, there’s a hurdle you’ll n
     
     <item>
       <title>mgsub v1.0 Launched to CRAN</title>
-      <link>/post/2018-01-26-mgsub-launched/</link>
+      <link>http://thug-r.life/post/2018-01-26-mgsub-launched/</link>
       <pubDate>Fri, 26 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2018-01-26-mgsub-launched/</guid>
+      <guid>http://thug-r.life/post/2018-01-26-mgsub-launched/</guid>
       <description>Official CRAN LaunchEarlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette.</description>
       <content:encoded><div id="official-cran-launch" class="section level2">
 <h2>Official CRAN Launch</h2>
@@ -578,10 +717,10 @@ rmb = print(rmb)
     
     <item>
       <title>One Year of Trump Executive Orders</title>
-      <link>/post/2018-01-25-one-year-of-trump-eo/</link>
+      <link>http://thug-r.life/post/2018-01-25-one-year-of-trump-eo/</link>
       <pubDate>Thu, 25 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2018-01-25-one-year-of-trump-eo/</guid>
+      <guid>http://thug-r.life/post/2018-01-25-one-year-of-trump-eo/</guid>
       <description>First YearLess than a week ago marked the end of Trump’s first year in office. Back in August I posted code on analyzing the issuing of Executive Orders. Today I’m just going to provide updated commentary.
 NotesThe Federal Register takes time to actually publish Executive Orders. This window is variable but has a median value of 5 days. That’s why this post is coming out on the 25th instead of the 20th.</description>
       <content:encoded><script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
@@ -644,10 +783,10 @@ NotesThe Federal Register takes time to actually publish Executive Orders. This
     
     <item>
       <title>Safe, Multiple String Substitutions with mgsub::mgsub</title>
-      <link>/post/2018-01-10-safe-multiple-string-substitutions/</link>
+      <link>http://thug-r.life/post/2018-01-10-safe-multiple-string-substitutions/</link>
       <pubDate>Wed, 10 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2018-01-10-safe-multiple-string-substitutions/</guid>
+      <guid>http://thug-r.life/post/2018-01-10-safe-multiple-string-substitutions/</guid>
       <description>String substitutionsNote - the package I wrote was originally inspired by a challenge a coworker tossed out. It also happened to provide a solution to this SO question which was really cool!
 Substitutions in strings are best handled with regular expressions which are an amazingly powerful and flexible tool. Regular expressions are a way of expressing patterns in strings. In the example below I want to find the four letters, “dopa” and replace them with “meta”.</description>
       <content:encoded><div id="string-substitutions" class="section level2">
@@ -746,10 +885,10 @@ Substitutions in strings are best handled with regular expressions which are an 
     
     <item>
       <title>How many random numbers does it take?</title>
-      <link>/post/2017-10-30-how-many-random-numbers-does-it-take/</link>
+      <link>http://thug-r.life/post/2017-10-30-how-many-random-numbers-does-it-take/</link>
       <pubDate>Mon, 30 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-10-30-how-many-random-numbers-does-it-take/</guid>
+      <guid>http://thug-r.life/post/2017-10-30-how-many-random-numbers-does-it-take/</guid>
       <description>Fermat and his libraryThis morning I woke up to a delightful tweet from fermatslibrary about sample random uniform numbers and how many it takes, on average, to sum to 1.
 Pick a uniformly random number in [0,1] and repeat until the sum of the numbers picked is &amp;gt;1. You&#39;ll on average pick e≈2.718… numbers! pic.twitter.com/8ak1hYENCi— Fermat&#39;s Library (@fermatslibrary) October 28, 2017If you look at the embedded picture, you can see the math sketched out but of course it’s alwasy more fun to simulate.</description>
       <content:encoded><div id="fermat-and-his-library" class="section level2">
@@ -832,10 +971,10 @@ abline(h=exp(1),col=&#39;red&#39;)</code></pre>
     
     <item>
       <title>The Value of Learning the Basics</title>
-      <link>/post/2017-10-18-the-value-of-learning-the-basics/</link>
+      <link>http://thug-r.life/post/2017-10-18-the-value-of-learning-the-basics/</link>
       <pubDate>Wed, 18 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-10-18-the-value-of-learning-the-basics/</guid>
+      <guid>http://thug-r.life/post/2017-10-18-the-value-of-learning-the-basics/</guid>
       <description>Learning the hard wayAbout a month ago David Robinson made a tweet that I both agree and disagree with.
 New blog post: “Don&#39;t teach students the hard way first” https://t.co/X2drh1tQe5 #rstats pic.twitter.com/GXAEpx5eET— David Robinson (@drob) September 21, 2017His example is simple enough - you’re going to a friends new house and are provided with directions involving a lot of back roads, twisting and turning. When you arrive you’re told to just take the highway back because it’s easier.</description>
       <content:encoded><div id="learning-the-hard-way" class="section level2">
@@ -874,10 +1013,10 @@ New blog post: “Don't teach students the hard way first” <a href="https://t.
     
     <item>
       <title>Fun Math Problems</title>
-      <link>/post/2017-10-02-fun-math-problems/</link>
+      <link>http://thug-r.life/post/2017-10-02-fun-math-problems/</link>
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-10-02-fun-math-problems/</guid>
+      <guid>http://thug-r.life/post/2017-10-02-fun-math-problems/</guid>
       <description>Meme Me Up, Scotty!Every now and then on Twitter or Facebook there’s a math problem posted which challenges users to get the right answer. They’re almost always based on order of operations and the reason most people get them wrong is because they don’t remember that elementary rule. It’s hard to blame most people since a lot of math that’s used day to day doesn’t require order of operations.</description>
       <content:encoded><div id="meme-me-up-scotty" class="section level2">
 <h2>Meme Me Up, Scotty!</h2>
@@ -917,10 +1056,10 @@ You will either be really angry or lol <a href="https://t.co/yLECGwpXdQ">pic.twi
     
     <item>
       <title>Bucket List</title>
-      <link>/post/2017-09-01-bucket-list/</link>
+      <link>http://thug-r.life/post/2017-09-01-bucket-list/</link>
       <pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-09-01-bucket-list/</guid>
+      <guid>http://thug-r.life/post/2017-09-01-bucket-list/</guid>
       <description>Bucket ListMost people end up having a list of things they’d like to do in their life before they ‘kick the bucket’. Often this is made up of big events - a foreign trip, some daredevil adventure. But sometimes that list is a bunch of little things.
 RI’ve published a package on CRAN - readOffice - which was designed to enable the importing of text from modern Microsoft Word and PowerPoint files.</description>
       <content:encoded><div id="bucket-list" class="section level2">
@@ -980,10 +1119,10 @@ RI’ve published a package on CRAN - readOffice - which was designed to enable
     
     <item>
       <title>purrr Tricks with All Subset Regression</title>
-      <link>/post/2017-08-24-purrr-tricks-with-all-subset-regression/</link>
+      <link>http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/</link>
       <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-08-24-purrr-tricks-with-all-subset-regression/</guid>
+      <guid>http://thug-r.life/post/2017-08-24-purrr-tricks-with-all-subset-regression/</guid>
       <description>All Subsets RegressionWhat is all subsets regression? It’s a technique for model building which involves taking a set of independent variables \(X_1..i\) and regressing them in sets of \(k\), where \(k\) is in \(\{1,2,\dots,i\}\), against the response variable \(Y\). The ‘all’ part of ‘all subsets’ means it’s every combination of \(X_{1..i}\) being drawn \(k\) at a time.
 But…why?You’re probably familiar with forward, backward or stepwise model building where terms are added (or removed) from a model one at a time while attempting to maximize or minimize some ‘goodness’ criteria.</description>
       <content:encoded><div id="all-subsets-regression" class="section level2">
@@ -1360,10 +1499,10 @@ coefs
     
     <item>
       <title>Automatic Twitter Updates</title>
-      <link>/post/2017-08-12-automatic-twitter-updates/</link>
+      <link>http://thug-r.life/post/2017-08-12-automatic-twitter-updates/</link>
       <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-08-12-automatic-twitter-updates/</guid>
+      <guid>http://thug-r.life/post/2017-08-12-automatic-twitter-updates/</guid>
       <description>Automatic Twitter UpdatesOne of my goals with this site is to have as much as possible to automatic. Because it’s a static site, each time I write a post I have to copy all the files (new and updated) to the hosting location so you, the illustrious reader, can enjoy the content I create. Then, I need to promote it. This involves the laborious process of switching to my pinned Chrome tab with Twitter open and writing a tweet remember to paste in a link.</description>
       <content:encoded><div id="automatic-twitter-updates" class="section level1">
 <h1>Automatic Twitter Updates</h1>
@@ -1441,10 +1580,10 @@ def lambda_handler(event, context):
     
     <item>
       <title>Legislate by Executive Order</title>
-      <link>/post/2017-08-10-legislate-by-executive-order/</link>
+      <link>http://thug-r.life/post/2017-08-10-legislate-by-executive-order/</link>
       <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-08-10-legislate-by-executive-order/</guid>
+      <guid>http://thug-r.life/post/2017-08-10-legislate-by-executive-order/</guid>
       <description>Executive Orders in the USAFrom Wikipedia:
 Executive orders are orders issued by United States Presidents and directed towards officers and agencies of the U.S. federal government. Executive orders have the full force of law, based on the authority derived from statute or the Constitution itself. The ability to make such orders is also based on express or implied Acts of Congress that delegate to the President some degree of discretionary power (delegated legislation).</description>
       <content:encoded><script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
@@ -1854,10 +1993,10 @@ print(sprintf(&quot;%d orders signed as of %d days in office!&quot;,ymax,ceiling
     
     <item>
       <title>Making this Blog</title>
-      <link>/post/2017-08-08-making-the-blog/</link>
+      <link>http://thug-r.life/post/2017-08-08-making-the-blog/</link>
       <pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-08-08-making-the-blog/</guid>
+      <guid>http://thug-r.life/post/2017-08-08-making-the-blog/</guid>
       <description>blogdown magicI made this blog using the magic of blogdown which is a framework that joins together a few technologies to make ‘static websites’
 RMarkdownHugoRMarkdownRMarkdown is an interface from R to markdown which is a way of marking up a text document with formating so other tools can convert it from a text file to a pretty format (PDF, Word, etc.) It’s a great way of documenting your code by having your narrative right next to the code that generated the insights/results.</description>
       <content:encoded><div id="blogdown-magic" class="section level1">
@@ -1912,10 +2051,10 @@ print(sprintf(&quot;%d orders signed as of %d days in office!&quot;,ymax,ceiling
     
     <item>
       <title>Theta Joins in R</title>
-      <link>/post/2017-08-06-fuzzy-joining/</link>
+      <link>http://thug-r.life/post/2017-08-06-fuzzy-joining/</link>
       <pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-08-06-fuzzy-joining/</guid>
+      <guid>http://thug-r.life/post/2017-08-06-fuzzy-joining/</guid>
       <description>Theta JoinsCommon Joins
 If you’re like me, you’re looking at that diagram wondering what the heck is a ‘theta’ join?! Well, that’s the formal name for a ‘fuzzy’ join. In fact, you can read about all the different join types in this StackOverflow answer.
 An equi join is the most common kind of join because it leverages keys in your data source which are essential in a SQL environment.</description>
@@ -2383,10 +2522,10 @@ while(!stop){
     
     <item>
       <title>Installing Your First Spark Cluster</title>
-      <link>/post/2016-03-20-installing-your-first-spark-cluster/</link>
+      <link>http://thug-r.life/post/2016-03-20-installing-your-first-spark-cluster/</link>
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>/post/2016-03-20-installing-your-first-spark-cluster/</guid>
+      <guid>http://thug-r.life/post/2016-03-20-installing-your-first-spark-cluster/</guid>
       <description>Installing your first spark clusterSo, if you’re like me you’ve been using a lot of traditional tools for data science/analytics/whatever you want to call it. R is great, it’s flexible, it’s powerful but it’s slow and memory constrained. At work I’ve got a VM with 16Gb and one call can increase it. At home I’ve got an 8 Gb machine and honestly, it works fine for what I do here.</description>
       <content:encoded><div id="installing-your-first-spark-cluster" class="section level1">
 <h1>Installing your first spark cluster</h1>

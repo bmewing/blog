@@ -1,0 +1,139 @@
+---
+title: "A Tale of Three Assignment Operators"
+author: "Mark Ewing"
+date: '2019-04-03'
+description: "A tale of the oddities and quirks of assigning values to variables in different environments"
+categories: ["r"]
+type: "post"
+---
+
+
+
+<div id="the-players" class="section level2">
+<h2>The Players</h2>
+<p>First, let’s meet the players.</p>
+<ul>
+<li><code>&lt;-</code> The classic R assignment operator. It’s been around <a href="https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html">since the beginning</a> ostensibly because there was actually a key for it back then.</li>
+<li><code>=</code> The assignment operator used by nearly every other programming language in the world</li>
+<li><code>&lt;&lt;-</code> The deep assignment operator, it exists only to commit sedition. And assign values to variables in other environments.</li>
+<li><code>-&gt;</code> and <code>-&gt;&gt;</code> The weird cousin that nobody likes to sit next to at family reunions. It’s the same thing as <code>&lt;-</code> and <code>&lt;&lt;-</code> respectively, but it assigns the opposite direction…we’ll pretend like it doesn’t exist going forward.</li>
+</ul>
+</div>
+<div id="environments-in-r" class="section level2">
+<h2>Environments in R</h2>
+<p><a href="http://adv-r.had.co.nz/Environments.html">Environments in R</a> can be a little tricky to wrap your head around intially, but once you’ve got it, you can leverage that power for good or ill. I’d suggest reading the chapter from Advanced-R (linked earlier) to learn more.</p>
+<p>Every R session has multiple environments which are organized in a search path. Whenever you use a variable or call a function in R, it begins by looking in the current environment. If it finds what you need, it stops and returns it. If it doesn’t find what you need, it looks through the search path starting with the parent of the current environment and then the grandparent, etc.</p>
+<pre class="r"><code>search()
+## [1] &quot;.GlobalEnv&quot;        &quot;package:stats&quot;     &quot;package:graphics&quot; 
+## [4] &quot;package:grDevices&quot; &quot;package:utils&quot;     &quot;package:datasets&quot; 
+## [7] &quot;package:methods&quot;   &quot;Autoloads&quot;         &quot;package:base&quot;</code></pre>
+<p>When you load a library in R, the library’s environment is inserted just after <code>globalenv()</code> (<code>.GlobalEnv</code> as noted above). Note below how I load the <code>Matrix</code> library and it enters the search path at postion #2.</p>
+<pre class="r"><code>library(Matrix)
+search()
+##  [1] &quot;.GlobalEnv&quot;        &quot;package:Matrix&quot;    &quot;package:stats&quot;    
+##  [4] &quot;package:graphics&quot;  &quot;package:grDevices&quot; &quot;package:utils&quot;    
+##  [7] &quot;package:datasets&quot;  &quot;package:methods&quot;   &quot;Autoloads&quot;        
+## [10] &quot;package:base&quot;</code></pre>
+<p>When we do basic assignment in the terminal in R, a variable is created (or changed) in the <code>globalenv()</code>.</p>
+<pre class="r"><code>x = &#39;equals assign&#39;
+y &lt;- &#39;arrow assign&#39;
+z &lt;&lt;- &#39;deep assign&#39;</code></pre>
+<p>We can fetch those values directly out of <code>globalenv()</code> using the <code>$</code>. Note that when I request a variable that hasn’t been created, it returns NULL.</p>
+<pre class="r"><code>cat(&quot;x:&quot;,globalenv()$x,&quot;\n&quot;)
+## x: equals assign
+cat(&quot;y:&quot;,globalenv()$y,&quot;\n&quot;)
+## y: arrow assign
+cat(&quot;z:&quot;,globalenv()$z,&quot;\n&quot;)
+## z: deep assign
+cat(&quot;not_assigned:&quot;,globalenv()$not_assigned,&quot;\n&quot;)
+## not_assigned:</code></pre>
+<p>When we create a function, the code block that makes up the function has it’s own environment. In this function here, I define two inputs, <code>x</code>, <code>y</code>. These variable names are different from the variables we already defined in our global environment. So when we assign these values in the function call, they are earlier in the search path so they’re the value that’s used. however, they don’t modify the values in <code>globalenv()</code> which we can see below. We can also create new variables inside the function which don’t exist in <code>globalenv()</code> meaning we can’t reference those values. Finally, note that we can refernce the variable <code>z</code> that we created in the global environment inside the function. While the variable <code>z</code> doesn’t exist in the function’s environment, R looks through the search path and finds it in <code>globalenv()</code> and uses that value.</p>
+<pre class="r"><code>demo = function(x, y){
+  to_print = &quot;%s: %s\n&quot;
+  a = &quot;apple&quot;
+  cat(sprintf(to_print,&quot;a&quot;,a))
+  cat(sprintf(to_print,&quot;x&quot;,x))
+  cat(sprintf(to_print,&quot;y&quot;,y))
+  cat(sprintf(to_print,&quot;z&quot;,z))
+}
+demo(x = &quot;arrow assign&quot;, y = &quot;equals assign&quot;)
+## a: apple
+## x: arrow assign
+## y: equals assign
+## z: deep assign</code></pre>
+<pre class="r"><code>cat(&quot;From globalenv():\n&quot;)
+## From globalenv():
+cat(c(&quot;x:&quot;, globalenv()$x), &quot;\n&quot;)
+## x: equals assign
+cat(c(&quot;y:&quot;, globalenv()$y), &quot;\n&quot;)
+## y: arrow assign
+cat(c(&quot;a:&quot;, globalenv()$a), &quot;\n&quot;)
+## a:</code></pre>
+</div>
+<div id="player-behavior" class="section level2">
+<h2>Player Behavior</h2>
+<p>We saw earlier that we can use all three of the assignment operators to create new values in the current environment. What are the differences? When should one be used over the other?</p>
+<div id="sedition" class="section level3">
+<h3>Sedition</h3>
+<p>I jokingly indicated that the <code>&lt;&lt;-</code> operator exists only for sedition. This is because <code>&lt;&lt;-</code> doesn’t necessarily assign a value to a variable in the current environment, it can modify environments later in the search path. Consider the following example. A simple function <code>sedition</code> takes one argument and uses <code>&lt;&lt;-</code> to assign it to <code>x</code> which at the time of the assignment doesn’t already exist in the function’s environment. We then print out the value of <code>x</code> and then try to print out the local environment’s version of <code>x</code>.</p>
+<pre class="r"><code>x = &quot;equals assign&quot;
+sedition = function(new_val){
+  x = &quot;hi there!&quot;
+  x &lt;&lt;- new_val
+  cat(&quot;internal:&quot;, x, &quot;\n&quot;)
+}
+cat(c(&quot;x:&quot;, x, &quot;\n&quot;))
+## x: equals assign
+sedition(&quot;all your base&quot;)
+## internal: hi there!
+cat(c(&quot;x:&quot;, x, &quot;\n&quot;))
+## x: all your base</code></pre>
+<p>What’s happened here? R started looking through the search path, <em>starting with the parent environment</em> and found where we’d already assigned a value to <code>x</code> in <code>globalenv()</code> and replaced the assignment with <code>new_val</code>. When we printed it out though, R found the value assigned to <code>x</code> from the function’s environment and returned that value. So the <code>&lt;&lt;-</code> has modified an environment <em>outside</em> the environment where it was used. <strong>But wait!</strong> When we used <code>&lt;&lt;-</code> in the global environment, it was assigned in the global environment, right? If R can’t find a variable with a value already assigned to it in the search path, it will create a new one in global and assign it there.</p>
+<pre class="r"><code>dummy_func = function(value){
+  dummy_var &lt;&lt;- value
+}
+cat(c(&quot;dummy_var:&quot;, globalenv()$dummy_var, &quot;\n&quot;))
+## dummy_var:
+dummy_func(&quot;dummy value&quot;)
+cat(c(&quot;dummy_var:&quot;, dummy_var, &quot;\n&quot;))
+## dummy_var: dummy value</code></pre>
+<div id="when-would-this-be-useful" class="section level4">
+<h4>When would this be useful?</h4>
+<p>The main reason why <code>&lt;&lt;-</code> gets used is when you have a function and you want to create <strong>side effects</strong>, that is, have your function do things that affect the world around it beyond the value it returns. Side effects are generally considered bad, but I don’t judge your life choices.</p>
+</div>
+</div>
+<div id="assigning-values-to-function-arguments" class="section level3">
+<h3>Assigning values to function arguments</h3>
+<p>While lots of people argue about <code>&lt;-</code> vs <code>=</code> for assigning values to variables, you’ve probably never seen someone call a function and assign values to the arguments of the function with anything other than <code>=</code>. In fact, <em>some people</em> argue that reserving <code>&lt;-</code> for variable assignment and <code>=</code> for argument assignment results in, and these are big air quotes, “cleaner code”. But, did you know that using <code>&lt;-</code> actually results in a sometimes useful side effect?</p>
+<pre class="r"><code>dummy_func = function(arg){
+  cat(arg, &quot;\n&quot;)
+}
+
+cat(&quot;arg:&quot;, globalenv()$arg, &quot;\n&quot;)
+## arg:
+dummy_func(arg = &quot;nothing ever changes...&quot;)
+## nothing ever changes...
+cat(&quot;arg:&quot;, globalenv()$arg, &quot;\n&quot;)
+## arg:
+dummy_func(arg &lt;- &quot;new values incoming!&quot;)
+## new values incoming!
+cat(&quot;arg:&quot;, globalenv()$arg, &quot;\n&quot;)
+## arg: new values incoming!</code></pre>
+<p>When this code block starts to run, no value is attached to <code>arg</code>. When I call my dummy function and pass in the argument name of <code>arg</code> and use an <code>=</code> to assign a value to it, the right text is printed, but my environment is unaffected. However, when I pass in the named argument of <code>arg</code> and use <code>&lt;-</code> to assign it, now it’s popped into my environment!</p>
+<div id="when-would-this-be-useful-1" class="section level4">
+<h4>When would this be useful?</h4>
+<p><a href="https://codegolf.stackexchange.com/">Code golf</a>. It’s where I learned about this trick.</p>
+<p>More useful though is to create psuedo-integration tests with <code>testthat</code>. The <code>testthat</code> package is great for unit tests, but what if you want to make sure the output of one function feeds correctly into another function? What if your function output has several characteristics you want to check but you don’t want to have to run the function repeatedly?</p>
+<pre class="r"><code>testthat::test_that(&quot;Integration Test&quot;,{
+  testthat::expect_type(tmp &lt;- function1(), &quot;list&quot;)
+  testthat::expect_length(tmp, 4)
+  testthat::expect_type(function2(tmp), &quot;data.frame&quot;)
+})</code></pre>
+<p>Because <code>testthat::expect_*</code> is a function call, anything you pass in as an argument is only availble for that function call. Using <code>&lt;-</code> for argument assignment (and leveraging the way R handles named arguments, argument order and <code>...</code>) can save the results into the testing environment for use in other checks.</p>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>I’m an avid <code>=</code> assigner because it keeps me consistent across the different languages I use. Also, <code>&lt;-</code> is too many keystrokes. I even figured out how to get <code>lintr</code> to make <code>=</code> the default and complain about <code>&lt;-</code> in some of my projects. That being said, knowing the tricks of using the different operators empowers you to do things that might otherwise be impossible or at least take even more keystrokes than <code>&lt;-</code>.</p>
+</div>
