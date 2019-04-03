@@ -34,11 +34,11 @@
         <meta property="og:title" content="Posts" />
 <meta property="og:description" content="Yet Another R Blog - but thuggish" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="/post/" />
+<meta property="og:url" content="http://thug-r.life/post/" />
 
 
 
-<meta property="og:updated_time" content="2018-02-07T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2019-04-03T00:00:00&#43;00:00"/>
 
 
 
@@ -136,7 +136,7 @@ ga('send', 'pageview');
                 <a class="fa-search" href="#search">Search</a>
                 <form id="search" method="get" action="//google.com/search">
                     <input type="text" name="q" placeholder="Search" />
-                    <input type="hidden" name="q" value="site:/">
+                    <input type="hidden" name="q" value="site:http://thug-r.life/">
                 </form>
             </li>
             <li class="menu">
@@ -153,7 +153,7 @@ ga('send', 'pageview');
         <section>
             <form class="search" method="get" action="//google.com/search">
                 <input type="text" name="q" placeholder="Search" />
-                <input type="hidden" name="q" value="site:/">
+                <input type="hidden" name="q" value="site:http://thug-r.life/">
             </form>
         </section>
 
@@ -205,11 +205,11 @@ ga('send', 'pageview');
 
                 
                     <li>
-                        <a href="/post/2018-02-07-hugo-to-rbloggers/"><p>Prep Your Hugo Blog for R-bloggers</p></a>
+                        <a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/"><p>A Tale of Three Assignment Operators</p></a>
                     </li>
                 
                     <li>
-                        <a href="/post/2018-01-26-mgsub-launched/"><p>mgsub v1.0 Launched to CRAN</p></a>
+                        <a href="http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/"><p>Prep Your Hugo Blog for R-bloggers</p></a>
                     </li>
                 
             </ul>
@@ -231,79 +231,10 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="/post/2018-02-07-hugo-to-rbloggers/">Prep Your Hugo Blog for R-bloggers</a></h2>
+            <h2><a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/">A Tale of Three Assignment Operators</a></h2>
         
         
-            <p>Configuration steps necessary to grow your audience through r-bloggers</p>
-        
-    </div>
-    <div class="meta">
-        
-            
-        
-
-        <time class="published"
-            datetime='2018-02-07'>
-            February 7, 2018</time>
-        <span class="author">Mark Ewing</span>
-        
-            <p>2 minute read</p>
-        
-        
-    </div>
-</header>
-
-    
-
-    <p>Get Ready for R-Bloggers
-There are lots of reasons to write a technical blog. Getting practice writing, thinking through ideas, etc. are all fulfilling reasons on their own. But life is always better with an audience. Well, not always. But for a blog it is. R-bloggers is a great platform to find an audience and share your writing with the world.
-If you’re writing with Hugo via blogdown though, there’s a hurdle you’ll need to clear.</p>
-
-    <footer>
-        <ul class="actions">
-            <li><a href="/post/2018-02-07-hugo-to-rbloggers/" class="button big">Continue Reading</a></li>
-        </ul>
-        <ul class="stats">
-    
-        
-
-        
-        
-            <li>
-                
-                
-                    
-
-                    
-
-                    
-
-                    
-                        Category
-                    
-                
-            </li>
-        
-    
-
-    
-    
-        <li><a href='/categoriesmeta'>meta</a></li>
-    
-</ul>
-
-    </footer>
-</article>
-
-        
-            <article class="post">
-    <header>
-    <div class="title">
-        
-            <h2><a href="/post/2018-01-26-mgsub-launched/">mgsub v1.0 Launched to CRAN</a></h2>
-        
-        
-            <p>Multiple, simultaneous string substitions done safely.</p>
+            <p>A tale of the oddities and quirks of assigning values to variables in different environments</p>
         
     </div>
     <div class="meta">
@@ -312,11 +243,11 @@ If you’re writing with Hugo via blogdown though, there’s a hurdle you’ll n
         
 
         <time class="published"
-            datetime='2018-01-26'>
-            January 26, 2018</time>
+            datetime='2019-04-03'>
+            April 3, 2019</time>
         <span class="author">Mark Ewing</span>
         
-            <p>9 minute read</p>
+            <p>7 minute read</p>
         
         
     </div>
@@ -324,12 +255,18 @@ If you’re writing with Hugo via blogdown though, there’s a hurdle you’ll n
 
     
 
-    <p>Official CRAN Launch
-Earlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette.</p>
+    <p><p>The Players
+First, let’s meet the players.</p>
+
+<p>&lt;- The classic R assignment operator. It’s been around since the beginning ostensibly because there was actually a key for it back then.
+= The assignment operator used by nearly every other programming language in the world
+&lt;&lt;- The deep assignment operator, it exists only to commit sedition. And assign values to variables in other environments.
+-&gt; and -&gt;&gt; The weird cousin that nobody likes to sit next to at family reunions.</p>
+</p>
 
     <footer>
         <ul class="actions">
-            <li><a href="/post/2018-01-26-mgsub-launched/" class="button big">Continue Reading</a></li>
+            <li><a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/" class="button big">Continue Reading</a></li>
         </ul>
         <ul class="stats">
     
@@ -368,10 +305,10 @@ Earlier this week I submitted mgsub to CRAN and after a couple of days it was ac
     <header>
     <div class="title">
         
-            <h2><a href="/post/2018-01-25-one-year-of-trump-eo/">One Year of Trump Executive Orders</a></h2>
+            <h2><a href="http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/">Prep Your Hugo Blog for R-bloggers</a></h2>
         
         
-            <p>How does Trump&#39;s use of Executive Orders in his first year line up?</p>
+            <p>Configuration steps necessary to grow your audience through r-bloggers</p>
         
     </div>
     <div class="meta">
@@ -380,11 +317,11 @@ Earlier this week I submitted mgsub to CRAN and after a couple of days it was ac
         
 
         <time class="published"
-            datetime='2018-01-25'>
-            January 25, 2018</time>
+            datetime='2018-02-07'>
+            February 7, 2018</time>
         <span class="author">Mark Ewing</span>
         
-            <p>4 minute read</p>
+            <p>2 minute read</p>
         
         
     </div>
@@ -392,14 +329,81 @@ Earlier this week I submitted mgsub to CRAN and after a couple of days it was ac
 
     
 
-    <p>First Year
-Less than a week ago marked the end of Trump’s first year in office. Back in August I posted code on analyzing the issuing of Executive Orders. Today I’m just going to provide updated commentary.
-Notes
-The Federal Register takes time to actually publish Executive Orders. This window is variable but has a median value of 5 days. That’s why this post is coming out on the 25th instead of the 20th.</p>
+    <p>Get Ready for R-Bloggers
+There are lots of reasons to write a technical blog. Getting practice writing, thinking through ideas, etc. are all fulfilling reasons on their own. But life is always better with an audience. Well, not always. But for a blog it is. R-bloggers is a great platform to find an audience and share your writing with the world.
+If you’re writing with Hugo via blogdown though, there’s a hurdle you’ll need to clear.</p>
 
     <footer>
         <ul class="actions">
-            <li><a href="/post/2018-01-25-one-year-of-trump-eo/" class="button big">Continue Reading</a></li>
+            <li><a href="http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/" class="button big">Continue Reading</a></li>
+        </ul>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+
+                    
+
+                    
+                        Category
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categoriesmeta'>meta</a></li>
+    
+</ul>
+
+    </footer>
+</article>
+
+        
+            <article class="post">
+    <header>
+    <div class="title">
+        
+            <h2><a href="http://thug-r.life/post/2018-01-26-mgsub-launched/">mgsub v1.0 Launched to CRAN</a></h2>
+        
+        
+            <p>Multiple, simultaneous string substitions done safely.</p>
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2018-01-26'>
+            January 26, 2018</time>
+        <span class="author">Mark Ewing</span>
+        
+            <p>9 minute read</p>
+        
+        
+    </div>
+</header>
+
+    
+
+    <p>Official CRAN Launch
+Earlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette.</p>
+
+    <footer>
+        <ul class="actions">
+            <li><a href="http://thug-r.life/post/2018-01-26-mgsub-launched/" class="button big">Continue Reading</a></li>
         </ul>
         <ul class="stats">
     
@@ -467,7 +471,7 @@ The Federal Register takes time to actually publish Executive Orders. This windo
             
             <ul class="icons">
                 
-                    <li><a href="/post/index.xml" type="application/rss+xml"
+                    <li><a href="http://thug-r.life/post/index.xml" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 
@@ -553,13 +557,13 @@ The Federal Register takes time to actually publish Executive Orders. This windo
                     <li>
                         <article>
                             <header>
-                                <h3><a href="/post/2018-02-07-hugo-to-rbloggers/">Prep Your Hugo Blog for R-bloggers</a></h3>
+                                <h3><a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/">A Tale of Three Assignment Operators</a></h3>
                                 
                                     
                                 
                                 <time class="published" datetime=
-                                    '2018-02-07'>
-                                    February 7, 2018</time>
+                                    '2019-04-03'>
+                                    April 3, 2019</time>
                             </header>
                         </article>
                     </li>
@@ -567,13 +571,13 @@ The Federal Register takes time to actually publish Executive Orders. This windo
                     <li>
                         <article>
                             <header>
-                                <h3><a href="/post/2018-01-26-mgsub-launched/">mgsub v1.0 Launched to CRAN</a></h3>
+                                <h3><a href="http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/">Prep Your Hugo Blog for R-bloggers</a></h3>
                                 
                                     
                                 
                                 <time class="published" datetime=
-                                    '2018-01-26'>
-                                    January 26, 2018</time>
+                                    '2018-02-07'>
+                                    February 7, 2018</time>
                             </header>
                         </article>
                     </li>
@@ -612,7 +616,7 @@ The Federal Register takes time to actually publish Executive Orders. This windo
                         <article>
                             <header>
                                 <a href="/categories/r/">r</a>
-                                <span style="float:right;">9</span>
+                                <span style="float:right;">10</span>
                             </header>
                         </article>
                     </li>
@@ -682,7 +686,7 @@ The Federal Register takes time to actually publish Executive Orders. This windo
         <section id="footer">
             <ul class="icons">
                 
-                    <li><a href="/post/index.xml" type="application/rss+xml"
+                    <li><a href="http://thug-r.life/post/index.xml" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 

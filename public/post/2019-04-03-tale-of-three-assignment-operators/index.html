@@ -4,7 +4,7 @@
     <head>
         
             
-                <title>Thug R Life</title>
+                <title>A Tale of Three Assignment Operators</title>
             
         
 
@@ -15,24 +15,27 @@
 
 
         
+            <meta name="author" content="Mark Ewing">
         
-            
-                <meta name="description" content="Yet Another R Blog - but thuggish">
-            
+        
+            <meta name="description" content="A tale of the oddities and quirks of assigning values to variables in different environments">
         
 
-        <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Thug R Life"/>
-<meta name="twitter:description" content="Yet Another R Blog - but thuggish"/>
+        <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="A Tale of Three Assignment Operators"/>
+<meta name="twitter:description" content="A tale of the oddities and quirks of assigning values to variables in different environments"/>
 <meta name="twitter:site" content="@pofigster"/>
 
-        <meta property="og:title" content="Thug R Life" />
-<meta property="og:description" content="Yet Another R Blog - but thuggish" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://thug-r.life/" />
+        <meta property="og:title" content="A Tale of Three Assignment Operators" />
+<meta property="og:description" content="A tale of the oddities and quirks of assigning values to variables in different environments" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/" />
 
 
 
-<meta property="og:updated_time" content="2019-04-03T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2019-04-03T00:00:00&#43;00:00"/>
+
+<meta property="article:modified_time" content="2019-04-03T00:00:00&#43;00:00"/>
+
 
 
 
@@ -44,9 +47,17 @@
 
 
         
-<meta itemprop="name" content="Thug R Life">
-<meta itemprop="description" content="Yet Another R Blog - but thuggish">
+<meta itemprop="name" content="A Tale of Three Assignment Operators">
+<meta itemprop="description" content="A tale of the oddities and quirks of assigning values to variables in different environments">
 
+
+<meta itemprop="datePublished" content="2019-04-03T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-03T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1324">
+
+
+
+<meta itemprop="keywords" content="" />
 
         
 
@@ -97,7 +108,7 @@ ga('send', 'pageview');
     
 <header id="header">
     
-        <h1><a href="/">Thug R Life</i></a></h1>
+        <h2><a href="/">Thug R Life</i></a></h2>
     
 
     <nav class="links">
@@ -218,14 +229,70 @@ ga('send', 'pageview');
         
 </section>
 
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f&text=A%20Tale%20of%20Three%20Assignment%20Operators&via=pofigster" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f&title=A%20Tale%20of%20Three%20Assignment%20Operators" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f&title=A%20Tale%20of%20Three%20Assignment%20Operators" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f&title=A%20Tale%20of%20Three%20Assignment%20Operators" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Mark%20Ewing&body=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
     
     <div id="main">
         
-            <article class="post">
+        
+        <article class="post">
     <header>
     <div class="title">
         
-            <h2><a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/">A Tale of Three Assignment Operators</a></h2>
+            <h1><a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/">A Tale of Three Assignment Operators</a></h1>
+            
         
         
             <p>A tale of the oddities and quirks of assigning values to variables in different environments</p>
@@ -499,62 +566,6 @@ cat(&quot;arg:&quot;, globalenv()$arg, &quot;\n&quot;)
     
 
 
-
-            <section id="share-menu">
-    <section id="social-share-nav">
-        <ul class="links">
-            <header>
-                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
-            </header>
-            
-
-
-<li><a href="//twitter.com/share?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f&text=A%20Tale%20of%20Three%20Assignment%20Operators&via=pofigster" target="_blank" class="share-btn twitter">
-    <i class="fa fa-twitter"></i>
-    <p>Twitter</p>
-</a></li>
-
-
-<li><a href="//plus.google.com/share?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f" target="_blank" class="share-btn google-plus">
-    <i class="fa fa-google-plus"></i>
-    <p>Google+</p>
-</a></li>
-
-
-<li><a href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f" target="_blank" class="share-btn facebook">
-    <i class="fa fa-facebook"></i>
-    <p>Facebook</p>
-</a></li>
-
-
-<li><a href="//reddit.com/submit?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f&title=A%20Tale%20of%20Three%20Assignment%20Operators" target="_blank" class="share-btn reddit">
-    <i class="fa fa-reddit-alien"></i>
-    <p>Reddit</p>
-</a></li>
-
-
-<li><a href="//www.linkedin.com/shareArticle?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f&title=A%20Tale%20of%20Three%20Assignment%20Operators" target="_blank" class="share-btn linkedin">
-    <i class="fa fa-linkedin"></i>
-    <p>LinkedIn</p>
-</a></li>
-
-
-<li><a href="//www.stumbleupon.com/submit?url=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f&title=A%20Tale%20of%20Three%20Assignment%20Operators" target="_blank" class="share-btn stumbleupon">
-    <i class="fa fa-stumbleupon"></i>
-    <p>StumbleUpon</p>
-</a></li>
-
-
-<li><a href="mailto:?subject=Check out this post by Mark%20Ewing&body=http%3a%2f%2fthug-r.life%2fpost%2f2019-04-03-tale-of-three-assignment-operators%2f" target="_blank" class="share-btn email">
-    <i class="fa fa-envelope"></i>
-    <p>Email</p>
-</a></li>
-
-        </ul>
-    </section>
-</section>
-
-        
     </div>
     
 <section id="sidebar">
@@ -574,9 +585,6 @@ cat(&quot;arg:&quot;, globalenv()$arg, &quot;\n&quot;)
                 </header>
             
             <ul class="icons">
-                
-                    <li><a href="http://thug-r.life/index.xml" type="application/rss+xml"
-                        target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 
                     
@@ -789,9 +797,6 @@ cat(&quot;arg:&quot;, globalenv()$arg, &quot;\n&quot;)
     
         <section id="footer">
             <ul class="icons">
-                
-                    <li><a href="http://thug-r.life/index.xml" type="application/rss+xml"
-                        target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 
                     

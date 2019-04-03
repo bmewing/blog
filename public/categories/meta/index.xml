@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Meta on Thug R Life</title>
-    <link>/categories/meta/</link>
+    <link>http://thug-r.life/categories/meta/</link>
     <description>Recent content in Meta on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 07 Feb 2018 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/categories/meta/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://thug-r.life/categories/meta/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Prep Your Hugo Blog for R-bloggers</title>
-      <link>/post/2018-02-07-hugo-to-rbloggers/</link>
+      <link>http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/</link>
       <pubDate>Wed, 07 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2018-02-07-hugo-to-rbloggers/</guid>
+      <guid>http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/</guid>
       <description>Get Ready for R-BloggersThere are lots of reasons to write a technical blog. Getting practice writing, thinking through ideas, etc. are all fulfilling reasons on their own. But life is always better with an audience. Well, not always. But for a blog it is. R-bloggers is a great platform to find an audience and share your writing with the world.
 If you’re writing with Hugo via blogdown though, there’s a hurdle you’ll need to clear.</description>
       <content:encoded><div id="get-ready-for-r-bloggers" class="section level2">

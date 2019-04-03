@@ -2,70 +2,70 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Thug R Life</title>
-    <link>/categories/</link>
+    <link>http://thug-r.life/categories/</link>
     <description>Recent content in Categories on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-        <atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://thug-r.life/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Cloud</title>
-      <link>/categories/cloud/</link>
+      <link>http://thug-r.life/categories/cloud/</link>
       <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/categories/cloud/</guid>
+      <guid>http://thug-r.life/categories/cloud/</guid>
       <description></description>
       <content:encoded></content:encoded>
     </item>
     
     <item>
       <title>Life</title>
-      <link>/categories/life/</link>
+      <link>http://thug-r.life/categories/life/</link>
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/categories/life/</guid>
+      <guid>http://thug-r.life/categories/life/</guid>
       <description></description>
       <content:encoded></content:encoded>
     </item>
     
     <item>
       <title>Meta</title>
-      <link>/categories/meta/</link>
+      <link>http://thug-r.life/categories/meta/</link>
       <pubDate>Wed, 07 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/meta/</guid>
+      <guid>http://thug-r.life/categories/meta/</guid>
       <description></description>
       <content:encoded></content:encoded>
     </item>
     
     <item>
       <title>Python</title>
-      <link>/categories/python/</link>
+      <link>http://thug-r.life/categories/python/</link>
       <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/categories/python/</guid>
+      <guid>http://thug-r.life/categories/python/</guid>
       <description></description>
       <content:encoded></content:encoded>
     </item>
     
     <item>
       <title>R</title>
-      <link>/categories/r/</link>
-      <pubDate>Fri, 26 Jan 2018 00:00:00 +0000</pubDate>
+      <link>http://thug-r.life/categories/r/</link>
+      <pubDate>Wed, 03 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/categories/r/</guid>
+      <guid>http://thug-r.life/categories/r/</guid>
       <description></description>
       <content:encoded></content:encoded>
     </item>
     
     <item>
       <title>Spark</title>
-      <link>/categories/spark/</link>
+      <link>http://thug-r.life/categories/spark/</link>
       <pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>/categories/spark/</guid>
+      <guid>http://thug-r.life/categories/spark/</guid>
       <description></description>
       <content:encoded></content:encoded>
     </item>

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Life on Thug R Life</title>
-    <link>/categories/life/</link>
+    <link>http://thug-r.life/categories/life/</link>
     <description>Recent content in Life on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 02 Oct 2017 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/categories/life/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://thug-r.life/categories/life/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Fun Math Problems</title>
-      <link>/post/2017-10-02-fun-math-problems/</link>
+      <link>http://thug-r.life/post/2017-10-02-fun-math-problems/</link>
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-10-02-fun-math-problems/</guid>
+      <guid>http://thug-r.life/post/2017-10-02-fun-math-problems/</guid>
       <description>Meme Me Up, Scotty!Every now and then on Twitter or Facebook there’s a math problem posted which challenges users to get the right answer. They’re almost always based on order of operations and the reason most people get them wrong is because they don’t remember that elementary rule. It’s hard to blame most people since a lot of math that’s used day to day doesn’t require order of operations.</description>
       <content:encoded><div id="meme-me-up-scotty" class="section level2">
 <h2>Meme Me Up, Scotty!</h2>
@@ -56,10 +56,10 @@ You will either be really angry or lol <a href="https://t.co/yLECGwpXdQ">pic.twi
     
     <item>
       <title>Bucket List</title>
-      <link>/post/2017-09-01-bucket-list/</link>
+      <link>http://thug-r.life/post/2017-09-01-bucket-list/</link>
       <pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-09-01-bucket-list/</guid>
+      <guid>http://thug-r.life/post/2017-09-01-bucket-list/</guid>
       <description>Bucket ListMost people end up having a list of things they’d like to do in their life before they ‘kick the bucket’. Often this is made up of big events - a foreign trip, some daredevil adventure. But sometimes that list is a bunch of little things.
 RI’ve published a package on CRAN - readOffice - which was designed to enable the importing of text from modern Microsoft Word and PowerPoint files.</description>
       <content:encoded><div id="bucket-list" class="section level2">
