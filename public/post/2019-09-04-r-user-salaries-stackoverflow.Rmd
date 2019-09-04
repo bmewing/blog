@@ -1,0 +1,179 @@
+---
+title: "Analysis of R User Salaries from the 2019 StackOverflow Survey"
+author: "Mark Ewing"
+date: "2019-09-04"
+description: "a.k.a. Am I getting paid enough?"
+categories: ["r"]
+type: "post"
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+## Intro
+
+Saw an interesting analysis pop up in my Twitter feed, written by (Tomaž Weiss)[https://tomazweiss.github.io/] and (posted on KDNuggets)[https://www.kdnuggets.com/2019/08/r-users-salaries-2019-stackoverflow-survey.html] analyzing the 2019 StackOverflow survey data to look at salaries of R Users. As is often the case, my brain went down a rabbit trail of new questions to ask.
+
+## Data
+
+The data is available in a zip file (from here)[https://insights.stackoverflow.com/survey], I uploaded just the results to an S3 bucket to make my analysis reproducible (though I would prefer if you downloaded from the original source instead of my bucket so I don't have to pay for it).
+
+```{r, cache = TRUE, results='hide'}
+library(data.table)
+library(ggplot2)
+library(countrycode)
+
+survey = fread("https://thug-r-data-share.s3.amazonaws.com/survey_results_public.csv")
+```
+
+There are a lot of columns and a lot of responses (88k responses!). This is the same filtering that Tomaž applied, just done with `data.table` instead of `dplyr`. I also chunked some of it out differently. This reduces the data to just over 3k responses, each representing an employed developer/coder who uses R.
+
+```{r}
+LANGUAGE = "^R$|;R$|^R;|;R;"
+BRANCH = c("I am a developer by profession",
+           "I am not primarily a developer, but I write code sometimes as part of my work")
+EMPLOY = c("Employed full-time",
+           "Employed part-time",
+           "Independent contractor, freelancer, or self-employed")
+survey_r = survey[grepl(LANGUAGE, LanguageWorkedWith) & 
+                    MainBranch %in% BRANCH &
+                    Employment %in% EMPLOY &
+                    Country != "Other Country (Not Listed Above)" &
+                    !is.na(Country) & 
+                    !is.na(ConvertedComp) &
+                    ConvertedComp > 0]
+```
+
+Tomaž had a great idea of bringing in the large geographical regions that countries are typically grouped into to help consolidate the visual aspects of the analysis.
+
+```{r}
+survey_r[, continent := countrycode::countrycode(sourcevar = Country, 
+                                                 origin ="country.name",
+                                                 destination = "continent")]
+survey_r[, c("n_users","median_salary") := list(.N, median(ConvertedComp)), by = c("Country")]
+survey_r[, Country := reorder(Country, ConvertedComp, median)]
+```
+
+### First Visual
+
+The main deliverable from Tomaž's article that I want to focus on is the plot of salary by country. As seen below, there are 50+ different countries that had at least 6 respondents who fit our criteria. Ranked from highest median salary to lowest, We see the USA at the top of the list with other developed countries following ending with developing / smaller developed countries at the bottom.
+
+```{r}
+first_plot = ggplot(data = survey_r[n_users > 5], aes(x = Country, y = ConvertedComp, fill = continent)) + 
+  geom_boxplot(outlier.size = 0.5) +
+  ylab("Annual USD Salary") +
+  coord_flip(ylim = c(0, 200000)) +
+  scale_y_continuous(breaks = seq(0, 200000, by = 40000),
+                     labels = scales::dollar_format()) +
+  ggtitle("Distributions of R Users' Salaries by Country") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_fill_discrete(name = "Continent")
+```
+```{r, echo=FALSE}
+plot(first_plot)
+```
+
+While this is a pretty chart to look at, my first question in response is, have we just recreated the global wealth rank? I'm not surprised by any of the top countries or any of the low countries. The 'steepening' of the changes in median salary is pretty consistent with my expectations for wealth distribution in general. As such, I don't believe I can gain an understanding of the 'effect' (used very loosely here) of being an R programmer in general. Is it a general indicator of increased prosperity? To answer this, we need more data.
+
+### Average Salaries
+
+The OECD (Organization for Economic Co-Operation and Development) provides data on average annual wages for 30+ countries, converted into USD PPP (Purchasing Power Parity). This is better than just convering annual wages to USD because the cost of living in different countries varies, and this is intended to normalize that. You can access (the data)[https://stats.oecd.org/Index.aspx?DataSetCode=AV_AN_WAGE#] yourself, they have a fairly nice data explorer.
+
+```{r}
+country_data = structure(list(Country = c("Australia", "Austria", 
+"Belgium", "Canada", "Czech Republic", "Denmark", "Finland", 
+"France", "Germany", "Greece", "Hungary", "Ireland", "Italy", 
+"Japan", "South Korea", "Luxembourg", "Netherlands", "Norway", "Poland", 
+"Portugal", "Slovakia", "Spain", "Sweden", "Switzerland", 
+"United Kingdom", "United States", "Mexico", "Israel", "Slovenia", 
+"Estonia", "Iceland", "New Zealand", "Chile", "Latvia", "Lithuania"), 
+AverageSalaryPPP = c(53349.4136154893, 50868.2460070356, 
+52079.6153106353, 48848.5225020856, 26961.5755906614, 55253.3420271725, 
+44111.4000300468, 44510.1331755264, 49813.2001197041, 26670.9542671142, 
+24454.7107939254, 47951.8524334211, 37751.9346359886, 40573.3776475475, 
+39471.7119182279, 65448.6119521135, 54261.6824451956, 50955.8298398594, 
+29109.0437588983, 25487.063695971, 25356.6822930888, 38761.1845695886, 
+44196.2394518027, 64108.5507608971, 44770.0497407862, 63093.0146425662, 
+16297.708306066, 37655.3011101961, 37321.9086709927, 26898.1034588229, 
+66504.2811678198, 42324.8742039956, 27124.711145738, 25586.1979656909, 
+26429.2281878031)), 
+class = c("data.table", "data.frame"), row.names = c(NA, -36L))
+```
+
+With this data captured, we can join it to our survey data and see the correlation between reported salaries in the survey and the national average salaries. The chart isn't dynamic and some countries aren't visible, but the pattern makes a few things very clear. First, there is a clear, positive correlation between the two values. Second, there are a few obvious outliers, specifically, Israel and Mexico. What this tells me is that the benefit of being an R programmer could be very high in these countries relative to the whole.
+
+```{r}
+correl_data = merge(survey_r[n_users > 5, 
+                             list(r_salary = median(ConvertedComp)), 
+                             by = c("Country", "continent")],
+                    country_data, by = "Country")
+correl_plot = ggplot(data = correl_data, aes(x = AverageSalaryPPP, y = r_salary, label = Country, fill = continent)) +
+  geom_label() +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  ggtitle("Distributions of R Users' Salaries by Country") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_fill_discrete(name = "Continent") +
+  ylab("Median R User Salary") +
+  xlab("National Average Salary")
+```
+```{r, echo = FALSE}
+plot(correl_plot)
+```
+
+### Correcting Salaries for Standard of Living
+
+The next step then is to correct the reported salaries by finding the difference between reported salary and average national salary. I'm assuming that all other factors don't matter, only the fact that you're an R programmer (obviously wrong), to see if I can glean the value add of the skill.
+
+This time, I'm going to merge the country data the full survey results of R users. I'll correct salary by subtracting off the national average salary and resort countries. Finally, I'll make the first plot again, with new data.
+
+```{r}
+corrected = merge(survey_r[n_users > 5], country_data, by = "Country")
+corrected[, corrected_salary := ConvertedComp - AverageSalaryPPP]
+corrected[, Country := reorder(Country, corrected_salary, median)]
+
+corrected_plot = ggplot(data = corrected, aes(x = Country, y = corrected_salary, fill = continent)) + 
+  geom_boxplot(outlier.size = 0.5) +
+  ylab("Difference Between Reported USD Salary and National Average") +
+  coord_flip(ylim = c(-50000, 125000)) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  ggtitle("Distributions of R Users' Salaries by Country") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_fill_discrete(name = "Continent")
+```
+```{r, echo=FALSE}
+plot(corrected_plot)
+```
+
+Most obvious bit is that the US is no longer on top - that belongs to Israel which was #2 before. What's a little sad is that in Spain, Austria, Hungary, Slovenia, Slovakia, and France the median R programmer salary is below the average national salary - apparently it's not a skill in high demand there. Only 9 countries have at least 75% of R programmers report a salary above the national average (Israel, USA, Norway, Denmark, Australia, UK, Japan, New Zealand, and Sweden).
+
+I think it would be safe to conclude that from a global perspective, just being an R programmer isn't the ticket to the good life.
+
+### Rank Shifts
+
+How much does this shift in perspective shift the ranking of countries? The table below is sorted by absolute magnitude of shift in rank. Of the two outliers I picked out of the correlation plot, Mexico and Israel, only Mexico shows up high on the list having moved up 14 steps in the ranking by comparing salary to average national wages, rocketing the second lowest value to middle of the pack.
+
+Why doesn't Israel show up higher? Because it was in the second highest position and moved to the highest - not a lot of opportunity for growth there.
+
+Austria is the big loser, falling 14 spots to second from last (I have no speculation as to why).
+
+```{r}
+country_ranks = corrected[, list(median_reported = median(median_salary),
+                                 median_corrected = median(corrected_salary)),
+                          by = "Country"]
+country_ranks[, c("reported_rank", "corrected_rank") := 
+                list(frank(median_reported), frank(median_corrected))]
+country_ranks[, rank_change := corrected_rank - reported_rank]
+```
+```{r, echo=FALSE}
+tmp = country_ranks[order(abs(rank_change), decreasing = TRUE), 
+              c("Country", "reported_rank", "corrected_rank", "rank_change")]
+setnames(tmp, c("reported_rank", "corrected_rank", "rank_change"),
+         c("Original Rank", "National Salary Corrected Rank", "Change in Ranks"))
+knitr::kable(tmp)
+```
+
+## Final Thoughts
+
+There are lots of other ways we could correct the reported salaries, but the main idea of taking in other outside data to inform our analysis has shifted the results away from essentially ranking countries by their wealth to informing us of the value add of R programming as a skill. Unless you have a deadline, never stop at the first analysis, let it guide you to ask more and more questions until your curiousity is sated. As always, R made the process super easy, `data.table` made it super fast and `ggplot2` made it super pretty.

@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://thug-r.life/post/2019-09-04-r-user-salaries-stackoverflow/</loc>
+    <lastmod>2019-09-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/</loc>
     <lastmod>2019-04-03T00:00:00+00:00</lastmod>
   </url>
@@ -106,7 +111,7 @@
   
   <url>
     <loc>http://thug-r.life/post/</loc>
-    <lastmod>2019-04-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -118,7 +123,7 @@
   
   <url>
     <loc>http://thug-r.life/categories/r/</loc>
-    <lastmod>2019-04-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -135,7 +140,7 @@
   
   <url>
     <loc>http://thug-r.life/</loc>
-    <lastmod>2019-04-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
