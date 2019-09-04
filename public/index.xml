@@ -6,10 +6,336 @@
     <description>Recent content on Thug R Life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 Sep 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="http://thug-r.life/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Analysis of R User Salaries from the 2019 StackOverflow Survey</title>
+      <link>http://thug-r.life/post/2019-09-04-r-user-salaries-stackoverflow/</link>
+      <pubDate>Wed, 04 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://thug-r.life/post/2019-09-04-r-user-salaries-stackoverflow/</guid>
+      <description>IntroSaw an interesting analysis pop up in my Twitter feed, written by (Tomaž Weiss)[https://tomazweiss.github.io/] and (posted on KDNuggets)[https://www.kdnuggets.com/2019/08/r-users-salaries-2019-stackoverflow-survey.html] analyzing the 2019 StackOverflow survey data to look at salaries of R Users. As is often the case, my brain went down a rabbit trail of new questions to ask.
+DataThe data is available in a zip file (from here)[https://insights.stackoverflow.com/survey], I uploaded just the results to an S3 bucket to make my analysis reproducible (though I would prefer if you downloaded from the original source instead of my bucket so I don’t have to pay for it).</description>
+      <content:encoded><div id="intro" class="section level2">
+<h2>Intro</h2>
+<p>Saw an interesting analysis pop up in my Twitter feed, written by (Tomaž Weiss)[<a href="https://tomazweiss.github.io/" class="uri">https://tomazweiss.github.io/</a>] and (posted on KDNuggets)[<a href="https://www.kdnuggets.com/2019/08/r-users-salaries-2019-stackoverflow-survey.html" class="uri">https://www.kdnuggets.com/2019/08/r-users-salaries-2019-stackoverflow-survey.html</a>] analyzing the 2019 StackOverflow survey data to look at salaries of R Users. As is often the case, my brain went down a rabbit trail of new questions to ask.</p>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>The data is available in a zip file (from here)[<a href="https://insights.stackoverflow.com/survey" class="uri">https://insights.stackoverflow.com/survey</a>], I uploaded just the results to an S3 bucket to make my analysis reproducible (though I would prefer if you downloaded from the original source instead of my bucket so I don’t have to pay for it).</p>
+<pre class="r"><code>library(data.table)
+library(ggplot2)
+## Warning: package &#39;ggplot2&#39; was built under R version 3.5.1
+library(countrycode)
+## Warning: package &#39;countrycode&#39; was built under R version 3.5.3
+
+survey = fread(&quot;https://thug-r-data-share.s3.amazonaws.com/survey_results_public.csv&quot;)</code></pre>
+<p>There are a lot of columns and a lot of responses (88k responses!). This is the same filtering that Tomaž applied, just done with <code>data.table</code> instead of <code>dplyr</code>. I also chunked some of it out differently. This reduces the data to just over 3k responses, each representing an employed developer/coder who uses R.</p>
+<pre class="r"><code>LANGUAGE = &quot;^R$|;R$|^R;|;R;&quot;
+BRANCH = c(&quot;I am a developer by profession&quot;,
+           &quot;I am not primarily a developer, but I write code sometimes as part of my work&quot;)
+EMPLOY = c(&quot;Employed full-time&quot;,
+           &quot;Employed part-time&quot;,
+           &quot;Independent contractor, freelancer, or self-employed&quot;)
+survey_r = survey[grepl(LANGUAGE, LanguageWorkedWith) &amp; 
+                    MainBranch %in% BRANCH &amp;
+                    Employment %in% EMPLOY &amp;
+                    Country != &quot;Other Country (Not Listed Above)&quot; &amp;
+                    !is.na(Country) &amp; 
+                    !is.na(ConvertedComp) &amp;
+                    ConvertedComp &gt; 0]</code></pre>
+<p>Tomaž had a great idea of bringing in the large geographical regions that countries are typically grouped into to help consolidate the visual aspects of the analysis.</p>
+<pre class="r"><code>survey_r[, continent := countrycode::countrycode(sourcevar = Country, 
+                                                 origin =&quot;country.name&quot;,
+                                                 destination = &quot;continent&quot;)]
+survey_r[, c(&quot;n_users&quot;,&quot;median_salary&quot;) := list(.N, median(ConvertedComp)), by = c(&quot;Country&quot;)]
+survey_r[, Country := reorder(Country, ConvertedComp, median)]</code></pre>
+<div id="first-visual" class="section level3">
+<h3>First Visual</h3>
+<p>The main deliverable from Tomaž’s article that I want to focus on is the plot of salary by country. As seen below, there are 50+ different countries that had at least 6 respondents who fit our criteria. Ranked from highest median salary to lowest, We see the USA at the top of the list with other developed countries following ending with developing / smaller developed countries at the bottom.</p>
+<pre class="r"><code>first_plot = ggplot(data = survey_r[n_users &gt; 5], aes(x = Country, y = ConvertedComp, fill = continent)) + 
+  geom_boxplot(outlier.size = 0.5) +
+  ylab(&quot;Annual USD Salary&quot;) +
+  coord_flip(ylim = c(0, 200000)) +
+  scale_y_continuous(breaks = seq(0, 200000, by = 40000),
+                     labels = scales::dollar_format()) +
+  ggtitle(&quot;Distributions of R Users&#39; Salaries by Country&quot;) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_fill_discrete(name = &quot;Continent&quot;)</code></pre>
+<p><img src="/post/2019-09-04-r-user-salaries-stackoverflow_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>While this is a pretty chart to look at, my first question in response is, have we just recreated the global wealth rank? I’m not surprised by any of the top countries or any of the low countries. The ‘steepening’ of the changes in median salary is pretty consistent with my expectations for wealth distribution in general. As such, I don’t believe I can gain an understanding of the ‘effect’ (used very loosely here) of being an R programmer in general. Is it a general indicator of increased prosperity? To answer this, we need more data.</p>
+</div>
+<div id="average-salaries" class="section level3">
+<h3>Average Salaries</h3>
+<p>The OECD (Organization for Economic Co-Operation and Development) provides data on average annual wages for 30+ countries, converted into USD PPP (Purchasing Power Parity). This is better than just convering annual wages to USD because the cost of living in different countries varies, and this is intended to normalize that. You can access (the data)[<a href="https://stats.oecd.org/Index.aspx?DataSetCode=AV_AN_WAGE#" class="uri">https://stats.oecd.org/Index.aspx?DataSetCode=AV_AN_WAGE#</a>] yourself, they have a fairly nice data explorer.</p>
+<pre class="r"><code>country_data = structure(list(Country = c(&quot;Australia&quot;, &quot;Austria&quot;, 
+&quot;Belgium&quot;, &quot;Canada&quot;, &quot;Czech Republic&quot;, &quot;Denmark&quot;, &quot;Finland&quot;, 
+&quot;France&quot;, &quot;Germany&quot;, &quot;Greece&quot;, &quot;Hungary&quot;, &quot;Ireland&quot;, &quot;Italy&quot;, 
+&quot;Japan&quot;, &quot;South Korea&quot;, &quot;Luxembourg&quot;, &quot;Netherlands&quot;, &quot;Norway&quot;, &quot;Poland&quot;, 
+&quot;Portugal&quot;, &quot;Slovakia&quot;, &quot;Spain&quot;, &quot;Sweden&quot;, &quot;Switzerland&quot;, 
+&quot;United Kingdom&quot;, &quot;United States&quot;, &quot;Mexico&quot;, &quot;Israel&quot;, &quot;Slovenia&quot;, 
+&quot;Estonia&quot;, &quot;Iceland&quot;, &quot;New Zealand&quot;, &quot;Chile&quot;, &quot;Latvia&quot;, &quot;Lithuania&quot;), 
+AverageSalaryPPP = c(53349.4136154893, 50868.2460070356, 
+52079.6153106353, 48848.5225020856, 26961.5755906614, 55253.3420271725, 
+44111.4000300468, 44510.1331755264, 49813.2001197041, 26670.9542671142, 
+24454.7107939254, 47951.8524334211, 37751.9346359886, 40573.3776475475, 
+39471.7119182279, 65448.6119521135, 54261.6824451956, 50955.8298398594, 
+29109.0437588983, 25487.063695971, 25356.6822930888, 38761.1845695886, 
+44196.2394518027, 64108.5507608971, 44770.0497407862, 63093.0146425662, 
+16297.708306066, 37655.3011101961, 37321.9086709927, 26898.1034588229, 
+66504.2811678198, 42324.8742039956, 27124.711145738, 25586.1979656909, 
+26429.2281878031)), 
+class = c(&quot;data.table&quot;, &quot;data.frame&quot;), row.names = c(NA, -36L))</code></pre>
+<p>With this data captured, we can join it to our survey data and see the correlation between reported salaries in the survey and the national average salaries. The chart isn’t dynamic and some countries aren’t visible, but the pattern makes a few things very clear. First, there is a clear, positive correlation between the two values. Second, there are a few obvious outliers, specifically, Israel and Mexico. What this tells me is that the benefit of being an R programmer could be very high in these countries relative to the whole.</p>
+<pre class="r"><code>correl_data = merge(survey_r[n_users &gt; 5, 
+                             list(r_salary = median(ConvertedComp)), 
+                             by = c(&quot;Country&quot;, &quot;continent&quot;)],
+                    country_data, by = &quot;Country&quot;)
+correl_plot = ggplot(data = correl_data, aes(x = AverageSalaryPPP, y = r_salary, label = Country, fill = continent)) +
+  geom_label() +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  ggtitle(&quot;Distributions of R Users&#39; Salaries by Country&quot;) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_fill_discrete(name = &quot;Continent&quot;) +
+  ylab(&quot;Median R User Salary&quot;) +
+  xlab(&quot;National Average Salary&quot;)</code></pre>
+<p><img src="/post/2019-09-04-r-user-salaries-stackoverflow_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="correcting-salaries-for-standard-of-living" class="section level3">
+<h3>Correcting Salaries for Standard of Living</h3>
+<p>The next step then is to correct the reported salaries by finding the difference between reported salary and average national salary. I’m assuming that all other factors don’t matter, only the fact that you’re an R programmer (obviously wrong), to see if I can glean the value add of the skill.</p>
+<p>This time, I’m going to merge the country data the full survey results of R users. I’ll correct salary by subtracting off the national average salary and resort countries. Finally, I’ll make the first plot again, with new data.</p>
+<pre class="r"><code>corrected = merge(survey_r[n_users &gt; 5], country_data, by = &quot;Country&quot;)
+corrected[, corrected_salary := ConvertedComp - AverageSalaryPPP]
+corrected[, Country := reorder(Country, corrected_salary, median)]
+
+corrected_plot = ggplot(data = corrected, aes(x = Country, y = corrected_salary, fill = continent)) + 
+  geom_boxplot(outlier.size = 0.5) +
+  ylab(&quot;Difference Between Reported USD Salary and National Average&quot;) +
+  coord_flip(ylim = c(-50000, 125000)) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  ggtitle(&quot;Distributions of R Users&#39; Salaries by Country&quot;) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_fill_discrete(name = &quot;Continent&quot;)</code></pre>
+<p><img src="/post/2019-09-04-r-user-salaries-stackoverflow_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Most obvious bit is that the US is no longer on top - that belongs to Israel which was #2 before. What’s a little sad is that in Spain, Austria, Hungary, Slovenia, Slovakia, and France the median R programmer salary is below the average national salary - apparently it’s not a skill in high demand there. Only 9 countries have at least 75% of R programmers report a salary above the national average (Israel, USA, Norway, Denmark, Australia, UK, Japan, New Zealand, and Sweden).</p>
+<p>I think it would be safe to conclude that from a global perspective, just being an R programmer isn’t the ticket to the good life.</p>
+</div>
+<div id="rank-shifts" class="section level3">
+<h3>Rank Shifts</h3>
+<p>How much does this shift in perspective shift the ranking of countries? The table below is sorted by absolute magnitude of shift in rank. Of the two outliers I picked out of the correlation plot, Mexico and Israel, only Mexico shows up high on the list having moved up 14 steps in the ranking by comparing salary to average national wages, rocketing the second lowest value to middle of the pack.</p>
+<p>Why doesn’t Israel show up higher? Because it was in the second highest position and moved to the highest - not a lot of opportunity for growth there.</p>
+<p>Austria is the big loser, falling 14 spots to second from last (I have no speculation as to why).</p>
+<pre class="r"><code>country_ranks = corrected[, list(median_reported = median(median_salary),
+                                 median_corrected = median(corrected_salary)),
+                          by = &quot;Country&quot;]
+country_ranks[, c(&quot;reported_rank&quot;, &quot;corrected_rank&quot;) := 
+                list(frank(median_reported), frank(median_corrected))]
+country_ranks[, rank_change := corrected_rank - reported_rank]</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Country</th>
+<th align="right">Original Rank</th>
+<th align="right">National Salary Corrected Rank</th>
+<th align="right">Change in Ranks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Mexico</td>
+<td align="right">2</td>
+<td align="right">16</td>
+<td align="right">14</td>
+</tr>
+<tr class="even">
+<td align="left">Austria</td>
+<td align="right">14</td>
+<td align="right">2</td>
+<td align="right">-12</td>
+</tr>
+<tr class="odd">
+<td align="left">Netherlands</td>
+<td align="right">16</td>
+<td align="right">7</td>
+<td align="right">-9</td>
+</tr>
+<tr class="even">
+<td align="left">Spain</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">-9</td>
+</tr>
+<tr class="odd">
+<td align="left">Czech Republic</td>
+<td align="right">8</td>
+<td align="right">15</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">France</td>
+<td align="right">13</td>
+<td align="right">6</td>
+<td align="right">-7</td>
+</tr>
+<tr class="odd">
+<td align="left">Slovenia</td>
+<td align="right">11</td>
+<td align="right">4</td>
+<td align="right">-7</td>
+</tr>
+<tr class="even">
+<td align="left">Lithuania</td>
+<td align="right">7</td>
+<td align="right">13</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Portugal</td>
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Belgium</td>
+<td align="right">18</td>
+<td align="right">14</td>
+<td align="right">-4</td>
+</tr>
+<tr class="odd">
+<td align="left">Japan</td>
+<td align="right">19</td>
+<td align="right">23</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Chile</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Germany</td>
+<td align="right">22</td>
+<td align="right">19</td>
+<td align="right">-3</td>
+</tr>
+<tr class="even">
+<td align="left">Greece</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Switzerland</td>
+<td align="right">27</td>
+<td align="right">24</td>
+<td align="right">-3</td>
+</tr>
+<tr class="even">
+<td align="left">Canada</td>
+<td align="right">23</td>
+<td align="right">21</td>
+<td align="right">-2</td>
+</tr>
+<tr class="odd">
+<td align="left">Finland</td>
+<td align="right">15</td>
+<td align="right">17</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hungary</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">New Zealand</td>
+<td align="right">20</td>
+<td align="right">22</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Poland</td>
+<td align="right">9</td>
+<td align="right">11</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Slovakia</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Australia</td>
+<td align="right">25</td>
+<td align="right">26</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Denmark</td>
+<td align="right">26</td>
+<td align="right">27</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Ireland</td>
+<td align="right">21</td>
+<td align="right">20</td>
+<td align="right">-1</td>
+</tr>
+<tr class="odd">
+<td align="left">Israel</td>
+<td align="right">29</td>
+<td align="right">30</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Sweden</td>
+<td align="right">17</td>
+<td align="right">18</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">United Kingdom</td>
+<td align="right">24</td>
+<td align="right">25</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">United States</td>
+<td align="right">30</td>
+<td align="right">29</td>
+<td align="right">-1</td>
+</tr>
+<tr class="odd">
+<td align="left">Italy</td>
+<td align="right">12</td>
+<td align="right">12</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Norway</td>
+<td align="right">28</td>
+<td align="right">28</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="final-thoughts" class="section level2">
+<h2>Final Thoughts</h2>
+<p>There are lots of other ways we could correct the reported salaries, but the main idea of taking in other outside data to inform our analysis has shifted the results away from essentially ranking countries by their wealth to informing us of the value add of R programming as a skill. Unless you have a deadline, never stop at the first analysis, let it guide you to ask more and more questions until your curiousity is sated. As always, R made the process super easy, <code>data.table</code> made it super fast and <code>ggplot2</code> made it super pretty.</p>
+</div>
+</content:encoded>
+    </item>
     
     <item>
       <title>A Tale of Three Assignment Operators</title>
@@ -2058,7 +2384,7 @@ print(sprintf(&quot;%d orders signed as of %d days in office!&quot;,ymax,ceiling
       <description>I&amp;rsquo;m Mark Ewing. I&amp;rsquo;m just some guy who currently lives in the northeast part of Tennessee, just barely too far from Asheville, NC to drink Wicked Weed beer every weekend. I work for a big company doing a bunch of stuff and often that stuff involves R. I love R. I mean, not in a creepy way, yet most people still find it creepy. I first learned R in a linear algebra class in college back in 2006 and used it until I finished my masters degree in Applied Statistics.</description>
       <content:encoded><p>I&rsquo;m Mark Ewing. I&rsquo;m just some guy who currently lives in the northeast part of Tennessee, just barely too far from Asheville, NC to drink Wicked Weed beer every weekend. I work for a big company doing a bunch of stuff and often that stuff involves R. I love R. I mean, not in a creepy way, yet most people still find it creepy. I first learned R in a linear algebra class in college back in 2006 and used it until I finished my masters degree in Applied Statistics. I introduced the company I work for now to R back in 2010 and worked really hard to grow its use and usability in an enterprise environment.</p>
 
-<p>I guess I&rsquo;m starting ths blog because I want to do more technical writing or something. Also, I&rsquo;ve started publishing packages and so I need a platform to promote them on and starting a blog seems like a great way to get <a href="https://www.r-bloggers.com/">r-bloggers</a> to publish my content. We&rsquo;ll see how it goes.</p>
+<p>I guess I&rsquo;m starting ths blog because I want to do more technical writing or something. Also, I&rsquo;ve started publishing packages and so I need a platform to promote them. We&rsquo;ll see how it goes.</p>
 </content:encoded>
     </item>
     
