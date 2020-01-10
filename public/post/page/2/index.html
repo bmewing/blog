@@ -16,7 +16,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.30" />
+        <meta name="generator" content="Hugo 0.62.2" />
         
 
 
@@ -27,7 +27,8 @@
             
         
 
-        <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Posts"/>
+        <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Posts"/>
 <meta name="twitter:description" content="Yet Another R Blog - but thuggish"/>
 <meta name="twitter:site" content="@pofigster"/>
 
@@ -35,25 +36,10 @@
 <meta property="og:description" content="Yet Another R Blog - but thuggish" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://thug-r.life/post/" />
+<meta property="og:updated_time" content="2020-01-10T00:00:00+00:00" />
 
-
-
-<meta property="og:updated_time" content="2018-01-26T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="Posts">
+        <meta itemprop="name" content="Posts">
 <meta itemprop="description" content="Yet Another R Blog - but thuggish">
-
-
         
 
         
@@ -78,14 +64,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-36686553-3', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36686553-3', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -205,11 +194,11 @@ ga('send', 'pageview');
 
                 
                     <li>
-                        <a href="http://thug-r.life/post/2019-09-04-r-user-salaries-stackoverflow/"><p>Analysis of R User Salaries from the 2019 StackOverflow Survey</p></a>
+                        <a href="http://thug-r.life/post/"><p>Posts</p></a>
                     </li>
                 
                     <li>
-                        <a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/"><p>A Tale of Three Assignment Operators</p></a>
+                        <a href="http://thug-r.life/post/2020-10-01-shared-birthdays/"><p>Shared Birthdays in Groups</p></a>
                     </li>
                 
             </ul>
@@ -225,6 +214,142 @@ ga('send', 'pageview');
         
             
         
+
+        
+            <article class="post">
+    <header>
+    <div class="title">
+        
+            <h2><a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/">A Tale of Three Assignment Operators</a></h2>
+        
+        
+            <p>A tale of the oddities and quirks of assigning values to variables in different environments</p>
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2019-04-03'>
+            April 3, 2019</time>
+        <span class="author">Mark Ewing</span>
+        
+            <p>7 minute read</p>
+        
+        
+    </div>
+</header>
+
+    
+
+    <p>The PlayersFirst, let’s meet the players.
+&lt;- The classic R assignment operator. It’s been around since the beginning ostensibly because there was actually a key for it back then.= The assignment operator used by nearly every other programming language in the world&lt;&lt;- The deep assignment operator, it exists only to commit sedition. And assign values to variables in other environments.-&gt; and -&gt;&gt; The weird cousin that nobody likes to sit next to at family reunions.</p>
+
+    <footer>
+        <ul class="actions">
+            <li><a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/" class="button big">Continue Reading</a></li>
+        </ul>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+
+                    
+
+                    
+                        Category
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categoriesr'>r</a></li>
+    
+</ul>
+
+    </footer>
+</article>
+
+        
+            <article class="post">
+    <header>
+    <div class="title">
+        
+            <h2><a href="http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/">Prep Your Hugo Blog for R-bloggers</a></h2>
+        
+        
+            <p>Configuration steps necessary to grow your audience through r-bloggers</p>
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2018-02-07'>
+            February 7, 2018</time>
+        <span class="author">Mark Ewing</span>
+        
+            <p>2 minute read</p>
+        
+        
+    </div>
+</header>
+
+    
+
+    <p>Get Ready for R-BloggersThere are lots of reasons to write a technical blog. Getting practice writing, thinking through ideas, etc. are all fulfilling reasons on their own. But life is always better with an audience. Well, not always. But for a blog it is. R-bloggers is a great platform to find an audience and share your writing with the world.
+If you’re writing with Hugo via blogdown though, there’s a hurdle you’ll need to clear.</p>
+
+    <footer>
+        <ul class="actions">
+            <li><a href="http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/" class="button big">Continue Reading</a></li>
+        </ul>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+
+                    
+
+                    
+                        Category
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categoriesmeta'>meta</a></li>
+    
+</ul>
+
+    </footer>
+</article>
 
         
             <article class="post">
@@ -255,151 +380,11 @@ ga('send', 'pageview');
 
     
 
-    <p>Official CRAN Launch
-Earlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette.</p>
+    <p>Official CRAN LaunchEarlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette.</p>
 
     <footer>
         <ul class="actions">
             <li><a href="http://thug-r.life/post/2018-01-26-mgsub-launched/" class="button big">Continue Reading</a></li>
-        </ul>
-        <ul class="stats">
-    
-        
-
-        
-        
-            <li>
-                
-                
-                    
-
-                    
-
-                    
-
-                    
-                        Category
-                    
-                
-            </li>
-        
-    
-
-    
-    
-        <li><a href='/categoriesr'>r</a></li>
-    
-</ul>
-
-    </footer>
-</article>
-
-        
-            <article class="post">
-    <header>
-    <div class="title">
-        
-            <h2><a href="http://thug-r.life/post/2018-01-25-one-year-of-trump-eo/">One Year of Trump Executive Orders</a></h2>
-        
-        
-            <p>How does Trump&#39;s use of Executive Orders in his first year line up?</p>
-        
-    </div>
-    <div class="meta">
-        
-            
-        
-
-        <time class="published"
-            datetime='2018-01-25'>
-            January 25, 2018</time>
-        <span class="author">Mark Ewing</span>
-        
-            <p>4 minute read</p>
-        
-        
-    </div>
-</header>
-
-    
-
-    <p>First Year
-Less than a week ago marked the end of Trump’s first year in office. Back in August I posted code on analyzing the issuing of Executive Orders. Today I’m just going to provide updated commentary.
-Notes
-The Federal Register takes time to actually publish Executive Orders. This window is variable but has a median value of 5 days. That’s why this post is coming out on the 25th instead of the 20th.</p>
-
-    <footer>
-        <ul class="actions">
-            <li><a href="http://thug-r.life/post/2018-01-25-one-year-of-trump-eo/" class="button big">Continue Reading</a></li>
-        </ul>
-        <ul class="stats">
-    
-        
-
-        
-        
-            <li>
-                
-                
-                    
-
-                    
-
-                    
-
-                    
-                        Category
-                    
-                
-            </li>
-        
-    
-
-    
-    
-        <li><a href='/categoriesr'>r</a></li>
-    
-</ul>
-
-    </footer>
-</article>
-
-        
-            <article class="post">
-    <header>
-    <div class="title">
-        
-            <h2><a href="http://thug-r.life/post/2018-01-10-safe-multiple-string-substitutions/">Safe, Multiple String Substitutions with mgsub::mgsub</a></h2>
-        
-        
-            <p>Solving an infrequent problem with a package.</p>
-        
-    </div>
-    <div class="meta">
-        
-            
-        
-
-        <time class="published"
-            datetime='2018-01-10'>
-            January 10, 2018</time>
-        <span class="author">Mark Ewing</span>
-        
-            <p>5 minute read</p>
-        
-        
-    </div>
-</header>
-
-    
-
-    <p>String substitutions
-Note - the package I wrote was originally inspired by a challenge a coworker tossed out. It also happened to provide a solution to this SO question which was really cool!
-Substitutions in strings are best handled with regular expressions which are an amazingly powerful and flexible tool. Regular expressions are a way of expressing patterns in strings. In the example below I want to find the four letters, “dopa” and replace them with “meta”.</p>
-
-    <footer>
-        <ul class="actions">
-            <li><a href="http://thug-r.life/post/2018-01-10-safe-multiple-string-substitutions/" class="button big">Continue Reading</a></li>
         </ul>
         <ul class="stats">
     
@@ -554,13 +539,13 @@ Substitutions in strings are best handled with regular expressions which are an 
                     <li>
                         <article>
                             <header>
-                                <h3><a href="http://thug-r.life/post/2019-09-04-r-user-salaries-stackoverflow/">Analysis of R User Salaries from the 2019 StackOverflow Survey</a></h3>
+                                <h3><a href="http://thug-r.life/post/">Posts</a></h3>
                                 
                                     
                                 
                                 <time class="published" datetime=
-                                    '2019-09-04'>
-                                    September 4, 2019</time>
+                                    '2020-01-10'>
+                                    January 10, 2020</time>
                             </header>
                         </article>
                     </li>
@@ -568,13 +553,13 @@ Substitutions in strings are best handled with regular expressions which are an 
                     <li>
                         <article>
                             <header>
-                                <h3><a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/">A Tale of Three Assignment Operators</a></h3>
+                                <h3><a href="http://thug-r.life/post/2020-10-01-shared-birthdays/">Shared Birthdays in Groups</a></h3>
                                 
                                     
                                 
                                 <time class="published" datetime=
-                                    '2019-04-03'>
-                                    April 3, 2019</time>
+                                    '2020-01-10'>
+                                    January 10, 2020</time>
                             </header>
                         </article>
                     </li>
@@ -613,7 +598,7 @@ Substitutions in strings are best handled with regular expressions which are an 
                         <article>
                             <header>
                                 <a href="/categories/r/">r</a>
-                                <span style="float:right;">11</span>
+                                <span style="float:right;">12</span>
                             </header>
                         </article>
                     </li>
