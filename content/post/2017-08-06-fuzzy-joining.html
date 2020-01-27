@@ -3,7 +3,6 @@ title: "Theta Joins in R"
 author: "Mark Ewing"
 description: "Learn how to do theta joins (fuzzy joins) in R six different ways."
 date: 2017-08-06
-categories: ["r"]
 type: "post"
 ---
 
@@ -27,7 +26,7 @@ on a.key = b.key</p>
 <p>How can we do ‘equi’ joins in R? I’ll present three methods below using three different packages, <code>data.table</code>, <code>dplyr</code>, and <code>sqldf</code>.</p>
 <div id="getting-ready" class="section level2">
 <h2>Getting ready</h2>
-<p>We’ll need to load some packages. Please note the versions I’m using. Also, the ‘live’ code I’m running is on my 64-bit Windows 7 laptop (8Gb RAM, i7-6600U CPU) in R 3.4.1</p>
+<p>We’ll need to load some packages. Please note the versions I’m using. Also, the ‘live’ code I’m running is on my 64-bit Windows 10 laptop (8Gb RAM, i7-6600U CPU) in R 3.5.0</p>
 <table>
 <thead>
 <tr class="header">
@@ -38,21 +37,26 @@ on a.key = b.key</p>
 <tbody>
 <tr class="odd">
 <td>data.table</td>
-<td>1.10.4</td>
+<td>1.11.4</td>
 </tr>
 <tr class="even">
 <td>sqldf</td>
-<td>0.4-10</td>
+<td>0.4-11</td>
 </tr>
 <tr class="odd">
 <td>dplyr</td>
-<td>0.5.0</td>
+<td>0.8.3</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>library(data.table)
 library(sqldf)
-library(dplyr)</code></pre>
+## Warning: package &#39;sqldf&#39; was built under R version 3.5.3
+## Warning: package &#39;gsubfn&#39; was built under R version 3.5.3
+## Warning: package &#39;proto&#39; was built under R version 3.5.1
+## Warning: package &#39;RSQLite&#39; was built under R version 3.5.3
+library(dplyr)
+## Warning: package &#39;dplyr&#39; was built under R version 3.5.3</code></pre>
 <div id="equijoin-data" class="section level3">
 <h3>equijoin data</h3>
 <p>Two quick tables to demonstrate equijoin behavior in each ecosystem. Here we have some customer id’s in two tables, one which has purchases (df1) and another with their location. I’ll write everything in a function to enable easy benchmarking and profiling.</p>
@@ -91,11 +95,11 @@ dt_left = function(){
 }
 dt_left()
 ##    CustomerId          State    Product
-## 1:          1             NA     Laptop
+## 1:          1           &lt;NA&gt;     Laptop
 ## 2:          2      Tennessee     Laptop
 ## 3:          3      Tennessee     Tablet
 ## 4:          4      Tennessee     Tablet
-## 5:          5             NA Smartphone
+## 5:          5           &lt;NA&gt; Smartphone
 ## 6:          6 North Carolina Smartphone</code></pre>
 <p>I think this sytax is a bit backwards since Y[X] produces a left join of Y onto X meaning you put the left anchors on the right… anyway.</p>
 </div>
@@ -177,11 +181,11 @@ microbenchmark(base = baseR_left(),
                dplyr = dplyr_left(),
                times = 100)
 ## Unit: microseconds
-##   expr       min         lq      mean     median        uq       max neval
-##   base   454.734   572.8845   727.651   627.5840   806.451  2958.868   100
-##     dt   634.513   889.5935  1030.685   944.8395  1140.117  2257.259   100
-##  sqldf 13749.219 15019.8840 17608.912 16303.4945 18693.672 67579.903   100
-##  dplyr   940.464  1072.1070  1343.551  1134.6470  1511.889  5295.988   100</code></pre>
+##   expr       min        lq      mean     median        uq       max neval cld
+##   base   548.602   670.702   842.999   718.5015  1032.251  2141.200   100  a 
+##     dt   807.002  1100.651  1379.426  1204.6010  1650.751  3164.802   100  a 
+##  sqldf 20937.301 23652.301 27614.825 25711.2005 28242.851 66439.100   100   b
+##  dplyr  1106.402  1321.050  1667.317  1415.2510  1834.452  5005.301   100  a</code></pre>
 <div id="results" class="section level4">
 <h4>Results</h4>
 <p>Base R has the smallest memory footprint (duh) and performs pretty well. <code>merge</code> is pretty flexible and can do some cool stuff. dplyr has the fastest performance on this toy set and a small memory footprint. data.table takes about twice as long as dplyr and is ~10x the memory footprint. sqldf is slow and bloated - but what else could you expect from a package that is literally spinning up a database in the background? It’s the price you pay to use SQL in R.</p>
@@ -259,9 +263,10 @@ sqldf_fuzzy()
 </div>
 <div id="fuzzyjoin" class="section level2">
 <h2>fuzzyjoin</h2>
-<p>Here I’ll introduce a new package aptly named <code>fuzzyjoin</code> (I’m using version 0.1.2). This adds ‘fuzzy’ versions of all the <code>dplyr</code> joins and is fully compatible in the <code>tidyverse</code>. In addition to providing both tables we need to provide match functions which provide logical indicators of fuzzy matching. What’s interesting is that each row is returned twice which must be a function of providing two match functions.</p>
+<p>Here I’ll introduce a new package aptly named <code>fuzzyjoin</code> (I’m using version 0.1.5). This adds ‘fuzzy’ versions of all the <code>dplyr</code> joins and is fully compatible in the <code>tidyverse</code>. In addition to providing both tables we need to provide match functions which provide logical indicators of fuzzy matching. What’s interesting is that each row is returned twice which must be a function of providing two match functions.</p>
 <p>This is also the first time I use the <code>magrittr</code> pipes (%&gt;%). If you’re not familiar with them I’d suggest learning about them because they’re great and I have stickers of them on my truck and motorcycle.</p>
 <pre class="r"><code>library(fuzzyjoin)
+## Warning: package &#39;fuzzyjoin&#39; was built under R version 3.5.3
 startMatch = function(x,y){
   x &lt;= y
 }
@@ -281,7 +286,7 @@ fuzzy_fuzzy()
 </div>
 <div id="pure-tidyverse" class="section level2">
 <h2>Pure tidyverse</h2>
-<p>I’m a fan of limiting the number of packages your code relies upon. Adding <code>fuzzyjoin</code> to handle this problem feels unnecessary (it provides great value in other applications because of the flexibility of the match functions) so I’d like to try and avoid it but also leverage the tidyverse. So I’m going to load the <code>tidyr</code> package (I’m using version 0.6.1) which is a solid compliment to <code>dplyr</code> and does lots of useful stuff. I know it looks like I’m just swapping out one package for another, but given the general practicality of tidyr compared to fuzzyjoin, I think it’s OK.</p>
+<p>I’m a fan of limiting the number of packages your code relies upon. Adding <code>fuzzyjoin</code> to handle this problem feels unnecessary (it provides great value in other applications because of the flexibility of the match functions) so I’d like to try and avoid it but also leverage the tidyverse. So I’m going to load the <code>tidyr</code> package (I’m using version 0.8.1) which is a solid compliment to <code>dplyr</code> and does lots of useful stuff. I know it looks like I’m just swapping out one package for another, but given the general practicality of tidyr compared to fuzzyjoin, I think it’s OK.</p>
 <p>tidyr adds a cross_join function (not present in dplyr!!) which has a funky problem of not adjusting the names of duplicate columns. This impacts the ability of dplyr and other things to work on the resulting tibble (data.frame). So, I manually adjust the names using <code>names&lt;-</code>, filter down to what I want and then select the columns. The approach is identical to the base R code, just using the tidyverse.</p>
 <pre class="r"><code>library(tidyr)
 tidy_fuzzy = function(){
@@ -342,20 +347,20 @@ tidy_fuzzy = function(){
                tidyverse = tidy_fuzzy(),
                times = 100)
 ## Unit: microseconds
-##          expr        min          lq        mean      median         uq
-##          base    420.821    503.4165    568.9828    550.0935    591.300
-##  base_between    434.313    532.5900    681.3389    587.4715    631.413
-##            dt   1203.750   1398.1150   1622.7250   1516.4475   1681.822
-##         sqldf  13554.124  14266.3095  16467.4464  14979.7710  16349.442
-##     fuzzyjoin 102653.099 110137.2410 120270.8023 113309.8015 122218.131
-##     tidyverse  11972.950  12768.6420  13838.1710  13226.6585  14376.438
-##         max neval
-##    1261.367   100
-##    6209.831   100
-##    4577.968   100
-##   58999.404   100
-##  217263.831   100
-##   26306.721   100</code></pre>
+##          expr       min         lq       mean     median        uq        max
+##          base   526.701   667.2005   972.9729   836.8515  1058.001   6870.201
+##  base_between   585.300   711.1505  1052.8059   975.5010  1193.802   4877.101
+##            dt  1839.401  2091.8010  2769.4180  2428.2005  2985.002   9181.001
+##         sqldf 20464.601 24900.9005 32261.5380 28242.0010 34966.951  75240.401
+##     fuzzyjoin 34239.301 41375.1010 50601.5500 44211.1515 51053.701 152096.201
+##     tidyverse  3239.801  3898.6015  5429.9969  4823.4510  6344.301  12026.900
+##  neval  cld
+##    100 a   
+##    100 a   
+##    100 ab  
+##    100   c 
+##    100    d
+##    100  b</code></pre>
 <div id="results-1" class="section level4">
 <h4>Results</h4>
 <p>Both base R functions have no memory footprint and actually run the fastest with the <code>%between%</code> function being a touch slower but not enough to ignore it’s improved readability. <code>fuzzyjoin</code> has a large footprint and runs the slowest being in the same ballpark as <code>sqldf</code> - neither of these are great choices for the task we have. <code>data.table</code> and <code>tidyverse</code> are in the same ballpark, but are substantially slower than base R. BUT this was a very small toy problem. Let’s do something more meaningful.</p>
@@ -405,58 +410,18 @@ while(!stop){
                base_between = baseR_fuzzy_between(),
                dt = dt_fuzzy(),
                sqldf = sqldf_fuzzy(),
-               fuzzyjoin = fuzzy_fuzzy(),
+               #fuzzyjoin = fuzzy_fuzzy(),
                tidyverse = tidy_fuzzy(),
-               times = 1)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th>Method</th>
-<th>Eval Time (ms)</th>
-<th>Scale Up</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Base</td>
-<td>42,564</td>
-<td>67,669</td>
-</tr>
-<tr class="even">
-<td>Base (%between%)</td>
-<td>53,239</td>
-<td>81,280x</td>
-</tr>
-<tr class="odd">
-<td>data.table</td>
-<td>17</td>
-<td>9x</td>
-</tr>
-<tr class="even">
-<td>sqldf</td>
-<td>1,296</td>
-<td>798x</td>
-</tr>
-<tr class="odd">
-<td>fuzzyjoin</td>
-<td>355,983</td>
-<td>16,100x</td>
-</tr>
-<tr class="even">
-<td>tidyverse</td>
-<td>65,113</td>
-<td>38,301x</td>
-</tr>
-</tbody>
-</table>
+               times = 3)</code></pre>
+<p>Method | Small Eval Time (ms) | Big(ger) Eval Time (ms) | Scale Up ——-|————– ——–|————————-|——— Base | 1.2 | 102,039 | 85,000x Base (%between%) | 1.3 | 93,731 | 72,100x data.table | 3.8 | 17 | 4x sqldf | 47 | 2,501 | 53x fuzzyjoin | 75 | 470,068 | 6,267x tidyverse | 7.2 | 83,413 | 11,585x</p>
 <p>The ‘scale up’ column is simply dividing the execution time of the 1000x sentence (3000x entities) data by the execution time of the original data. I find the results to be somewhat surprising.</p>
 <div id="results-2" class="section level4">
 <h4>Results</h4>
 <ul>
-<li><code>data.table</code> is the clear winner overall - it was middle of the pack on the toy data and scales better than the data.</li>
-<li><code>sqldf</code> has a lot of overhead and ran (relatively) poorly on the toy problem but scales very well with the larger data.</li>
-<li><code>fuzzyjoin</code> took nearly 6 minutes to run where the next slowest was closer to a minute. This is not a good choice for the type of fuzzy joining we’re doing.</li>
-<li>Base R (both versions) and <code>tidyverse</code> were in the same rough ballpark, ~1 minute with ridiculous scaling problems.</li>
+<li><code>data.table</code> is the clear winner overall - it was on fast end of the toy data and scales better than the data.</li>
+<li><code>sqldf</code> has a lot of overhead and ran (relatively) poorly on the toy problem but scales well with the larger data.</li>
+<li><code>fuzzyjoin</code> took nearly 8 minutes to run where the next slowest was closer to 2 minutes. Even though the scaling factor is an order of magnitude smaller than the worst, the total time involved is absurd. This is not a good choice for the type of fuzzy joining we’re doing.</li>
+<li>Base R (both versions) and <code>tidyverse</code> were in the same rough ballpark, ~1.5 minutes with ridiculous scaling problems.</li>
 </ul>
 </div>
 </div>

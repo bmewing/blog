@@ -3,7 +3,6 @@ title: "Analysis of R User Salaries from the 2019 StackOverflow Survey"
 author: "Mark Ewing"
 date: "2019-09-04"
 description: "a.k.a. Am I getting paid enough?"
-categories: ["r"]
 type: "post"
 ---
 
@@ -11,18 +10,17 @@ type: "post"
 
 <div id="intro" class="section level2">
 <h2>Intro</h2>
-<p>Saw an interesting analysis pop up in my Twitter feed, written by (Tomaž Weiss)[<a href="https://tomazweiss.github.io/" class="uri">https://tomazweiss.github.io/</a>] and (posted on KDNuggets)[<a href="https://www.kdnuggets.com/2019/08/r-users-salaries-2019-stackoverflow-survey.html" class="uri">https://www.kdnuggets.com/2019/08/r-users-salaries-2019-stackoverflow-survey.html</a>] analyzing the 2019 StackOverflow survey data to look at salaries of R Users. As is often the case, my brain went down a rabbit trail of new questions to ask.</p>
+<p>Saw an interesting analysis pop up in my Twitter feed, written by <a href="https://tomazweiss.github.io/">Tomaž Weiss</a> and <a href="https://www.kdnuggets.com/2019/08/r-users-salaries-2019-stackoverflow-survey.html">posted on KDNuggets</a> analyzing the 2019 StackOverflow survey data to look at salaries of R Users. As is often the case, my brain went down a rabbit trail of new questions to ask.</p>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
-<p>The data is available in a zip file (from here)[<a href="https://insights.stackoverflow.com/survey" class="uri">https://insights.stackoverflow.com/survey</a>], I uploaded just the results to an S3 bucket to make my analysis reproducible (though I would prefer if you downloaded from the original source instead of my bucket so I don’t have to pay for it).</p>
+<p>The data is available in a zip file <a href="https://insights.stackoverflow.com/survey">from here</a>, I uploaded just the results to an S3 bucket to make my analysis reproducible (though I would prefer if you downloaded from the original source instead of my bucket so I don’t have to pay for it).</p>
 <pre class="r"><code>library(data.table)
-library(ggplot2)
-## Warning: package &#39;ggplot2&#39; was built under R version 3.5.1
-library(countrycode)
-## Warning: package &#39;countrycode&#39; was built under R version 3.5.3
-
-survey = fread(&quot;https://thug-r-data-share.s3.amazonaws.com/survey_results_public.csv&quot;)</code></pre>
+library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.5.1</code></pre>
+<pre class="r"><code>library(countrycode)</code></pre>
+<pre><code>## Warning: package &#39;countrycode&#39; was built under R version 3.5.3</code></pre>
+<pre class="r"><code>survey = fread(&quot;https://thug-r-data-share.s3.amazonaws.com/survey_results_public.csv&quot;)</code></pre>
 <p>There are a lot of columns and a lot of responses (88k responses!). This is the same filtering that Tomaž applied, just done with <code>data.table</code> instead of <code>dplyr</code>. I also chunked some of it out differently. This reduces the data to just over 3k responses, each representing an employed developer/coder who uses R.</p>
 <pre class="r"><code>LANGUAGE = &quot;^R$|;R$|^R;|;R;&quot;
 BRANCH = c(&quot;I am a developer by profession&quot;,

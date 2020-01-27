@@ -3,7 +3,6 @@ title: "Installing Your First Spark Cluster"
 author: "Mark Ewing"
 description: "Learn how to install and configure a small spark cluster on Digital Ocean"
 date: 2016-03-20
-categories: ["spark","cloud"]
 type: "post"
 ---
 
@@ -127,7 +126,7 @@ type: "post"
 
 </div>
 <p>This dumps us to the default scala interface so we can do a quick test to make sure it works. Apache provides some <a href="https://spark.apache.org/examples.html">basic examples</a> of how Spark works. We’ll estimate pi with this code:</p>
-<pre class="eval"><code>val NUM_SAMPLES = 10000
+<pre eval="FALSE"><code>val NUM_SAMPLES = 10000
 val count = sc.parallelize(1 to NUM_SAMPLES).map{i =&gt;
  val x = Math.random()
  val y = Math.random()
@@ -141,7 +140,7 @@ println(&quot;Pi is roughly &quot; + 4.0 * count / NUM_SAMPLES)</code></pre>
 </div>
 <pre class="r"><code>nsamp = 10000
 cat(&quot;Pi is roughly&quot;,4*sum((runif(nsamp)^2+runif(nsamp)^2) &lt;= 1)/nsamp)
-## Pi is roughly 3.1736</code></pre>
+## Pi is roughly 3.1388</code></pre>
 <p>So is this the example that proves Spark is the best? Nope. But now we have an actual cluster of Spark nodes.</p>
 </div>
 </div>

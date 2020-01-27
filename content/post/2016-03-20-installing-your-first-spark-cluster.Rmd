@@ -1,0 +1,155 @@
+---
+title: "Installing Your First Spark Cluster"
+author: "Mark Ewing"
+description: "Learn how to install and configure a small spark cluster on Digital Ocean"
+date: 2016-03-20
+type: "post"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+# Installing your first spark cluster
+
+So, if you’re like me you’ve been using a lot of traditional tools for data science/analytics/whatever you want to call it.  R is great, it’s flexible, it’s powerful but it’s slow and memory constrained.  At work I’ve got a VM with 16Gb and one call can increase it.  At home I’ve got an 8 Gb machine and honestly, it works fine for what I do here.  But sometimes data is bigger.  Sometimes you want to go faster.  That’s what Apache Spark is supposed to bring to the table.  They talk about being 100x faster than Hadoop (which I’ll admit I’ve never used) but that’s not an erstwhile comparison to R and what R can do in memory.  I’ve been wanting to play around with Spark, especially because of SparkR and the supposed ease of combining the two but there were a big stumbling block.
+
+### Spark is all about distributed computing
+
+In the AWS mindset of hardware, everything is little chunks and you just grab as many little chunks as you need to get things done.  This is the opposite of the mainframe mindset which is to have one HUGE chunk.  R, by default, is a mainframe mindset.  It uses only local resource and will greedily hog everything it can.  This isn’t infinitely scalable.  Even though 64-bit machines/OSs are supposed to bring theoretically infinite RAM support, the OS and even the processor on a computer will limit what can be installed (and this is without considering how many slots are in a motherboard).  Sure, a server is way more scalable than a home PC, but still, you’re going to hit a wall with R eventually.  Spark is designed to work best with the AWS mindset – lots of smaller machines all cluster together to provide the right amount of power.  Now, this isn’t infinitely scalable either because I think Spark starts to choke on 1000+ nodes (servers).  But if you start using bigger servers for your nodes, it’s not going to be an issue.
+
+So why is this distributed computing idea a stumbling block?  There are lots of guides for installing Spark on your local machine which I guess is fine for practicing, learning Scala, whatever.  But I don’t like half measures, I wanted a cluster to I could actually see what that was like.  There were no guides that, at least none that someone with my background could understand.
+
+### Solution
+
+Just do it myself and keep trying till I figured it out.  Also, Stack Overflow and some barely helpful comments.
+
+## Walkthrough
+
+I’m going to detail how to do this using Digital Ocean.  Digital Ocean is a great service, you can spin up servers for fixed monthly costs which all use SSD drives so they’re fast.  Their API is easy to navigate (vs AWS) and if you click [this link](https://m.do.co/c/92b8439f5af7) to sign up with then, you’ll get $10 for free which is enough to run this example for about 5 days (f.d. this is my referral link so if you do spend money with then, I’ll get a kickback).  You’ll need to make an account to follow along.
+
+### Build the servers
+
+Staring from Digital Ocean, we need to order 3 servers (you could order more, but 3 is the minimum number to have a real cluster).  I’m going to order Ubuntu 14.04, \$20/mo servers with Private Networking and use my computers SSH Key.  If you don’t have an SSH Key you should [really, really make one](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets).  Why Ubuntu?  Because I’m most familiar with it and apt-get is amazing.  Why \$20/month?  2 CPUs is nice because our cluster will have 4 to work with and the extra Gb of RAM plus HD space means we’ll need less swap.  Pick the region most appropriate for you, New York 3 is great.  Make sure you check the box to use private networking as that’s the only way I’ve gotten this to work.  Finally, increment the number of clusters to three and name one of them spark-master and the other two spark-worker-01 and spark-worker-02 so we can remember which is which.  Hit create and wait just a minute for them to be created.
+
+![](/img/2016-03-20-step-01.png){width=400px}
+
+![](/img/2016-03-20-step-02.png){width=400px}
+
+![](/img/2016-03-20-step-03.png){width=400px}
+
+### Install needed software
+
+If you’re on Windows, you’ll need to [install Putty](https://the.earth.li/~sgtatham/putty/latest/x86/putty-0.67-installer.msi). If you’re on a Mac you can just use your Terminal and if you’re on linux, you already know what you’re doing.
+
+### Connect to your servers
+
+I’m going to assume you made an SSH key for the entire guide, if you didn’t, just know you’ll need to use the password Digital Ocean emailed you.  I’m on a Mac, so everything is going to be from the Terminal there.  If you’re using Putty, you may need to do some extra work, sorry.
+
+To connect to the servers, we’ll type `ssh root@IP_ADDRESS_HERE` where IP_ADDRESS_HERE is the IP address of spark-master we get from the Digital Ocean console.  You’ll get prompted if this is really a server you want to connect to  and the answer is yes – you own it after all.
+
+![](/img/2016-03-20-step-04.png){width=400px}
+
+If everything worked OK, you’ll see something like this:
+
+![](/img/2016-03-20-step-05.png){width=400px}
+
+We need to do a few things to this server and, this is important, both of the worker servers as well.  My suggestion is to have three windows open, connected to each server and just do each step in serial.
+
+1. Prevent root from logging in with a password (security and only if you used an SSH key)
+2. Update the package repository
+3. Upgrade all installed packages
+4. Create swap space
+5. Install Java
+6. Install git
+7. Install Scala
+8. Install sbt
+9. Build Spark
+
+To prevent root from logging in with a password, we need to edit the file `/etc/ssh/sshd_config` which we do with `nano /etc/ssh/sshd_config`
+
+Go to the line under #Authentication and change the line which reads `PermitRootLogin yes` to `PermitRootLogin without-password` then press Ctrl-O (thats the letter, not the number) to save and Ctrl-X to exit the nano editor.
+
+![](/img/2016-03-20-step-06.png){width=400px}
+
+Now, let’s update and upgrade all the software running on the box. This is where Ubuntu and apt-get shine.  Simply type apt-get update and then when that’s done apt-get upgrade to get everything up to date.  You’ll be prompted after the upgrade step if you want to consume the disk space and you should answer yes.
+
+Now we need to create some swap space.  Swap space is hard disk space that’s reserved to act like RAM when we run out of RAM.  Building Spark will require more than 5Gb which would have cost us $80/month to get.  Swap is traditionally slow because spinning hard disks are slow input/output devices.  SSD drives are almost as fast as RAM which is great.  Digital Ocean doesn’t like it because it wears out the drives faster but we’ll configure ours to only use when necessary so we don’t blow away the hardware.  We know we need a little over 5Gb but to be safe, let’s make 10Gb of swap space.  Type `fallocate -l 10G /swapfile` to make a file called swapfile in the root of your server of size 10Gb.  Then we need to modify the permissions on the file so only the system can read/write from it – don’t want hackers seeing what’s in our swap.  So we’ll type `chmod 600 /swapfile` and hit enter.  Then we need to make this file a swap file so we type `mkswap /swapfile` followed by `swapon /swapfile` to activate it.
+
+![](/img/2016-03-20-step-07.png){width=400px}
+
+Almost done!  This is just temporary, it will only last while the server stays on.  We want to make it permanent so we’ll edit a file using `nano /etc/fstab` and at the bottom of the file we’ll add the line `/swapfile   none   swap   sw   0   0` (these are the numbers, not the letters).
+
+![](/img/2016-03-20-step-08.png){width=400px}
+
+Finally, to be good customers, we’re going to modify the ‘swappiness’ of our swap to be a low number (0 would mean “never use it” and 100 would mean “use it first”).  We’ll edit a file using `nano /etc/sysctl.conf` and add `vm.swappiness=10` to the last line.  Ctrl-O to save and Ctrl-X to quit.
+
+![](/img/2016-03-20-step-09.png){width=400px}
+
+We’ll reboot the server at this point to make sure everything takes effect.  Simply type `reboot` into the terminal.  It will disconnect you from the server – wait a minute and then reconnect with `ssh root@IP_ADDRESS_HERE` (should be as easy as pressing the up arrow on your keyboard and enter). We can type in `cat /proc/sys/vm/swappiness` to see the current swappiness value (should be 10 if things worked OK) and we can type `free -m` to make sure our 10Gb of RAM are there.
+
+![](/img/2016-03-20-step-10.png){width=400px}
+
+Everything looks good on my system!  Make sure it’s done on all three of your servers before proceeding.
+
+Now we need to install Java.  Official Oracle Java is hard to install on linux.  So we won’t.  We’ll install the default JDK (Java Development Kit) and JRE (Java Runtime Environment) which is an open source version of Java.  It does everything Oracle Java does, just more open source.  Type `apt-get install default-jdk default-jre` into the console to install both of these.  It will take a minute.
+
+Now we need to install git.  Git is a source control system and when building Spark we’ll need it.  Type `apt-get install git` to install it.
+
+To install Scala, we could just type `apt-get install scala` but we wouldn’t be getting the latest version.  This is true of git and Java too, but they’re less important to have the newest version.  If you visit the [Scala archive page](http://www.scala-lang.org/files/archive/?C=M;O=D) you should look for the newest file ending in .deb (this is a Debian style package which Ubuntu can install).  At the time of this writing, it’s 2.11.8.  Right click on the link and copy the link address.  In my case, that address is http://www.scala-lang.org/files/archive/scala-2.11.8.deb
+
+Back in our server we’re going to download that file.  By default when we login, we’re in the home folder of the root user, a fine place to download files.  So, we’ll type `wget http://www.scala-lang.org/files/archive/scala-2.11.8.deb` to download the file to our current folder (feel free to replace the address with the newest version).  When it’s done, we’ll install it using `dpkg -i scala-2.11.8.deb`. Note, if the file you downloaded has a different name, this won’t work.  So, type `dpkg -i sc` and hit tab, the file name will fill in for you.
+
+![](/img/2016-03-20-step-11.png){width=400px}
+
+Now we need to install sbt which is a way for Scala to build things.  It’s a lot harder to find the newest version of this, so just use `wget https://bintray.com/artifact/download/sbt/debian/sbt-0.13.11.deb` to get the most recent as of this writing.  Install it with `dpkg -i sbt-0.13.11.deb`
+
+Now we’re ready to install Spark.  Finally!  Go to the [Spark download page](https://spark.apache.org/downloads.html) and select the newest version of source code (at the time of writing, 1.6.1) and then click the link provided.  On the next page, right click on one of the links and copy the address.
+
+![Step 12a](/img/2016-03-20-step-12.png){width=400px}
+![](/img/2016-03-20-step-12b.png){width=400px}
+
+Take your copied address and go back to your server and type `wget COPIED_LINK` to download the file.  Now, this compressed file, so we need to uncompress it.  We can do this with `tar -xvf spark-1.6.1.tgz` which will produce a new folder named spark-1.6.1 with everything we need inside.  We can move into the folder by typing `cd spark-1.6.1` and then we can build Spark by typing `sbt/sbt assembly` (note, in the screenshot I typed sbt/sbt build which is wrong)
+
+![Step 13a](/img/2016-03-20-step-13.png){width=400px}
+![](/img/2016-03-20-step-13b.png){width=400px}
+
+One thing that’s weird here is that Spark apparently wants a specific version of sbt so it downloads sbt 0.13.7 suggesting that as long as you have one version of sbt, it will work and so there’s no pressure to get the latest version.  This is going to take a long time (15+ minutes) so go take a break, stretch your legs and I’ll see you back here in a bit.
+
+### Starting Spark in Standalone Cluster Mode
+
+Spark has a few options for running as a cluster – it can use YARN or Mesos (whatever those are) or it can run in what is called Standalone mode.  This may sound like “not a cluster mode” but don’t worry – it is a cluster.
+
+We need to get some additional information now about our server, specifically, our private IP address.  All servers have public IP addresses if they’re connected to the internet, but only by activating the private networking when we created our servers can we more easily allow them to speak to each other.  In Digital Ocean, from the droplets page, if you click on one of the servers (you’ll need to do this for all three) you’ll get to the full dashboard.  From there, click on ‘Settings’ and you should see the public and private IP addresses of your servers.
+
+
+![](/img/2016-03-20-step-14b.png){width=400px}
+
+Copy the private IP address because we need it for starting up the master node.  First, make sure your current location is /root/spark-1.6.1 which you can do by typing in pwd – if you’re not here, use `cd /root/spark-1.6.1/` to get there otherwise these commands won’t work.  To start the master node (which must be done first) we will type `./sbin/start-master.sh -h MASTER_PRIVATE_IP` which will print out a line saying it’s starting and then return you to the command prompt.  Once this is done, we can start each of the worker nodes.  On those nodes, run `./sbin/start-slave.sh spark://MASTER_PRIVATE_IP:7077 -m 10g -h WORKER_PRIVATE_IP` – what does this command do?  We’re creating a worker and giving it the location of the master – that’s why we provide the master’s private IP – the :7077 is the default port the master listens on.  You could change this but we’re not going to here.  -m 10g is saying the worker has 10Gb of RAM available.  Why are we specifying this?  My default, the worker will make the system memory -1Gb available – in our case, 1Gb.  But we setup SWAP so it could use it if necessary, so we’ll allocate it.  Finally, -h WORKER_PRIVATE_IP is ensuring the worker node will start up with the address it has and not under some random default.
+
+Now we should have a cluster with one master and two nodes.  We can test that it works by launching the Spark shell on the master node with `./bin/spark-shell –master local –executor-memory 4g` which says we’re connecting to a master which is the local machine and we want each worker to provide 4Gb of memory for our use.
+
+![](/img/2016-03-20-step-15.png){width=400px}
+
+This dumps us to the default scala interface so we can do a quick test to make sure it works.  Apache provides some [basic examples](https://spark.apache.org/examples.html) of how Spark works.  We’ll estimate pi with this code:
+
+```{eval=FALSE}
+val NUM_SAMPLES = 10000
+val count = sc.parallelize(1 to NUM_SAMPLES).map{i =>
+ val x = Math.random()
+ val y = Math.random()
+ if (x*x + y*y <= 1) 1 else 0
+}.reduce(_ + _)
+println("Pi is roughly " + 4.0 * count / NUM_SAMPLES)
+```
+
+Just copy and paste the above code into the scala terminal and you should get something like:
+
+![](/img/2016-03-20-step-16.png){width=400px}
+
+```{r}
+nsamp = 10000
+cat("Pi is roughly",4*sum((runif(nsamp)^2+runif(nsamp)^2) <= 1)/nsamp)
+```
+
+So is this the example that proves Spark is the best?  Nope.  But now we have an actual cluster of Spark nodes.

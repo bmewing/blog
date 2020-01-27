@@ -1,0 +1,161 @@
+---
+title: "Shared Birthdays in Groups"
+author: "Mark Ewing"
+description: "a.k.a. You are not as special as you think you are..."
+date: 2020-01-10
+type: "post"
+---
+
+
+
+<div id="intro" class="section level2">
+<h2>Intro</h2>
+<p>For the last several years I’ve participated in a reading challenge with a few family members. It’s a custom derivative of the <a href="https://www.popsugar.com/">POPSUGAR</a> list and in general it’s great for encouraging reading outside of my normal choices (though I suppose I’ve been doing it long enough that maybe I have broader taste now?). This year one item is to read a book published the month of your birthday. As I was researching options, my 9 year old started trying to estimate the probability that a book was published <em>on</em> your birthday. This led to a great discussion about assumptions in these types of calculations and eventually settled on the topic of the required group size needed to have a 50% chance of at least two people sharing a birthday. He originally proposed 366 but quickly realized that would be a 100% chance. He settled on 182 or 183 (half of 365) which intuitively makes sense. When I told him it was just 23 he couldn’t believe it.</p>
+</div>
+<div id="the-math" class="section level2">
+<h2>The Math</h2>
+<p>The math is a bit beyond what he’s been learning, but I got to introduce basic combinatorics and critical thinking with probabilities. The first thing we needed to cover was how many pairs there are in a group, and then how to easily arrive at the probability of at least one pair sharing a birthday.</p>
+<div id="pairs-in-a-group" class="section level3">
+<h3>Pairs in a Group</h3>
+<p>Since order doesn’t matter when selecting pairs from a group to compare birthdays, we need to know how many ways there are to choose 2 from a group of <code>N</code> people. <code>N choose m</code> is <code>N!/((N-m)!*m!)</code> which is implemented in the R function <code>choose(N, m)</code>. So, for a group of 23 people there are 253 possible pairs.</p>
+<pre class="r"><code>choose(23, 2)</code></pre>
+<pre><code>## [1] 253</code></pre>
+</div>
+<div id="probabilities" class="section level3">
+<h3>Probabilities</h3>
+<p>Next we discussed independence in probabilities. Because the probability that a pair of people share a birthday isn’t affected by the shared state of any other pair (that is, if Dick and Jane share a birthday, that has no bearing on if Tom and Sue share a birthday), we have independence. This makes calculating the probability of <code>A &amp; B</code> much easier.</p>
+<p>The hardest part was understanding the easy way to calculate the probability that <em>at least one</em> pair would share a birthday. In a simple case of 3 people, that would be <code>AB | AC | BC | (AB &amp; AC) | (AB &amp; BC) | (AC &amp; BC) | (AB &amp; AC &amp; BC)</code> which is a lot of work. But, the antithesis of <em>at least one</em> is <em>none</em>, or <code>P(at least one) = 1-P(none)</code>. The probability of none is easy in this case because each pair has a <code>364/365</code> probability of not sharing a birthday. Because these probabilities are independent, we can easily calculate the probability.</p>
+<pre class="r"><code>1-(364/365)^choose(23, 2)</code></pre>
+<pre><code>## [1] 0.5004772</code></pre>
+</div>
+</div>
+<div id="reality" class="section level2">
+<h2>Reality</h2>
+<p>The math, while involved, is ultimately straightfoward. This is because we’ve made a few of key assumptions. First, we’re ignoring leap years and all the people who are born on February 29, so we already know the math isn’t perfect. Second, we’re assuming that birthdays are uniformly distributed across the days of the year. There are more assumptions, but these are the big ones. So, how does it hold up? I suggested to my son that he could work with his teachers to check in each class at his school in how many instances there are shared birthdays and look at average class size to see if the probabilities we calculate are reflected acurately in reality.</p>
+<p>I found a dump from a large dataset that included birthday (month and day only) and the individuals were organized by functional group. I realized I could use this to assess how well the probabilities held up.</p>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>I have pre-agreggated the data so the only information is the size of the group and the number of unique birthdays in the first file and the count of individuals with each birthday in the second. I’m not sure where the original data came from and I don’t want to be leaking PII.</p>
+<pre class="r"><code>library(data.table)
+library(ggplot2)
+library(Hmisc)
+
+shared_birthdays = fread(&quot;https://thug-r-data-share.s3.amazonaws.com/birthday_data.txt&quot;)
+birthday_counts = fread(&quot;https://thug-r-data-share.s3.amazonaws.com/birthday_data_dist.txt&quot;)</code></pre>
+<p>Here’s a sample of the data.</p>
+<pre class="r"><code>head(shared_birthdays)</code></pre>
+<pre><code>##    group_size unique_birthdays
+## 1:          5                5
+## 2:          6                6
+## 3:          3                3
+## 4:          5                5
+## 5:          2                2
+## 6:          7                7</code></pre>
+<pre class="r"><code>head(birthday_counts)</code></pre>
+<pre><code>##    birthday count
+## 1:      101    53
+## 2:      102    48
+## 3:      103    41
+## 4:      104    46
+## 5:      105    42
+## 6:      106    58</code></pre>
+</div>
+<div id="shared-birthdays" class="section level3">
+<h3>Shared Birthdays</h3>
+<p>To find the proportion of shared birthdays for each observed group size, we can use <code>data.table</code>. First we’ll create a new logical column that checks if there are shared birthdays by comparing the number of <code>unique_birthdays</code> to the group size (if it’s not the same, there’s a shared birthday). Next, we’ll aggregate the observed proportion of groups with at least one shared birthday by <code>group_size</code> and also count how many groups of a particular size we observed.</p>
+<pre class="r"><code>shared_birthdays[, shared := unique_birthdays &lt; group_size]
+shared = shared_birthdays[order(group_size), list(observed = mean(shared), n = .N), by=group_size]
+head(shared)</code></pre>
+<pre><code>##    group_size   observed   n
+## 1:          1 0.00000000 170
+## 2:          2 0.00000000 177
+## 3:          3 0.02222222 180
+## 4:          4 0.04081633 196
+## 5:          5 0.01621622 185
+## 6:          6 0.04712042 191</code></pre>
+<p>One thing to note is there are groups of size 1, so we want to remove those. Additionally, we should calculate the expected proportion and include some confidence bands.</p>
+<pre class="r"><code>shared = shared[group_size &gt; 1]
+shared[, expected := (1-(364/365)^choose(group_size, 2))]
+conf = binconf(shared$observed * shared$n, shared$n, alpha=0.1)
+set(shared, j=&quot;lower&quot;, value=conf[, &quot;Lower&quot;])
+set(shared, j=&quot;upper&quot;, value=conf[, &quot;Upper&quot;])
+head(shared)</code></pre>
+<pre><code>##    group_size   observed   n    expected       lower      upper
+## 1:          2 0.00000000 177 0.002739726 0.000000000 0.01505543
+## 2:          3 0.02222222 180 0.008196680 0.010014756 0.04857976
+## 3:          4 0.04081633 196 0.016326175 0.023148743 0.07098826
+## 4:          5 0.01621622 185 0.027061942 0.006498911 0.03987981
+## 5:          6 0.04712042 191 0.040317031 0.027616774 0.07927507
+## 6:          7 0.08661417 127 0.055984983 0.053709170 0.13676491</code></pre>
+<p>Now we can run a bunch of hypothesis tests to see if the data we have contradicts the assumed model.</p>
+<pre class="r"><code>shared[, &quot;in_bound&quot; := expected &gt;= lower &amp; expected &lt;= upper]
+print(paste0(&quot;Proportion of cases in confidence bands: &quot;, round(mean(shared$in_bound), 3)))</code></pre>
+<pre><code>## [1] &quot;Proportion of cases in confidence bands: 0.857&quot;</code></pre>
+<pre class="r"><code>shared[!(in_bound)]</code></pre>
+<pre><code>##    group_size   observed   n   expected      lower      upper in_bound
+## 1:          3 0.02222222 180 0.00819668 0.01001476 0.04857976    FALSE
+## 2:          4 0.04081633 196 0.01632618 0.02314874 0.07098826    FALSE
+## 3:         11 0.06493506  77 0.14005920 0.03196272 0.12744330    FALSE
+## 4:         19 0.11111111  18 0.37445756 0.03747701 0.28637556    FALSE
+## 5:         23 0.00000000   4 0.50047715 0.00000000 0.40347863    FALSE
+## 6:         24 0.87500000   8 0.53102327 0.58885663 0.98682994    FALSE</code></pre>
+<p>We observe that 90% of our (95%) confidence bands captured the expected value. Further, we see that we have two cases of observing significatly more shared birthdays than expected (group sizes of 3 and 4) and two cases of significantly fewer (19 and, ironically, 23). On the whole though, it seems like our assumptions aren’t too bad.</p>
+</div>
+<div id="visualize-it" class="section level3">
+<h3>Visualize It!</h3>
+<pre class="r"><code>viz = ggplot(shared, aes(x=group_size)) +
+  geom_errorbar(aes(ymin=lower, ymax=upper, color=in_bound)) +
+  geom_point(aes(y=observed, size=n), color=&#39;red&#39;, shape=1) +
+  geom_line(aes(y=expected), color=&#39;blue&#39;, lwd=1.1) +
+  labs(color=&quot;In Bound&quot;, x=&quot;Group Size&quot;, y=&quot;Likelihood of Shared Birthday&quot;, size=&quot;Number of Groups&quot;) +
+  scale_y_continuous(labels=scales::percent)</code></pre>
+<p><img src="/post/2020-10-01-shared-birthdays_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+<div id="uniformity-of-birthdays" class="section level2">
+<h2>Uniformity of Birthdays</h2>
+<p>First, we need to explode the counts of each birthday into each observation. Then we’ll run a Kolmogorov-Smirnov omnibus test on our observations vs a uniform distribution. This presents a few challenges - first, birthdays, even when reexpressed as values from 1/366 to 1, are discrete, not uniform, so we already know it’s not really a uniform distribution. Second, K-S doesn’t like ties.</p>
+<pre class="r"><code>psuedo_dist = unlist(lapply(1:nrow(birthday_counts), function(i){
+  rep(i/366, birthday_counts[[&quot;count&quot;]][i])
+}))
+ks.test(psuedo_dist, &quot;punif&quot;)</code></pre>
+<pre><code>## Warning in ks.test(psuedo_dist, &quot;punif&quot;): ties should not be present for the
+## Kolmogorov-Smirnov test</code></pre>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  psuedo_dist
+## D = 0.0085357, p-value = 0.2125
+## alternative hypothesis: two-sided</code></pre>
+<p>A superior choice is to run the Cramer-von Mises test which only works on discrete distributions, doesn’t mind ties, and is generally better in that it evaluates the distance between the two ECDFs holistically where K-S only looks at the maximum distance between the two.</p>
+<pre class="r"><code>library(dgof)</code></pre>
+<pre><code>## Warning: package &#39;dgof&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dgof&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     ks.test</code></pre>
+<pre class="r"><code>cvm.test(psuedo_dist, ecdf((1:366)/366))</code></pre>
+<pre><code>## 
+##  Cramer-von Mises - W2
+## 
+## data:  psuedo_dist
+## W2 = 0.16641, p-value = 0.3432
+## alternative hypothesis: Two.sided</code></pre>
+<p>Ultimately the conclusion is that there is no evidence that this group of people’s birthdays follow something other than a uniform distribution. Visually we can see that it generally does look like a swarm - February 29 being the obvious exception.</p>
+<pre class="r"><code>birthday_counts[, c(&quot;month&quot;, &quot;day&quot;) := list(
+  gsub(&quot;.{2}$&quot;, &quot;&quot;, birthday),
+  gsub(&quot;.*(.{2})$&quot;, &quot;\\1&quot;, birthday)
+)]
+birthday_counts[, &quot;birthday_date&quot; := as.Date(paste0(&quot;2020-&quot;,month,&quot;-&quot;,day))]
+birthday_counts[, &quot;expected&quot; := sum(count)/366]
+exp_viz = ggplot(birthday_counts, aes(x=birthday_date)) + 
+  geom_line(aes(y=expected), color=&#39;red&#39;) +
+  geom_point(aes(y=count)) +
+  labs(x=&quot;Birthday&quot;, y=&quot;Count&quot;)</code></pre>
+<p><img src="/post/2020-10-01-shared-birthdays_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="final-thoughts" class="section level2">
+<h2>Final Thoughts</h2>
+<p>Overall, it was fun to take a significant number of birthdays that were assigned to groups based on characteristics other than birthday and see the power a few simple assumptions gives us to make assessments about a group.</p>
+</div>

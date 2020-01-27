@@ -3,7 +3,6 @@ title: "purrr Tricks with All Subset Regression"
 author: "Mark Ewing"
 description: "See how this one clickbaity purrr trick helped me solve an issue with all subsets regression!"
 date: 2017-08-24
-categories: ["r"]
 type: "post"
 ---
 
@@ -84,19 +83,19 @@ summary(fullModel)
 ## -2.4627 -0.7666 -0.0156  0.6580  3.4490 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -0.02660    0.18046  -0.147   0.8835    
-## X1           0.98850    0.22582   4.377 7.07e-05 ***
-## X2           2.96688    0.22758  13.036  &lt; 2e-16 ***
-## X3          -0.53690    0.22246  -2.413   0.0199 *  
-## X4           0.06567    0.21863   0.300   0.7653    
+##             Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) -0.02660    0.18046  -0.147               0.8835    
+## X1           0.98850    0.22582   4.377            0.0000707 ***
+## X2           2.96688    0.22758  13.036 &lt; 0.0000000000000002 ***
+## X3          -0.53690    0.22246  -2.413               0.0199 *  
+## X4           0.06567    0.21863   0.300               0.7653    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 1.249 on 45 degrees of freedom
 ##   (31 observations deleted due to missingness)
 ## Multiple R-squared:  0.8074, Adjusted R-squared:  0.7902 
-## F-statistic: 47.15 on 4 and 45 DF,  p-value: 1.547e-15</code></pre>
+## F-statistic: 47.15 on 4 and 45 DF,  p-value: 0.000000000000001547</code></pre>
 <p>You can see the DF agree with what we expect to see. Also, please ignore the fact that we’re getting results which are nearly perfect. It’s hard to generate dummy data that looks like real world data.</p>
 <div id="first-subset" class="section level3">
 <h3>First Subset</h3>
@@ -115,17 +114,17 @@ summary(firstSubset)
 ## -2.64333 -0.79388 -0.01199  0.74753  2.85868 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  0.05194    0.16760   0.310    0.758    
-## X1           0.87991    0.20895   4.211 8.96e-05 ***
-## X2           2.88003    0.21237  13.561  &lt; 2e-16 ***
+##             Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept)  0.05194    0.16760   0.310                0.758    
+## X1           0.87991    0.20895   4.211            0.0000896 ***
+## X2           2.88003    0.21237  13.561 &lt; 0.0000000000000002 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 1.304 on 58 degrees of freedom
 ##   (20 observations deleted due to missingness)
 ## Multiple R-squared:  0.7794, Adjusted R-squared:  0.7718 
-## F-statistic: 102.5 on 2 and 58 DF,  p-value: &lt; 2.2e-16</code></pre>
+## F-statistic: 102.5 on 2 and 58 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 <p>This is a pretty good model, and we nailed basic arithmetic! How does this model compare to what we would get if we used only the complete observations?</p>
 <pre class="r"><code>firstSubset_limited = lm(Y~X1+X2,data=fullModel$model)
 summary(firstSubset_limited)
@@ -138,16 +137,16 @@ summary(firstSubset_limited)
 ## -2.4684 -0.8767 -0.0286  0.7977  3.0501 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -0.09628    0.18551  -0.519 0.606175    
-## X1           0.94976    0.23369   4.064 0.000182 ***
-## X2           2.90673    0.23552  12.342 2.37e-16 ***
+##             Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) -0.09628    0.18551  -0.519             0.606175    
+## X1           0.94976    0.23369   4.064             0.000182 ***
+## X2           2.90673    0.23552  12.342 0.000000000000000237 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 1.301 on 47 degrees of freedom
 ## Multiple R-squared:  0.7819, Adjusted R-squared:  0.7726 
-## F-statistic: 84.26 on 2 and 47 DF,  p-value: 2.869e-16</code></pre>
+## F-statistic: 84.26 on 2 and 47 DF,  p-value: 0.0000000000000002869</code></pre>
 <p>It’s not very different, but the R^2 value is a little higher. Also the AIC and BIC are little better for the reduced data set.</p>
 <pre class="r"><code>cat(&quot;All available observations AIC:    &quot;,AIC(firstSubset),&quot;\nJust the complete observations AIC:&quot;,AIC(firstSubset_limited),&quot;\n\nAll available observations BIC:    &quot;,BIC(firstSubset),&quot;\nJust the complete observations BIC:&quot;,BIC(firstSubset_limited))
 ## All available observations AIC:     210.4281 
@@ -237,17 +236,17 @@ leapsSummary$adjr2[2]
 </div>
 <div id="purrr" class="section level2">
 <h2>purrr</h2>
-<p><code>purrr</code> is a package from the tidyverse that provides a set of tools to improve functional programming. It has consistent syntax versions of <code>map</code> and <code>reduce</code> type functions that make code more readable than the base versions in R. But you’ll notice I used <code>lapply</code> above instead of <code>purrr::map</code>. I’m used to using <code>lapply</code> and I don’t like loading a whole package for simple use cases like that. Where I do like using it is for more complex cases - like <code>at_depth</code></p>
-<div id="at_depth" class="section level3">
-<h3>at_depth</h3>
+<p><code>purrr</code> is a package from the tidyverse that provides a set of tools to improve functional programming. It has consistent syntax versions of <code>map</code> and <code>reduce</code> type functions that make code more readable than the base versions in R. But you’ll notice I used <code>lapply</code> above instead of <code>purrr::map</code>. I’m used to using <code>lapply</code> and I don’t like loading a whole package for simple use cases like that. Where I do like using it is for more complex cases - like <code>map_depth</code></p>
+<div id="map_depth" class="section level3">
+<h3>map_depth</h3>
 <p><code>lapply</code> takes an object and applies a function to each element of the object and returns it in a list. Consider a heirarchical list like the one below.</p>
 <pre class="r"><code>dumbList = list(z=list(a=c(1,2), b=c(2,3)), y=list(a=c(1,1),b=c(1,4)), x=list(a=c(2,2),b=c(2,0)))</code></pre>
 <p>Maybe I want to sum each element so that z<span class="math inline">\(a = 3, y\)</span>a = 2, x$a = 4, etc…</p>
 <pre class="r"><code>lapply(dumbList,sum)
 ## Error in FUN(X[[i]], ...): invalid &#39;type&#39; (list) of argument</code></pre>
-<p>It doesn’t work because <code>dumbList[[1]]</code> is a list and you can’t sum a list. However, with <code>purrr::at_depth</code> we can specify the depth we want to work at - in this case, the second level. Operate on the lists inside of lists.</p>
+<p>It doesn’t work because <code>dumbList[[1]]</code> is a list and you can’t sum a list. However, with <code>purrr::map_depth</code> we can specify the depth we want to work at - in this case, the second level. Operate on the lists inside of lists.</p>
 <pre class="r"><code>library(purrr) #version 0.2.2
-purrr::at_depth(dumbList,2,sum)
+purrr::map_depth(dumbList,2,sum)
 ## $z
 ## $z$a
 ## [1] 3
@@ -307,14 +306,14 @@ lapply(res,length) # 4, 6, 4, 1 because there are 4 ways to select 1 variable fr
 </div>
 <div id="reggoodness" class="section level3">
 <h3>regGoodness</h3>
-<p><code>regGoodness</code> (regression goodness) operates on the hierarchical list produced by <code>allSubsetsRegression</code>, applying a function which produces a ‘goodness’ score and then sorts by if that goodness score should be minimzed or maximized. It does this by using <code>purrr::at_depth</code> to allow a clean hierarchical output when generating the models, but ease of computing summary statistics afterward. <strong>note</strong> this does leverage the <code>stringr</code> package.</p>
+<p><code>regGoodness</code> (regression goodness) operates on the hierarchical list produced by <code>allSubsetsRegression</code>, applying a function which produces a ‘goodness’ score and then sorts by if that goodness score should be minimzed or maximized. It does this by using <code>purrr::map_depth</code> to allow a clean hierarchical output when generating the models, but ease of computing summary statistics afterward. <strong>note</strong> this does leverage the <code>stringr</code> package.</p>
 <pre class="r"><code>library(stringr) #version 1.2.0
 
 regGoodness = function(models,f,direction){
   if(!(direction %in% c(&quot;&gt;&quot;,&quot;&lt;&quot;))) stop(&quot;Invalid direction - must be &lt; or &gt;&quot;)
   if(!is.function(f)) stop(&quot;f must be a function&quot;)
   if(!(&quot;subReg&quot; %in% class(models))) stop(&quot;models must be generated by allSubsetsRegression&quot;)
-  score = unlist(purrr::at_depth(models,2,f))
+  score = unlist(purrr::map_depth(models,2,f))
   output = data.frame(N = stringr::str_count(names(score),&quot;\\+&quot;)+1,Terms = names(score),Value = score,stringsAsFactors = FALSE)
   rownames(output) = NULL
   if(direction == &quot;&lt;&quot;){
@@ -351,8 +350,8 @@ ar2
 <h3>Coefficient Stability</h3>
 <p>We can also analyze how stable our coefficient estimates are as we vary what is in or out of the model. First we need to extract the coefficients from each model, then mutate the vector so it becomes a named data frame. The <code>dplyr::bind_rows</code> function is great because, like a “UNION ALL” query in SQL, keeps all the column names as it binds data frames together like new rows.</p>
 <pre class="r"><code>library(dplyr) #version 0.5.0
-coefs = purrr::at_depth(res,2,coefficients) %&gt;% 
-  purrr::at_depth(2,function(x){as.data.frame(t(as.matrix(x)))}) %&gt;% 
+coefs = purrr::map_depth(res,2,coefficients) %&gt;% 
+  purrr::map_depth(2,function(x){as.data.frame(t(as.matrix(x)))}) %&gt;% 
   purrr::reduce(bind_rows) %&gt;% 
   mutate(Terms = ar2$Terms)
 coefs
@@ -376,5 +375,5 @@ coefs
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
-<p>All subsets regression presents many challenges, theoretical and practical. I was able to easily write some functional code which produced a hierarchical list. The structure is nice for exploring the results but presents hurdles when trying to analyze it with functional programming. <code>purrr::at_depth</code> allows for easy functional programming on hierarchical lists without the need for anonymous functions or other cumbersome overhead.</p>
+<p>All subsets regression presents many challenges, theoretical and practical. I was able to easily write some functional code which produced a hierarchical list. The structure is nice for exploring the results but presents hurdles when trying to analyze it with functional programming. <code>purrr::map_depth</code> allows for easy functional programming on hierarchical lists without the need for anonymous functions or other cumbersome overhead.</p>
 </div>

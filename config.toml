@@ -1,7 +1,7 @@
 baseurl = "http://thug-r.life/"
 languageCode = "en-us"
 title = "Thug R Life"
-theme = "hugo-future-imperfect"
+theme = "hugo-theme-terminal"
 preserveTaxonomyNames = true
 paginate = 3
 disqusShortname = "thugrlife"
@@ -10,6 +10,12 @@ math = true
 ignoreFiles = ["\\.Rmarkdown$", "_files$", "_cache$"]
 
 [params]
+    contentTypeName = "post"
+    themeColor = "blue"
+    showMenuItems = 3
+    showLanguageSelector = false
+    fullWidthTheme = false
+    centerTheme = true
     # Sets the meta tag description, usually reserved for the main page
     description          = "Yet Another R Blog - but thuggish"
     # This will appear on the top left of the navigation bar
@@ -45,7 +51,7 @@ ignoreFiles = ["\\.Rmarkdown$", "_files$", "_cache$"]
 [params.intro]
     header    = "Thug R Life"
 
-    paragraph = "Just a blog, by a guy trying to make a difference.<br>Hopefully soon published on <a href='https://www.r-bloggers.com/'>R-bloggers</a>"
+    paragraph = "Just a blog, by a guy trying to make a difference."
 
     about     = "I guess I'm starting this blog because I want to do more technical writing or something. Also, I've started publishing packages and so I need a platform to promote them on and starting a blog seems like a great way to get r-bloggers to publish my content. We'll see how it goes."
 
@@ -64,7 +70,7 @@ ignoreFiles = ["\\.Rmarkdown$", "_files$", "_cache$"]
 # Adjust the amount of recent posts on the sidebar.
 # This is optional. The default value 5 will be used
 [params.postAmount]
-    sidebar = 2
+    sidebar = 4
 
 # Set up your menu items in the navigation bar
 # You can use identifier to prepend a font awesome icon to your text
@@ -75,44 +81,16 @@ ignoreFiles = ["\\.Rmarkdown$", "_files$", "_cache$"]
     weight = 1
 
 [[menu.main]]
-    name = "Categories"
-    url = "/categories"
-    weight = 2
-
-[[menu.main]]
     name = "About"
     url = "/about"
     weight = 3
 
-# Insert your username and the icon will apear on the page as long as
-# socialAppearAtTop or socialAppearAtBottom is set to true in the params area
-# The social media icons will appear on the sidebar
-[social]
-    github          = "bmewing"
-    bitbucket       = ""
-    jsfiddle        = ""
-    codepen         = ""
-    foursquare      = ""
-    dribbble        = ""
-    deviantart      = ""
-    behance         = ""
-    flickr          = ""
-    instagram       = ""
-    youtube         = ""
-    vimeo           = ""
-    vine            = ""
-    medium          = ""
-    wordpress       = ""
-    tumblr          = ""
-    xing            = ""
-    linkedin        = ""
-    slideshare      = ""
-    stackoverflow   = "2890590"
-    reddit          = ""
-    pinterest       = ""
-    googleplus      = ""
-    facebook        = ""
-    facebook_admin  = ""
-    twitter_domain  = ""
-    twitter         = "pofigster"
-    email           = "b.mark@ewingsonline.com"
+[langauges]
+  [langagues.en]
+    languageName = "English"
+    title = "Thug-R Life"
+    subtitle = "Just a blog, by a guy, trying to make a difference."
+    
+    [languages.en.params.logo]
+      logoText = "Thug-R"
+
