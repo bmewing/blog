@@ -3,7 +3,6 @@ title: "mgsub v1.0 Launched to CRAN"
 author: "Mark Ewing"
 description: "Multiple, simultaneous string substitions done safely."
 date: 2018-01-26
-categories: ["r"]
 type: "post"
 ---
 
@@ -25,9 +24,7 @@ type: "post"
 # library(textclean)</code></pre>
 <p>To make testing/comparing easier I wrote a function for each package which accepts a list of the string to be modified, the vector of matches and the vector of replacements. This way I can put the functions in a list and just <code>lapply</code> (the name of <code>f</code> for my list is super expressive). One thing to note is that I have ensured that each function accepts regular expression input (by setting <code>fixed=FALSE</code> where necessary).</p>
 <pre class="r"><code>mgsub = function(a){
-  replace = a$replace
-  names(replace) = a$match
-  mgsub::mgsub(a$orig,replace)
+  mgsub::mgsub(a$orig, a$match, a$replace)
 }
 qdap = function(a){
   qdap::mgsub(a$match,a$replace,a$orig,fixed=FALSE)
@@ -59,45 +56,92 @@ simple = lapply(f,function(x) x(a))
 htmlTable(prepTable(simple,simple_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>yo ho, we go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+yo ho, we go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>yo ho, we go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+yo ho, we go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>we</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+we
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>yo ho, we go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+yo ho, we go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>yo ho, we go!</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>TRUE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+yo ho, we go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+TRUE
+</td>
 </tr>
 </tbody>
 </table>
@@ -117,45 +161,92 @@ substring = lapply(f,function(x) x(a))
 htmlTable(prepTable(substring,substring_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>we don't know an answer</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+we don’t know an answer
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>any don't know an answer</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+any don’t know an answer
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>we</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+we
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>any don't know an answer</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+any don’t know an answer
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>any don't know an answer</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>FALSE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+any don’t know an answer
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+FALSE
+</td>
 </tr>
 </tbody>
 </table>
@@ -177,45 +268,92 @@ transpose = lapply(f,function(x) x(a))
 htmlTable(prepTable(transpose,transpose_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>ho hey, let's go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+ho hey, let’s go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey hey, let's go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey hey, let’s go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey hey, let's go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey hey, let’s go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>hey hey, let's go!</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>FALSE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+hey hey, let’s go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+FALSE
+</td>
 </tr>
 </tbody>
 </table>
@@ -237,48 +375,96 @@ shift = lapply(f,function(x) x(a))
 htmlTable(prepTable(shift,shift_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<p><table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>how, are you hey?</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+how, are you hey?
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey, hey hey hey?</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey, hey hey hey?
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey, hey hey hey?</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey, hey hey hey?
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>hey, hey hey hey?</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>FALSE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+hey, hey hey hey?
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+FALSE
+</td>
 </tr>
 </tbody>
-</table> In this case, every word has been replaced with the last replacement value (again, due to the looping).</p>
+</table>
+<p>In this case, every word has been replaced with the last replacement value (again, due to the looping).</p>
 </div>
 <div id="regex" class="section level2">
 <h2>Regex</h2>
@@ -294,45 +480,92 @@ regex = lapply(f,function(x) x(a))
 htmlTable(prepTable(regex,regex_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>Metazamine is not the same as dopachloride or Metamezamine and is still real.</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+Metazamine is not the same as dopachloride or Metamezamine and is still real.
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>Metazamine is not the same as dopachloride or Metamezamine and is still real.</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+Metazamine is not the same as dopachloride or Metamezamine and is still real.
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>real</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+real
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>Metazamine is not the same as dopachloride or Metamezamine and is still real.</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+Metazamine is not the same as dopachloride or Metamezamine and is still real.
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>Metazamine is not the same as dopachloride or Metamezamine and is still real.</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>TRUE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+Metazamine is not the same as dopachloride or Metamezamine and is still real.
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+TRUE
+</td>
 </tr>
 </tbody>
 </table>
@@ -352,45 +585,92 @@ regex_substring = lapply(f,function(x) x(a))
 htmlTable(prepTable(regex_substring,regex_substring_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>metazamine is a fake chemical</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+metazamine is a fake chemical
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>freakoute is a fake chemical</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+freakoute is a fake chemical
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>metazamine</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+metazamine
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>freakoute is a fake chemical</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+freakoute is a fake chemical
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>freakoute is a fake chemical</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>FALSE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+freakoute is a fake chemical
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+FALSE
+</td>
 </tr>
 </tbody>
 </table>
@@ -406,10 +686,9 @@ htmlTable(prepTable(regex_substring,regex_substring_target),
 s = &quot;Hi, my name is Mark&quot;
 m = c(&quot;Hi&quot;,&quot;Mark&quot;)
 r = c(&quot;Goodbye&quot;,&quot;Tom&quot;)
-names(r) = m
 
 smb = microbenchmark(
-  mgsub = mgsub::mgsub(s,r,fixed=TRUE),
+  mgsub = mgsub::mgsub(s,m,r,fixed=TRUE),
   qdap = qdap::mgsub(m,r,s),
   bayesbio = bayesbio:::mgsub(m,r,s),
   bazar = bazar::mgsub(m,r,s),
@@ -417,12 +696,12 @@ smb = microbenchmark(
 )
 smb = print(smb)
 ## Unit: microseconds
-##       expr     min       lq      mean   median       uq     max neval
-##      mgsub  95.545 140.9460 160.71527 161.9150 180.8780 304.137   100
-##       qdap 184.890 242.8725 273.25684 286.8155 298.3025 422.291   100
-##   bayesbio  16.411  28.6270  33.59056  33.5500  37.9260  88.252   100
-##      bazar  26.257  41.9380  49.17671  48.3195  53.2430 114.143   100
-##  textclean  43.397  68.1940  77.61020  77.6755  84.7875 216.251   100</code></pre>
+##       expr     min       lq      mean   median       uq     max neval  cld
+##      mgsub 268.500 308.3010 348.45497 328.9010 369.5005 554.201   100   c 
+##       qdap 286.001 340.6510 409.34099 409.3505 439.4515 791.202   100    d
+##   bayesbio  25.202  34.4505  45.66502  43.2510  52.7010 165.701   100 a   
+##      bazar  40.101  52.3005  63.30701  59.1005  67.8510 275.302   100 a   
+##  textclean  80.301  95.7505 108.29300 103.8505 116.2505 274.601   100  b</code></pre>
 <p><code>mgsub</code> and <code>qdap</code> in this simple case are in the same order of magnitude. The other three are significantly faster - the slowest of them is still 2x faster than <code>mgsub</code> or <code>qdap</code>.</p>
 </div>
 <div id="regex-1" class="section level3">
@@ -430,10 +709,9 @@ smb = print(smb)
 <pre class="r"><code>s = &quot;Dopazamine is not the same as Dopachloride and is still fake.&quot;
 m = c(&quot;[Dd]opa(.*?mine)&quot;,&quot;fake&quot;)
 r = c(&quot;Meta\\1&quot;,&quot;real&quot;)
-names(r) = m
 
 rmb = microbenchmark(
-  mgsub = mgsub::mgsub(s,r),
+  mgsub = mgsub::mgsub(s,m,r),
   qdap = qdap::mgsub(m,r,s,fixed=FALSE),
   bayesbio = bayesbio:::mgsub(m,r,s),
   bazar = bazar::mgsub(m,r,s),
@@ -441,12 +719,12 @@ rmb = microbenchmark(
 )
 rmb = print(rmb)
 ## Unit: microseconds
-##       expr     min       lq      mean   median       uq     max neval
-##      mgsub 186.348 308.8780 345.39981 347.8975 381.4475 605.356   100
-##       qdap 168.479 266.3935 275.46668 283.8980 297.9375 735.544   100
-##   bayesbio  19.328  34.6445  41.66810  42.6675  49.5960  94.450   100
-##      bazar  32.092  54.7015  59.58088  59.8070  69.1060  94.816   100
-##  textclean  32.092  58.3485  65.30250  64.9120  73.3000 161.551   100</code></pre>
+##       expr     min       lq      mean   median       uq     max neval cld
+##      mgsub 199.700 245.7510 322.44799 311.3010 380.4510 583.501   100   c
+##       qdap 173.901 192.7510 277.97608 262.6015 357.3005 556.601   100  b 
+##   bayesbio  18.000  24.6005  36.62298  34.9515  47.1010  91.401   100 a  
+##      bazar  29.001  36.5010  55.00406  47.3510  67.7510 235.001   100 a  
+##  textclean  31.302  38.0515  55.62598  49.7010  72.4010  97.102   100 a</code></pre>
 <p>When we add regular expressions (with backreferences) the speed difference grows even bigger.</p>
 <p>All that being said, things are still in microseconds, so it’s not necessarily a practical difference. And, is it worth being so much faster knowing you could be getting wrong results?</p>
 </div>
@@ -454,7 +732,7 @@ rmb = print(rmb)
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
 
-<table style="border-collapse:collapse;" class=table_1161 border=0>
+<table style="border-collapse:collapse;" class=table_9453 border=0>
 <thead>
 <tr style="border-top:2px solid black;">
   <th colspan=1 id="tableHTML_second_header_1"></th>
@@ -482,8 +760,8 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_6" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_7" style="background-color:#8df086;text-align:center;">Y</td>
-  <td id="tableHTML_column_8" style="text-align:right;">162</td>
-  <td id="tableHTML_column_9" style="text-align:right;">348</td>
+  <td id="tableHTML_column_8" style="text-align:right;">329</td>
+  <td id="tableHTML_column_9" style="text-align:right;">311</td>
 </tr>
 <tr>
   <td id="tableHTML_column_1">qdap</td>
@@ -493,8 +771,8 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_6" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_7" style="background-color:#6f87fc;text-align:center;">N</td>
-  <td id="tableHTML_column_8" style="text-align:right;">287</td>
-  <td id="tableHTML_column_9" style="text-align:right;">284</td>
+  <td id="tableHTML_column_8" style="text-align:right;">409</td>
+  <td id="tableHTML_column_9" style="text-align:right;">263</td>
 </tr>
 <tr>
   <td id="tableHTML_column_1">bayesbio</td>
@@ -504,8 +782,8 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_6" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_7" style="background-color:#6f87fc;text-align:center;">N</td>
-  <td id="tableHTML_column_8" style="text-align:right;">34</td>
-  <td id="tableHTML_column_9" style="text-align:right;">43</td>
+  <td id="tableHTML_column_8" style="text-align:right;">43</td>
+  <td id="tableHTML_column_9" style="text-align:right;">35</td>
 </tr>
 <tr>
   <td id="tableHTML_column_1">bazar</td>
@@ -515,8 +793,8 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_6" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_7" style="background-color:#6f87fc;text-align:center;">N</td>
-  <td id="tableHTML_column_8" style="text-align:right;">48</td>
-  <td id="tableHTML_column_9" style="text-align:right;">60</td>
+  <td id="tableHTML_column_8" style="text-align:right;">59</td>
+  <td id="tableHTML_column_9" style="text-align:right;">47</td>
 </tr>
 <tr style="border-bottom:2px solid black;">
   <td id="tableHTML_column_1">textclean</td>
@@ -526,8 +804,8 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_6" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_7" style="background-color:#6f87fc;text-align:center;">N</td>
-  <td id="tableHTML_column_8" style="text-align:right;">78</td>
-  <td id="tableHTML_column_9" style="text-align:right;">65</td>
+  <td id="tableHTML_column_8" style="text-align:right;">104</td>
+  <td id="tableHTML_column_9" style="text-align:right;">50</td>
 </tr>
 </tbody>
 </table>

@@ -3,7 +3,6 @@ title: "Automatic Twitter Updates"
 author: "Mark Ewing"
 description: "Use the serverless magic of AWS Lambda to auto-tweet my posts"
 date: 2017-08-12
-categories: ["cloud","python"]
 type: "post"
 ---
 
@@ -44,19 +43,14 @@ type: "post"
 <h2>Auto Tweeting</h2>
 <p>There are lots of options for hosting a static website (including GitHub), so why choose AWS S3 which costs pennies a month? The main reason is the ability to integrate with lambda. I just finished writing a module in Python 2.7 using the <code>tweepy</code> library that is trigger each time I upload new posts to my S3 bucket which tweets out the title and the link. The Python code is pretty simple.</p>
 <pre class="python"><code>from __future__ import print_function
-
 import json
 import urllib
 import boto3
 import datetime
 import tweepy
 from titlecase import titlecase
-
 now = datetime.datetime.now()
-
 s3 = boto3.client(&#39;s3&#39;)
-
-
 def lambda_handler(event, context):
     key = urllib.unquote_plus(event[&#39;Records&#39;][0][&#39;s3&#39;][&#39;object&#39;][&#39;key&#39;].encode(&#39;utf8&#39;))
     postDate = key[5:15]

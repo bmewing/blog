@@ -1,372 +1,159 @@
-<!DOCTYPE HTML>
-
-<html>
-    <head>
-        
-            
-                <title>mgsub v1.0 Launched to CRAN</title>
-            
-        
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.30" />
-        
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>mgsub v1.0 Launched to CRAN :: Thug R Life</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Official CRAN LaunchEarlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette."/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2018-01-26-mgsub-launched/" />
 
 
-        
-            <meta name="author" content="Mark Ewing">
-        
-        
-            <meta name="description" content="Multiple, simultaneous string substitions done safely.">
-        
-
-        <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="mgsub v1.0 Launched to CRAN"/>
-<meta name="twitter:description" content="Multiple, simultaneous string substitions done safely."/>
-<meta name="twitter:site" content="@pofigster"/>
-
-        <meta property="og:title" content="mgsub v1.0 Launched to CRAN" />
-<meta property="og:description" content="Multiple, simultaneous string substitions done safely." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://thug-r.life/post/2018-01-26-mgsub-launched/" />
-
-
-
-<meta property="article:published_time" content="2018-01-26T00:00:00&#43;00:00"/>
-
-<meta property="article:modified_time" content="2018-01-26T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="mgsub v1.0 Launched to CRAN">
-<meta itemprop="description" content="Multiple, simultaneous string substitions done safely.">
-
-
-<meta itemprop="datePublished" content="2018-01-26T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2018-01-26T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1882">
-
-
-
-<meta itemprop="keywords" content="" />
-
-        
-
-        
-
-        
-        
-            
-        
-
-        
-        
-            <link rel="stylesheet" href="/css/google-font.css" />
-            <link rel="stylesheet" href="/css/font-awesome.min.css" />
-            <link rel="stylesheet" href="/css/main.css" />
-            <link rel="stylesheet" href="/css/add-on.css" />
-            <link rel="stylesheet" href="/css/monokai-sublime.css">
-        
-
-        
-
-        
-        
-        
-            
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-36686553-3', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36686553-3', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/blue.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+<link rel="shortcut icon" href="/img/favicon/blue.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="mgsub v1.0 Launched to CRAN :: Thug R Life — " />
+<meta name="twitter:description" content="Official CRAN LaunchEarlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette." />
+<meta name="twitter:site" content="/" />
+<meta name="twitter:creator" content="Mark Ewing" />
+<meta name="twitter:image" content="">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="mgsub v1.0 Launched to CRAN :: Thug R Life — ">
+<meta property="og:description" content="Official CRAN LaunchEarlier this week I submitted mgsub to CRAN and after a couple of days it was accepted! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette." />
+<meta property="og:url" content="/post/2018-01-26-mgsub-launched/" />
+<meta property="og:site_name" content="mgsub v1.0 Launched to CRAN" />
+<meta property="og:image" content="">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2018-01-26 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Thug-R
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
         
-        <script src="//yihui.name/js/math-code.js"></script>
-		<script async
-		src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
-		</script>
-    </head>
-    <body>
-
+          <li><a href="/post">Blog</a></li>
         
-        <div id="wrapper">
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+    
 
     
-    
-<header id="header">
-    
-        <h2><a href="/">Thug R Life</i></a></h2>
-    
+  </ul>
 
-    <nav class="links">
-        <ul>
-            
-                <li>
-                    <a href="/post">
-                        
-                            <i class="fa fa-newspaper-o">&nbsp;</i>Blog
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="/categories">
-                        Categories
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="/about">
-                        About
-                    </a>
-                </li>
-            
-        </ul>
-    </nav>
-    <nav class="main">
-        <ul>
-            
-            <li id="share-nav" class="share-menu" style="display:none;">
-                <a class="fa-share-alt" href="#share-menu">Share</a>
-            </li>
-            
-            <li class="search">
-                <a class="fa-search" href="#search">Search</a>
-                <form id="search" method="get" action="//google.com/search">
-                    <input type="text" name="q" placeholder="Search" />
-                    <input type="hidden" name="q" value="site:http://thug-r.life/">
-                </form>
-            </li>
-            <li class="menu">
-                <a class="fa-bars" href="#menu">Menu</a>
-            </li>
-        </ul>
-    </nav>
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/post">Blog</a></li>
+      
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
 </header>
 
 
-<section id="menu">
-
+  <div class="content">
     
-        <section>
-            <form class="search" method="get" action="//google.com/search">
-                <input type="text" name="q" placeholder="Search" />
-                <input type="hidden" name="q" value="site:http://thug-r.life/">
-            </form>
-        </section>
-
+<div class="post">
+  <h1 class="post-title">
+    <a href="/post/2018-01-26-mgsub-launched/">mgsub v1.0 Launched to CRAN</a></h1>
+  <div class="post-meta">
+      
+    <span class="post-date">
+      2018-01-26
+    </span>
     
-        <section>
-            <ul class="links">
-                
-                    <li>
-                        <a href="/post">
-                            <h3>
-                                
-                                    <i class="fa fa-newspaper-o">&nbsp;</i>
-                                
-                                Blog
-                            </h3>
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a href="/categories">
-                            <h3>
-                                
-                                Categories
-                            </h3>
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a href="/about">
-                            <h3>
-                                
-                                About
-                            </h3>
-                        </a>
-                    </li>
-                
-            </ul>
-        </section>
-
     
-        <section>
-            <ul class="links">
-                <header>
-                    <h3>Recent Posts</h3>
-                </header>
-                
-                    
-                
-
-                
-                    <li>
-                        <a href="http://thug-r.life/post/2019-09-04-r-user-salaries-stackoverflow/"><p>Analysis of R User Salaries from the 2019 StackOverflow Survey</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/"><p>A Tale of Three Assignment Operators</p></a>
-                    </li>
-                
-            </ul>
-        </section>
-
+    <span class="post-author">::
+      Mark Ewing
+    </span>
     
-        
-</section>
+  </div>
 
-    <section id="share-menu">
-    <section id="social-share-nav">
-        <ul class="links">
-            <header>
-                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
-            </header>
-            
+  
 
+  
 
-<li><a href="//twitter.com/share?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f&text=mgsub%20v1.0%20Launched%20to%20CRAN&via=pofigster" target="_blank" class="share-btn twitter">
-    <i class="fa fa-twitter"></i>
-    <p>Twitter</p>
-</a></li>
-
-
-<li><a href="//plus.google.com/share?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f" target="_blank" class="share-btn google-plus">
-    <i class="fa fa-google-plus"></i>
-    <p>Google+</p>
-</a></li>
-
-
-<li><a href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f" target="_blank" class="share-btn facebook">
-    <i class="fa fa-facebook"></i>
-    <p>Facebook</p>
-</a></li>
-
-
-<li><a href="//reddit.com/submit?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f&title=mgsub%20v1.0%20Launched%20to%20CRAN" target="_blank" class="share-btn reddit">
-    <i class="fa fa-reddit-alien"></i>
-    <p>Reddit</p>
-</a></li>
-
-
-<li><a href="//www.linkedin.com/shareArticle?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f&title=mgsub%20v1.0%20Launched%20to%20CRAN" target="_blank" class="share-btn linkedin">
-    <i class="fa fa-linkedin"></i>
-    <p>LinkedIn</p>
-</a></li>
-
-
-<li><a href="//www.stumbleupon.com/submit?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f&title=mgsub%20v1.0%20Launched%20to%20CRAN" target="_blank" class="share-btn stumbleupon">
-    <i class="fa fa-stumbleupon"></i>
-    <p>StumbleUpon</p>
-</a></li>
-
-
-<li><a href="mailto:?subject=Check out this post by Mark%20Ewing&body=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f" target="_blank" class="share-btn email">
-    <i class="fa fa-envelope"></i>
-    <p>Email</p>
-</a></li>
-
-        </ul>
-    </section>
-</section>
-
-    
-    <div id="main">
-        
-        
-        <article class="post">
-    <header>
-    <div class="title">
-        
-            <h1><a href="http://thug-r.life/post/2018-01-26-mgsub-launched/">mgsub v1.0 Launched to CRAN</a></h1>
-            
-        
-        
-            <p>Multiple, simultaneous string substitions done safely.</p>
-        
-    </div>
-    <div class="meta">
-        
-            
+  <div class="post-content"><div>
         
 
-        <time class="published"
-            datetime='2018-01-26'>
-            January 26, 2018</time>
-        <span class="author">Mark Ewing</span>
-        
-            <p>9 minute read</p>
-        
-        
-    </div>
-</header>
 
-
-    <section id="social-share">
-        <ul class="icons">
-            
-
-
-<li><a href="//twitter.com/share?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f&text=mgsub%20v1.0%20Launched%20to%20CRAN&via=pofigster" target="_blank" class="share-btn twitter">
-    <i class="fa fa-twitter"></i>
-    <p>Twitter</p>
-</a></li>
-
-
-<li><a href="//plus.google.com/share?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f" target="_blank" class="share-btn google-plus">
-    <i class="fa fa-google-plus"></i>
-    <p>Google+</p>
-</a></li>
-
-
-<li><a href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f" target="_blank" class="share-btn facebook">
-    <i class="fa fa-facebook"></i>
-    <p>Facebook</p>
-</a></li>
-
-
-<li><a href="//reddit.com/submit?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f&title=mgsub%20v1.0%20Launched%20to%20CRAN" target="_blank" class="share-btn reddit">
-    <i class="fa fa-reddit-alien"></i>
-    <p>Reddit</p>
-</a></li>
-
-
-<li><a href="//www.linkedin.com/shareArticle?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f&title=mgsub%20v1.0%20Launched%20to%20CRAN" target="_blank" class="share-btn linkedin">
-    <i class="fa fa-linkedin"></i>
-    <p>LinkedIn</p>
-</a></li>
-
-
-<li><a href="//www.stumbleupon.com/submit?url=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f&title=mgsub%20v1.0%20Launched%20to%20CRAN" target="_blank" class="share-btn stumbleupon">
-    <i class="fa fa-stumbleupon"></i>
-    <p>StumbleUpon</p>
-</a></li>
-
-
-<li><a href="mailto:?subject=Check out this post by Mark%20Ewing&body=http%3a%2f%2fthug-r.life%2fpost%2f2018-01-26-mgsub-launched%2f" target="_blank" class="share-btn email">
-    <i class="fa fa-envelope"></i>
-    <p>Email</p>
-</a></li>
-
-        </ul>
-    </section>
-    
-
-    <div id="content">
-        <div id="official-cran-launch" class="section level2">
+<div id="official-cran-launch" class="section level2">
 <h2>Official CRAN Launch</h2>
 <p>Earlier this week I submitted <code>mgsub</code> to CRAN and after a couple of days <a href="https://cran.r-project.org/web/packages/mgsub/index.html">it was accepted</a>! Now it’s live! I’m very excited to have published my second package and one that I think is a more valuable contribution than my first. The package represented a few firsts for me. The first package that I wrote tests for, checked code coverage on and for which I wrote a vignette. Woot!</p>
 <p>In my nervous anticipation after submission I worried I might have missed the email indicating it went live so I did a quick search for <code>mgsub</code> to see what would come back. Turns out, there are at least 4 other implementations of <code>mgsub</code> in packages on CRAN already. Nothing kicks imposter syndrome into overdrive like seeing that 4 other people already did what you did. But the focus of my implementation is <em>safety</em> - it’s important to know that a string manipulation function is going to work the way you intend. If your processing enough strings (or even a big enough string) it is difficult to do QA on a function. Spot checking could miss things and if the process isn’t safe enough, there may be no way of accomplishing your goal.</p>
@@ -382,9 +169,7 @@ ga('send', 'pageview');
 # library(textclean)</code></pre>
 <p>To make testing/comparing easier I wrote a function for each package which accepts a list of the string to be modified, the vector of matches and the vector of replacements. This way I can put the functions in a list and just <code>lapply</code> (the name of <code>f</code> for my list is super expressive). One thing to note is that I have ensured that each function accepts regular expression input (by setting <code>fixed=FALSE</code> where necessary).</p>
 <pre class="r"><code>mgsub = function(a){
-  replace = a$replace
-  names(replace) = a$match
-  mgsub::mgsub(a$orig,replace)
+  mgsub::mgsub(a$orig, a$match, a$replace)
 }
 qdap = function(a){
   qdap::mgsub(a$match,a$replace,a$orig,fixed=FALSE)
@@ -416,45 +201,92 @@ simple = lapply(f,function(x) x(a))
 htmlTable(prepTable(simple,simple_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>yo ho, we go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+yo ho, we go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>yo ho, we go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+yo ho, we go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>we</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+we
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>yo ho, we go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+yo ho, we go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>yo ho, we go!</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>TRUE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+yo ho, we go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+TRUE
+</td>
 </tr>
 </tbody>
 </table>
@@ -474,45 +306,92 @@ substring = lapply(f,function(x) x(a))
 htmlTable(prepTable(substring,substring_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>we don't know an answer</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+we don’t know an answer
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>any don't know an answer</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+any don’t know an answer
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>we</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+we
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>any don't know an answer</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+any don’t know an answer
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>any don't know an answer</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>FALSE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+any don’t know an answer
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+FALSE
+</td>
 </tr>
 </tbody>
 </table>
@@ -534,45 +413,92 @@ transpose = lapply(f,function(x) x(a))
 htmlTable(prepTable(transpose,transpose_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>ho hey, let's go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+ho hey, let’s go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey hey, let's go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey hey, let’s go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey hey, let's go!</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey hey, let’s go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>hey hey, let's go!</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>FALSE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+hey hey, let’s go!
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+FALSE
+</td>
 </tr>
 </tbody>
 </table>
@@ -594,48 +520,96 @@ shift = lapply(f,function(x) x(a))
 htmlTable(prepTable(shift,shift_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<p><table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>how, are you hey?</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+how, are you hey?
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey, hey hey hey?</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey, hey hey hey?
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>hey, hey hey hey?</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+hey, hey hey hey?
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>hey, hey hey hey?</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>FALSE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+hey, hey hey hey?
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+FALSE
+</td>
 </tr>
 </tbody>
-</table> In this case, every word has been replaced with the last replacement value (again, due to the looping).</p>
+</table>
+<p>In this case, every word has been replaced with the last replacement value (again, due to the looping).</p>
 </div>
 <div id="regex" class="section level2">
 <h2>Regex</h2>
@@ -651,45 +625,92 @@ regex = lapply(f,function(x) x(a))
 htmlTable(prepTable(regex,regex_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>Metazamine is not the same as dopachloride or Metamezamine and is still real.</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+Metazamine is not the same as dopachloride or Metamezamine and is still real.
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>Metazamine is not the same as dopachloride or Metamezamine and is still real.</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+Metazamine is not the same as dopachloride or Metamezamine and is still real.
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>real</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+real
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>Metazamine is not the same as dopachloride or Metamezamine and is still real.</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+Metazamine is not the same as dopachloride or Metamezamine and is still real.
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>Metazamine is not the same as dopachloride or Metamezamine and is still real.</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>TRUE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+Metazamine is not the same as dopachloride or Metamezamine and is still real.
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+TRUE
+</td>
 </tr>
 </tbody>
 </table>
@@ -709,45 +730,92 @@ regex_substring = lapply(f,function(x) x(a))
 htmlTable(prepTable(regex_substring,regex_substring_target),
           align=&quot;llr&quot;,
           css.cell = &quot;padding-left: 1em; padding-right: 1em&quot;)</code></pre>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Library</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Result</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Correct</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Library
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Result
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Correct
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>mgsub</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>metazamine is a fake chemical</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>TRUE</td>
+<td style="text-align: left;">
+1
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+mgsub
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+metazamine is a fake chemical
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+TRUE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>qdap</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>freakoute is a fake chemical</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+2
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+qdap
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+freakoute is a fake chemical
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bayesbio</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>metazamine</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+3
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bayesbio
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+metazamine
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>bazar</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: left;'>freakoute is a fake chemical</td>
-<td style='padding-left: 1em; padding-right: 1em; text-align: right;'>FALSE</td>
+<td style="text-align: left;">
+4
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+bazar
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: left;">
+freakoute is a fake chemical
+</td>
+<td style="padding-left: 1em; padding-right: 1em; text-align: right;">
+FALSE
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>5</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>textclean</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;'>freakoute is a fake chemical</td>
-<td style='padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;'>FALSE</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+5
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+textclean
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: left;">
+freakoute is a fake chemical
+</td>
+<td style="padding-left: 1em; padding-right: 1em; border-bottom: 2px solid grey; text-align: right;">
+FALSE
+</td>
 </tr>
 </tbody>
 </table>
@@ -763,10 +831,9 @@ htmlTable(prepTable(regex_substring,regex_substring_target),
 s = &quot;Hi, my name is Mark&quot;
 m = c(&quot;Hi&quot;,&quot;Mark&quot;)
 r = c(&quot;Goodbye&quot;,&quot;Tom&quot;)
-names(r) = m
 
 smb = microbenchmark(
-  mgsub = mgsub::mgsub(s,r,fixed=TRUE),
+  mgsub = mgsub::mgsub(s,m,r,fixed=TRUE),
   qdap = qdap::mgsub(m,r,s),
   bayesbio = bayesbio:::mgsub(m,r,s),
   bazar = bazar::mgsub(m,r,s),
@@ -774,12 +841,12 @@ smb = microbenchmark(
 )
 smb = print(smb)
 ## Unit: microseconds
-##       expr     min       lq      mean   median       uq     max neval
-##      mgsub  95.545 140.9460 160.71527 161.9150 180.8780 304.137   100
-##       qdap 184.890 242.8725 273.25684 286.8155 298.3025 422.291   100
-##   bayesbio  16.411  28.6270  33.59056  33.5500  37.9260  88.252   100
-##      bazar  26.257  41.9380  49.17671  48.3195  53.2430 114.143   100
-##  textclean  43.397  68.1940  77.61020  77.6755  84.7875 216.251   100</code></pre>
+##       expr     min       lq      mean   median       uq     max neval  cld
+##      mgsub 268.500 308.3010 348.45497 328.9010 369.5005 554.201   100   c 
+##       qdap 286.001 340.6510 409.34099 409.3505 439.4515 791.202   100    d
+##   bayesbio  25.202  34.4505  45.66502  43.2510  52.7010 165.701   100 a   
+##      bazar  40.101  52.3005  63.30701  59.1005  67.8510 275.302   100 a   
+##  textclean  80.301  95.7505 108.29300 103.8505 116.2505 274.601   100  b</code></pre>
 <p><code>mgsub</code> and <code>qdap</code> in this simple case are in the same order of magnitude. The other three are significantly faster - the slowest of them is still 2x faster than <code>mgsub</code> or <code>qdap</code>.</p>
 </div>
 <div id="regex-1" class="section level3">
@@ -787,10 +854,9 @@ smb = print(smb)
 <pre class="r"><code>s = &quot;Dopazamine is not the same as Dopachloride and is still fake.&quot;
 m = c(&quot;[Dd]opa(.*?mine)&quot;,&quot;fake&quot;)
 r = c(&quot;Meta\\1&quot;,&quot;real&quot;)
-names(r) = m
 
 rmb = microbenchmark(
-  mgsub = mgsub::mgsub(s,r),
+  mgsub = mgsub::mgsub(s,m,r),
   qdap = qdap::mgsub(m,r,s,fixed=FALSE),
   bayesbio = bayesbio:::mgsub(m,r,s),
   bazar = bazar::mgsub(m,r,s),
@@ -798,12 +864,12 @@ rmb = microbenchmark(
 )
 rmb = print(rmb)
 ## Unit: microseconds
-##       expr     min       lq      mean   median       uq     max neval
-##      mgsub 186.348 308.8780 345.39981 347.8975 381.4475 605.356   100
-##       qdap 168.479 266.3935 275.46668 283.8980 297.9375 735.544   100
-##   bayesbio  19.328  34.6445  41.66810  42.6675  49.5960  94.450   100
-##      bazar  32.092  54.7015  59.58088  59.8070  69.1060  94.816   100
-##  textclean  32.092  58.3485  65.30250  64.9120  73.3000 161.551   100</code></pre>
+##       expr     min       lq      mean   median       uq     max neval cld
+##      mgsub 199.700 245.7510 322.44799 311.3010 380.4510 583.501   100   c
+##       qdap 173.901 192.7510 277.97608 262.6015 357.3005 556.601   100  b 
+##   bayesbio  18.000  24.6005  36.62298  34.9515  47.1010  91.401   100 a  
+##      bazar  29.001  36.5010  55.00406  47.3510  67.7510 235.001   100 a  
+##  textclean  31.302  38.0515  55.62598  49.7010  72.4010  97.102   100 a</code></pre>
 <p>When we add regular expressions (with backreferences) the speed difference grows even bigger.</p>
 <p>All that being said, things are still in microseconds, so it’s not necessarily a practical difference. And, is it worth being so much faster knowing you could be getting wrong results?</p>
 </div>
@@ -811,7 +877,7 @@ rmb = print(rmb)
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
 
-<table style="border-collapse:collapse;" class=table_1161 border=0>
+<table style="border-collapse:collapse;" class=table_9453 border=0>
 <thead>
 <tr style="border-top:2px solid black;">
   <th colspan=1 id="tableHTML_second_header_1"></th>
@@ -839,8 +905,8 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_6" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_7" style="background-color:#8df086;text-align:center;">Y</td>
-  <td id="tableHTML_column_8" style="text-align:right;">162</td>
-  <td id="tableHTML_column_9" style="text-align:right;">348</td>
+  <td id="tableHTML_column_8" style="text-align:right;">329</td>
+  <td id="tableHTML_column_9" style="text-align:right;">311</td>
 </tr>
 <tr>
   <td id="tableHTML_column_1">qdap</td>
@@ -850,8 +916,8 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_6" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_7" style="background-color:#6f87fc;text-align:center;">N</td>
-  <td id="tableHTML_column_8" style="text-align:right;">287</td>
-  <td id="tableHTML_column_9" style="text-align:right;">284</td>
+  <td id="tableHTML_column_8" style="text-align:right;">409</td>
+  <td id="tableHTML_column_9" style="text-align:right;">263</td>
 </tr>
 <tr>
   <td id="tableHTML_column_1">bayesbio</td>
@@ -861,8 +927,8 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_6" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_7" style="background-color:#6f87fc;text-align:center;">N</td>
-  <td id="tableHTML_column_8" style="text-align:right;">34</td>
-  <td id="tableHTML_column_9" style="text-align:right;">43</td>
+  <td id="tableHTML_column_8" style="text-align:right;">43</td>
+  <td id="tableHTML_column_9" style="text-align:right;">35</td>
 </tr>
 <tr>
   <td id="tableHTML_column_1">bazar</td>
@@ -872,8 +938,8 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_6" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_7" style="background-color:#6f87fc;text-align:center;">N</td>
-  <td id="tableHTML_column_8" style="text-align:right;">48</td>
-  <td id="tableHTML_column_9" style="text-align:right;">60</td>
+  <td id="tableHTML_column_8" style="text-align:right;">59</td>
+  <td id="tableHTML_column_9" style="text-align:right;">47</td>
 </tr>
 <tr style="border-bottom:2px solid black;">
   <td id="tableHTML_column_1">textclean</td>
@@ -883,413 +949,70 @@ rmb = print(rmb)
   <td id="tableHTML_column_5" style="background-color:#6f87fc;text-align:center;">N</td>
   <td id="tableHTML_column_6" style="background-color:#8df086;text-align:center;">Y</td>
   <td id="tableHTML_column_7" style="background-color:#6f87fc;text-align:center;">N</td>
-  <td id="tableHTML_column_8" style="text-align:right;">78</td>
-  <td id="tableHTML_column_9" style="text-align:right;">65</td>
+  <td id="tableHTML_column_8" style="text-align:right;">104</td>
+  <td id="tableHTML_column_9" style="text-align:right;">50</td>
 </tr>
 </tbody>
 </table>
 <p>I’ve shown that only <code>mgsub::mgsub</code> provides actual correct multiple, global string substitution from the 5 packages that have a function named <code>mgsub</code> in every possible scenario. While it is on the slower end of runtime, it’s a small price to pay for safety.</p>
 </div>
 
+      </div></div>
+  
+  <div class="pagination">
+    <div class="pagination__title">
+      <span
+        class="pagination__title-h"></span>
+      <hr />
     </div>
-
-    <footer>
-        <ul class="stats">
-    
-        
-
-        
-        
-            <li>
-                
-                
-                    
-
-                    
-
-                    
-
-                    
-                        Category
-                    
-                
-            </li>
-        
-    
-
-    
-    
-        <li><a href='/categoriesr'>r</a></li>
-    
-</ul>
-
-    </footer>
-</article>
-<ul class="actions pagination">
-    
-        <li><a href="http://thug-r.life/post/2018-01-25-one-year-of-trump-eo/"
-                class="button big previous">One Year of Trump Executive Orders</a></li>
-    
-
-    
-        <li><a href="http://thug-r.life/post/2018-02-07-hugo-to-rbloggers/"
-                class="button big next">Prep Your Hugo Blog for R-bloggers</a></li>
-    
-</ul>
-
-
-
-    
-        <article class="post">
-            <div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "thugrlife" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-        </article>
-    
-
-
+    <div class="pagination__buttons">
+      
+      <span class="button previous">
+        <a href="/post/2018-02-07-hugo-to-rbloggers/">
+          <span class="button__icon">←</span>
+          <span class="button__text">Prep Your Hugo Blog for R-bloggers</span>
+        </a>
+      </span>
+      
+      
+      <span class="button next">
+        <a href="/post/2018-01-25-one-year-of-trump-eo/">
+          <span class="button__text">One Year of Trump Executive Orders</span>
+          <span class="button__icon">→</span>
+        </a>
+      </span>
+      
     </div>
+  </div>
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
     
-<section id="sidebar">
-
+      <div class="copyright">
+        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
     
-        <section id="intro">
-            
-            
-                
-                    <img src="/img/main/logo.jpg" class="intro-circle" width="" alt="Thug R Life" />
-                
-            
-            
-                <header>
-                    <h2>Thug R Life</h2>
-                    <p>Just a blog, by a guy trying to make a difference.<br>Hopefully soon published on <a href='https://www.r-bloggers.com/'>R-bloggers</a></p>
-                </header>
-            
-            <ul class="icons">
-                
-                
-                    
-<li><a href="//github.com/bmewing" target="_blank" title="GitHub" class="fa fa-github"></a></li>
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
 
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
 
 
 
 
 
+  
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//stackoverflow.com/users/2890590" target="_blank" title="Stack Overflow" class="fa fa-stack-overflow"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//twitter.com/pofigster" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
-
-
-
-<li><a href="mailto:b.mark@ewingsonline.com" title="Email" class="fa fa-envelope"></a></li>
-
-
-                
-            </ul>
-        </section>
-
-    
-        <section id="recent-posts">
-            <ul class="posts">
-                <header>
-                    <h3>Recent Posts</h3>
-                </header>
-                
-                    
-                
-
-                
-                    
-                
-
-                
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="http://thug-r.life/post/2019-09-04-r-user-salaries-stackoverflow/">Analysis of R User Salaries from the 2019 StackOverflow Survey</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2019-09-04'>
-                                    September 4, 2019</time>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="http://thug-r.life/post/2019-04-03-tale-of-three-assignment-operators/">A Tale of Three Assignment Operators</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2019-04-03'>
-                                    April 3, 2019</time>
-                            </header>
-                        </article>
-                    </li>
-                
-
-                
-                    <li>
-                        <ul class="actions">
-                            <li><a href=
-                            
-                                /post/
-                            
-                            class="button">View more posts</a></li>
-                        </ul>
-                    </li>
-                
-            </ul>
-        </section>
-
-    
-    
-    
-    
-        <section id="categories">
-            <ul class="posts">
-                <header>
-                    <h3><a href="/categories/">Categories</a></h3>
-                </header>
-
-                
-                    
-                
-
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/r/">r</a>
-                                <span style="float:right;">11</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/cloud/">cloud</a>
-                                <span style="float:right;">2</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/life/">life</a>
-                                <span style="float:right;">2</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/meta/">meta</a>
-                                <span style="float:right;">1</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/python/">python</a>
-                                <span style="float:right;">1</span>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/spark/">spark</a>
-                                <span style="float:right;">1</span>
-                            </header>
-                        </article>
-                    </li>
-                
-            </ul>
-        </section>
-    
-
-    
-        
-        <section class="blurb">
-            <h2>About</h2>
-            <p>I guess I&#39;m starting this blog because I want to do more technical writing or something. Also, I&#39;ve started publishing packages and so I need a platform to promote them on and starting a blog seems like a great way to get r-bloggers to publish my content. We&#39;ll see how it goes.</p>
-
-            <ul class="actions">
-                <li><a href="/about/" class="button">Learn More</a></li>
-            </ul>
-        </section>
-        
-
-    
-        <section id="footer">
-            <ul class="icons">
-                
-                
-                    
-<li><a href="//github.com/bmewing" target="_blank" title="GitHub" class="fa fa-github"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//stackoverflow.com/users/2890590" target="_blank" title="Stack Overflow" class="fa fa-stack-overflow"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//twitter.com/pofigster" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
-
-
-
-<li><a href="mailto:b.mark@ewingsonline.com" title="Email" class="fa fa-envelope"></a></li>
-
-
-                
-            </ul>
-
-            <p class="copyright">&copy; Thug R Life. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
-        </section>
-
-</section>
-
-            </div>
-        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
-        
-
-        
-        
-            
-        
-
-        
-        
-            <script src="/js/jquery.min.js"></script>
-            <script src="/js/skel.min.js"></script>
-            <script src="/js/util.js"></script>
-            <script src="/js/main.js"></script>
-            <script src="/js/backToTop.js"></script>
-            <script src="/js/highlight.pack.js"></script>
-        
-
-        
-
-            
-            <script>hljs.initHighlightingOnLoad();</script>
-            
-    </body>
+</body>
 </html>
-

@@ -1,17 +1,10 @@
 base
-datasets
-utils
-grDevices
-graphics
-stats
-methods
 data.table
 proto
 gsubfn
 RSQLite
 sqldf
 dplyr
-tcltk
 profmem
 microbenchmark
 fuzzyjoin

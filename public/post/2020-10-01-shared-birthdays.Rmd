@@ -1,0 +1,158 @@
+---
+title: "Shared Birthdays in Groups"
+author: "Mark Ewing"
+description: "a.k.a. You are not as special as you think you are..."
+date: 2020-01-10
+type: "post"
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+```{r libraries, include=FALSE}
+library(data.table)
+library(ggplot2)
+library(Hmisc)
+```
+
+## Intro
+
+For the last several years I've participated in a reading challenge with a few family members. It's a custom derivative of the [POPSUGAR](https://www.popsugar.com/) list and in general it's great for encouraging reading outside of my normal choices (though I suppose I've been doing it long enough that maybe I have broader taste now?). This year one item is to read a book published the month of your birthday. As I was researching options, my 9 year old started trying to estimate the probability that a book was published *on* your birthday. This led to a great discussion about assumptions in these types of calculations and eventually settled on the topic of the required group size needed to have a 50% chance of at least two people sharing a birthday. He originally proposed 366 but quickly realized that would be a 100% chance. He settled on 182 or 183 (half of 365) which intuitively makes sense. When I told him it was just 23 he couldn't believe it.
+
+## The Math
+
+The math is a bit beyond what he's been learning, but I got to introduce basic combinatorics and critical thinking with probabilities. The first thing we needed to cover was how many pairs there are in a group, and then how to easily arrive at the probability of at least one pair sharing a birthday.
+
+### Pairs in a Group
+
+Since order doesn't matter when selecting pairs from a group to compare birthdays, we need to know how many ways there are to choose 2 from a group of `N` people. `N choose m` is `N!/((N-m)!*m!)` which is implemented in the R function `choose(N, m)`. So, for a group of 23 people there are 253 possible pairs.
+
+```{r}
+choose(23, 2)
+```
+
+### Probabilities
+
+Next we discussed independence in probabilities. Because the probability that a pair of people share a birthday isn't affected by the shared state of any other pair (that is, if Dick and Jane share a birthday, that has no bearing on if Tom and Sue share a birthday), we have independence. This makes calculating the probability of `A & B` much easier.
+
+The hardest part was understanding the easy way to calculate the probability that *at least one* pair would share a birthday. In a simple case of 3 people, that would be `AB | AC | BC | (AB & AC) | (AB & BC) | (AC & BC) | (AB & AC & BC)` which is a lot of work. But, the antithesis of *at least one* is *none*, or `P(at least one) = 1-P(none)`. The probability of none is easy in this case because each pair has a `364/365` probability of not sharing a birthday. Because these probabilities are independent, we can easily calculate the probability.
+
+```{r}
+1-(364/365)^choose(23, 2)
+```
+
+## Reality
+
+The math, while involved, is ultimately straightfoward. This is because we've made a few of key assumptions. First, we're ignoring leap years and all the people who are born on February 29, so we already know the math isn't perfect. Second, we're assuming that birthdays are uniformly distributed across the days of the year. There are more assumptions, but these are the big ones. So, how does it hold up? I suggested to my son that he could work with his teachers to check in each class at his school in how many instances there are shared birthdays and look at average class size to see if the probabilities we calculate are reflected acurately in reality.
+
+I found a dump from a large dataset that included birthday (month and day only) and the individuals were organized by functional group. I realized I could use this to assess how well the probabilities held up.
+
+### Data
+
+I have pre-agreggated the data so the only information is the size of the group and the number of unique birthdays in the first file and the count of individuals with each birthday in the second. I'm not sure where the original data came from and I don't want to be leaking PII.
+
+```{r, results='hide'}
+library(data.table)
+library(ggplot2)
+library(Hmisc)
+
+shared_birthdays = fread("https://thug-r-data-share.s3.amazonaws.com/birthday_data.txt")
+birthday_counts = fread("https://thug-r-data-share.s3.amazonaws.com/birthday_data_dist.txt")
+```
+
+Here's a sample of the data.
+
+```{r}
+head(shared_birthdays)
+```
+
+```{r}
+head(birthday_counts)
+```
+
+### Shared Birthdays
+
+To find the proportion of shared birthdays for each observed group size, we can use `data.table`. First we'll create a new logical column that checks if there are shared birthdays by comparing the number of `unique_birthdays` to the group size (if it's not the same, there's a shared birthday). Next, we'll aggregate the observed proportion of groups with at least one shared birthday by `group_size` and also count how many groups of a particular size we observed.
+
+```{r}
+shared_birthdays[, shared := unique_birthdays < group_size]
+shared = shared_birthdays[order(group_size), list(observed = mean(shared), n = .N), by=group_size]
+head(shared)
+```
+
+One thing to note is there are groups of size 1, so we want to remove those. Additionally, we should calculate the expected proportion and include some confidence bands.
+
+```{r}
+shared = shared[group_size > 1]
+shared[, expected := (1-(364/365)^choose(group_size, 2))]
+conf = binconf(shared$observed * shared$n, shared$n, alpha=0.1)
+set(shared, j="lower", value=conf[, "Lower"])
+set(shared, j="upper", value=conf[, "Upper"])
+head(shared)
+```
+
+Now we can run a bunch of hypothesis tests to see if the data we have contradicts the assumed model.
+
+```{r}
+shared[, "in_bound" := expected >= lower & expected <= upper]
+print(paste0("Proportion of cases in confidence bands: ", round(mean(shared$in_bound), 3)))
+shared[!(in_bound)]
+```
+
+We observe that 90% of our (95%) confidence bands captured the expected value. Further, we see that we have two cases of observing significatly more shared birthdays than expected (group sizes of 3 and 4) and two cases of significantly fewer (19 and, ironically, 23). On the whole though, it seems like our assumptions aren't too bad.
+
+### Visualize It!
+
+```{r}
+viz = ggplot(shared, aes(x=group_size)) +
+  geom_errorbar(aes(ymin=lower, ymax=upper, color=in_bound)) +
+  geom_point(aes(y=observed, size=n), color='red', shape=1) +
+  geom_line(aes(y=expected), color='blue', lwd=1.1) +
+  labs(color="In Bound", x="Group Size", y="Likelihood of Shared Birthday", size="Number of Groups") +
+  scale_y_continuous(labels=scales::percent)
+```
+```{r, echo=FALSE}
+plot(viz)
+```
+
+## Uniformity of Birthdays
+
+First, we need to explode the counts of each birthday into each observation. Then we'll run a Kolmogorov-Smirnov omnibus test on our observations vs a uniform distribution. This presents a few challenges - first, birthdays, even when reexpressed as values from 1/366 to 1, are discrete, not uniform, so we already know it's not really a uniform distribution. Second, K-S doesn't like ties.
+
+```{r}
+psuedo_dist = unlist(lapply(1:nrow(birthday_counts), function(i){
+  rep(i/366, birthday_counts[["count"]][i])
+}))
+ks.test(psuedo_dist, "punif")
+```
+
+A superior choice is to run the Cramer-von Mises test which only works on discrete distributions, doesn't mind ties, and is generally better in that it evaluates the distance between the two ECDFs holistically where K-S only looks at the maximum distance between the two.
+
+```{r}
+library(dgof)
+cvm.test(psuedo_dist, ecdf((1:366)/366))
+```
+
+Ultimately the conclusion is that there is no evidence that this group of people's birthdays follow something other than a uniform distribution. Visually we can see that it generally does look like a swarm - February 29 being the obvious exception.
+
+```{r}
+birthday_counts[, c("month", "day") := list(
+  gsub(".{2}$", "", birthday),
+  gsub(".*(.{2})$", "\\1", birthday)
+)]
+birthday_counts[, "birthday_date" := as.Date(paste0("2020-",month,"-",day))]
+birthday_counts[, "expected" := sum(count)/366]
+exp_viz = ggplot(birthday_counts, aes(x=birthday_date)) + 
+  geom_line(aes(y=expected), color='red') +
+  geom_point(aes(y=count)) +
+  labs(x="Birthday", y="Count")
+```
+```{r, echo=FALSE}
+plot(exp_viz)
+```
+
+
+## Final Thoughts
+
+Overall, it was fun to take a significant number of birthdays that were assigned to groups based on characteristics other than birthday and see the power a few simple assumptions gives us to make assessments about a group.

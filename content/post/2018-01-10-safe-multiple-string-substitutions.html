@@ -3,7 +3,6 @@ title: "Safe, Multiple String Substitutions with mgsub::mgsub"
 author: "Mark Ewing"
 description: "Solving an infrequent problem with a package."
 date: 2018-01-10
-categories: ["r"]
 type: "post"
 ---
 
@@ -26,12 +25,12 @@ type: "post"
 ## [1] &quot;The chemical metaziamine is fake, long live metaziamine!&quot;</code></pre>
 <p>However, the internal regex functions aren’t vectorized, so I can’t have multiple patterns.</p>
 <pre class="r"><code>gsub(c(&quot;dopa&quot;,&quot;fake&quot;),c(&quot;meta&quot;,&quot;real&quot;),&quot;The chemical dopaziamine is fake, long live dopaziamine!&quot;)
-## Warning in gsub(c(&quot;dopa&quot;, &quot;fake&quot;), c(&quot;meta&quot;, &quot;real&quot;), &quot;The chemical
-## dopaziamine is fake, long live dopaziamine!&quot;): argument &#39;pattern&#39; has
-## length &gt; 1 and only the first element will be used
-## Warning in gsub(c(&quot;dopa&quot;, &quot;fake&quot;), c(&quot;meta&quot;, &quot;real&quot;), &quot;The chemical
-## dopaziamine is fake, long live dopaziamine!&quot;): argument &#39;replacement&#39; has
-## length &gt; 1 and only the first element will be used
+## Warning in gsub(c(&quot;dopa&quot;, &quot;fake&quot;), c(&quot;meta&quot;, &quot;real&quot;), &quot;The chemical dopaziamine
+## is fake, long live dopaziamine!&quot;): argument &#39;pattern&#39; has length &gt; 1 and only
+## the first element will be used
+## Warning in gsub(c(&quot;dopa&quot;, &quot;fake&quot;), c(&quot;meta&quot;, &quot;real&quot;), &quot;The chemical dopaziamine
+## is fake, long live dopaziamine!&quot;): argument &#39;replacement&#39; has length &gt; 1 and
+## only the first element will be used
 ## [1] &quot;The chemical metaziamine is fake, long live metaziamine!&quot;</code></pre>
 </div>
 <div id="multiple-patterns" class="section level3">
@@ -61,16 +60,17 @@ type: "post"
 <div id="problems-with-safety" class="section level3">
 <h3>Problems with safety</h3>
 <p>I noted that <code>qdap::mgsub</code> uses placeholders. This can actually cause a problem in certain cases where patterns are the same length. Consider the phrase “Hey, how are you?” where I want to shift each word to the left. So, “hey” shoudl be replaced by “how”, “how” by “are”, etc. Note, each pattern to match is 3 characters long. Note also that I pass in the <code>ignore.case=T</code> argument so my patterns won’t be bothered by capitalization.</p>
-<pre class="r"><code>qdap::mgsub(c(&quot;hey&quot;,&quot;how&quot;,&quot;are&quot;,&quot;you&quot;),c(&quot;how&quot;,&quot;are&quot;,&quot;you&quot;,&quot;hey&quot;),&quot;Hey, how are you?&quot;
-            ,fixed=F,ignore.case=T)
+<pre class="r"><code>qdap::mgsub(c(&quot;hey&quot;, &quot;how&quot;, &quot;are&quot;, &quot;you&quot;),
+            c(&quot;how&quot;, &quot;are&quot;, &quot;you&quot;, &quot;hey&quot;),
+            &quot;Hey, how are you?&quot;,
+            fixed=F,ignore.case=T)
 ## [1] &quot;hey, hey hey hey?&quot;</code></pre>
 <p>The placeholders became indistinguishable and so every word was replaced with the same word.</p>
 </div>
 <div id="a-safer-option" class="section level3">
 <h3>A safer option</h3>
 <p>I just published a <a href="https://github.com/bmewing/mgsub">github repo</a> which contains a new R package called <code>mgsub</code>. It is a safe alternative to <code>qdap::mgsub</code>, fully supporting regular expression matching and replacement in a way that guarantees safety. It also replaces with the longer match first, so sub-matches won’t mess things up.</p>
-<p>Rather than passing in vectors (which could be recylced) of matches and replacements, I require named lists.</p>
-<p>Finally, the code is pure R (for now) with no dependencies, so you won’t get a lot of bloat.</p>
+<p>Also, the code is pure R (for now) with no dependencies, so you won’t get a lot of bloat.</p>
 <div id="installing-from-github" class="section level4">
 <h4>Installing from github</h4>
 <pre class="r"><code>devtools::install_github(&quot;bmewing/mgsub&quot;)</code></pre>
@@ -78,20 +78,23 @@ type: "post"
 <div id="examples" class="section level4">
 <h4>Examples</h4>
 <p>First, the case that broke <code>qdap</code>.</p>
-<pre class="r"><code>mgsub::mgsub(&quot;Hey, how are you?&quot;,list(&quot;hey&quot;=&quot;how&quot;,&quot;how&quot;=&quot;are&quot;,&quot;are&quot;=&quot;you&quot;,&quot;you&quot;=&quot;hey&quot;)
-            ,ignore.case=T)
+<pre class="r"><code>mgsub::mgsub(&quot;Hey, how are you?&quot;, c(&quot;hey&quot;, &quot;how&quot;, &quot;are&quot;, &quot;you&quot;), c(&quot;how&quot;, &quot;are&quot;, &quot;you&quot;, &quot;hey&quot;),
+             ignore.case=T)
 ## [1] &quot;how, are you hey?&quot;</code></pre>
 <p>We can also try a complex regular expression. Note we use regular expressions in the match and the replacement and it works exactly as expected. We only replaced “dopa” with “meta” with it’s a -mine group as opposed to a -ride group. Disclaimer - I know nothing about chemistry and stuff, so I don’t know if those are real.</p>
 <pre class="r"><code>mgsub::mgsub(&quot;Dopazamine is not the same as Dopachloride and is still fake.&quot;,
-             list(&quot;[Dd]opa(.*?mine)&quot;=&quot;Meta\\1&quot;,&quot;fake&quot;=&quot;real&quot;),
+             c(&quot;[Dd]opa(.*?mine)&quot;, &quot;fake&quot;),
+             c(&quot;Meta\\1&quot;, &quot;real&quot;),
              ignore.case=F)
 ## [1] &quot;Metazamine is not the same as Dopachloride and is still real.&quot;</code></pre>
 <p>We can see the substring protection here. Even though “the” is a substring of “they” and appears in the list first, “they” is given priority when it is also matched.</p>
 <pre class="r"><code>mgsub::mgsub(&quot;They don&#39;t understand the value of what they seek.&quot;,
-             list(&quot;the&quot;=&quot;a&quot;,&quot;they&quot;=&quot;we&quot;),ignore.case=T)
+             c(&quot;the&quot;, &quot;they&quot;),
+             c(&quot;a&quot;,&quot;we&quot;),
+             ignore.case=T)
 ## [1] &quot;we don&#39;t understand a value of what we seek.&quot;</code></pre>
 <p>You can also use it on single characters.</p>
-<pre class="r"><code>mgsub::mgsub(&quot;ho ho hoot&quot;,list(&quot;h&quot;=&quot;o&quot;,&quot;o&quot;=&quot;h&quot;))
+<pre class="r"><code>mgsub::mgsub(&quot;ho ho hoot&quot;, c(&quot;h&quot;, &quot;o&quot;), c(&quot;o&quot;, &quot;h&quot;))
 ## [1] &quot;oh oh ohht&quot;</code></pre>
 </div>
 </div>

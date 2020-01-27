@@ -13,11 +13,11 @@ knitr::opts_chunk$set(collapse = TRUE)
 
 ## Intro
 
-Saw an interesting analysis pop up in my Twitter feed, written by (Tomaž Weiss)[https://tomazweiss.github.io/] and (posted on KDNuggets)[https://www.kdnuggets.com/2019/08/r-users-salaries-2019-stackoverflow-survey.html] analyzing the 2019 StackOverflow survey data to look at salaries of R Users. As is often the case, my brain went down a rabbit trail of new questions to ask.
+Saw an interesting analysis pop up in my Twitter feed, written by [Tomaž Weiss](https://tomazweiss.github.io/) and [posted on KDNuggets](https://www.kdnuggets.com/2019/08/r-users-salaries-2019-stackoverflow-survey.html) analyzing the 2019 StackOverflow survey data to look at salaries of R Users. As is often the case, my brain went down a rabbit trail of new questions to ask.
 
 ## Data
 
-The data is available in a zip file (from here)[https://insights.stackoverflow.com/survey], I uploaded just the results to an S3 bucket to make my analysis reproducible (though I would prefer if you downloaded from the original source instead of my bucket so I don't have to pay for it).
+The data is available in a zip file [from here](https://insights.stackoverflow.com/survey), I uploaded just the results to an S3 bucket to make my analysis reproducible (though I would prefer if you downloaded from the original source instead of my bucket so I don't have to pay for it).
 
 ```{r, cache = TRUE, results='hide'}
 library(data.table)
